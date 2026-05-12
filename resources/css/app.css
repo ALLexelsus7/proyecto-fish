@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Rescato algunos estilos de la propuesta inicial del proyecto y agrego otros */
+@layer components{
+    .tarjeta-cristal{
+        /* 1. Translucidez: Fondo negro con un 15% de opacidad */
+        background: rgba(0, 0, 0, 0.15);    
+        /* 2. La magia: Desenfoca lo que está detrás del elemento */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /* Necesario para que funcione en Safari/Apple */    
+        /* 3. Borde sutil: Un borde blanco muy transparente para simular el filo */
+        border: 1px solid rgba(255, 255, 255, 0.3);    
+        /* 4. Sombra: Sombra suave y amplia para que parezca flotar */
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);    
+        /* Extras: Curvas para un diseño más amigable */
+        border-radius: 0 0 26px 26px; 
+        padding: 30px;
+    }
+    .tarjeta-cristal-2{
+        background: rgba(0, 0, 0, 0.45);    
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);    
+        border: 1px solid rgba(255, 255, 255, 0.3);    
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);    
+        border-radius: 26px 26px 0 0; 
+        padding: 30px;
+    } 
+}
