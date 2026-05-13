@@ -1,6 +1,6 @@
 @extends('layouts.app')
 {{-- https://gradienty.codes/#google_vignette --}}
-@section('body-style', 'background-image: linear-gradient(to right, #2dd4bf, #1f2937);')
+@section('body-style', 'background: linear-gradient(to bottom left, #84cc16, #16a34a, #0f766e);')
 {{-- Seccion con el formulario de contacto --}}
 @section('content')
 <section class="relative min-h-screen pt-60 pb-20 flex items-center justify-center bg-fixed bg-cover bg-center">
@@ -38,29 +38,29 @@
             </div>
         </div>
 
-        <form action="#" class="tarjeta-cristal p-8 space-y-5 border border-white/10">
+        <form action="#" class="tarjeta-cristal p-8 space-y-5 border border-white/10 text-white">
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Nombre</label>
+                    <label class="text-xs font-bold uppercase tracking-widest">Nombre</label>
                     <input type="text" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition">
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Asunto</label>
+                    <label class="text-xs font-bold uppercase tracking-widest">Asunto</label>
                     <input type="text" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition">
                 </div>
             </div>
 
             <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Correo Electrónico</label>
+                <label class="text-xs font-bold uppercase tracking-widest">Correo Electrónico</label>
                 <input type="email" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition">
             </div>
 
             <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Mensaje</label>
-                <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition"></textarea>
+                <label class="text-xs font-bold uppercase tracking-widest">Mensaje</label>
+                <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition"></textarea>
             </div>
 
-            <button type="submit" class="w-full bg-magma-diablillo hover:bg-ojo-aberracion text-white font-black py-4 rounded-xl shadow-lg shadow-magma-diablillo/20 transition-all transform hover:-translate-y-1">
+            <button type="submit" class="w-full bg-magma-diablillo hover:bg-ojo-aberracion hover:text-terror-submarino font-black py-4 rounded-xl shadow-lg shadow-magma-diablillo/20 transition-all transform hover:-translate-y-1">
                 ENVIAR SEÑAL
             </button>
         </form>

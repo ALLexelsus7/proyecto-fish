@@ -26,6 +26,7 @@
             <a href="{{ route('dashboard') }}" class="text-sm border border-white/20 px-4 py-2 rounded-full hover:bg-white/10">Panel</a>
         @else
             <a href="{{ route('login') }}" class="text-sm bg-magma-diablillo px-5 py-2 rounded-full hover:bg-ojo-aberracion transition font-bold hover:text-mar-profundo">Login</a>
+            <a href="{{ route('register') }}" class="text-sm bg-magma-diablillo px-5 py-2 rounded-full hover:bg-ojo-aberracion transition font-bold hover:text-mar-profundo">Register</a>
         @endauth
     </div>
 </nav>
