@@ -5,7 +5,8 @@
         <span>ABYSSAL <span class="text-magma-diablillo">CATCH</span></span>
     </a>
 
-    <ul class="hidden md:flex space-x-8 font-medium">        
+    <ul class="hidden md:flex space-x-8 font-medium">   
+        {{-- x-nav-link es una etiqueta de Alpine.js por Breeze --}}
         <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="text-white hover:text-coral-electrico transition">
             Inicio
         </x-nav-link>

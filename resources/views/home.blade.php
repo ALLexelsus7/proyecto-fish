@@ -1,5 +1,6 @@
 @extends('layouts.app')
-
+{{-- Uso un fondo distinto en el body --}}
+@section('body-background', asset('img/bg/HadalZone.png'))
 {{-- Seccion con las categorias destacadas y features --}}
 @section('content')
     <section class="relative h-screen flex items-center justify-center overflow-hidden">

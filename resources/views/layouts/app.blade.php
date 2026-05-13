@@ -14,7 +14,14 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased text-white bg-cover bg-center bg-no-repeat bg-fixed bg-black/10" style="background-image:url('{{ asset('img/bg/HadalZone.png') }}');"">
+    {{-- Estilo para el cuerpo de la página según la sección y el tipo de background (imagen o color) --}}
+    @php
+        $bodyStyle = trim($__env->yieldContent('body-style'));
+        $bodyBackground = trim($__env->yieldContent('body-background'));
+    @endphp
+    <body class="@yield('body-class', 'font-sans antialiased text-white bg-cover bg-center bg-no-repeat bg-fixed bg-black/10')"
+          style="{{ $bodyStyle ?: 'background-image:url(\''.($bodyBackground ?: asset('img/svg/pattern-abismal.svg')).'\');' }}">
+          {{-- Aqui el style admite imagenes o colores de fondo y ese svg sera el default --}}
         <div class="min-h-screen">
             <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300">
                 @include('layouts.navigation')

@@ -28,3 +28,14 @@
         padding: 30px;
     } 
 }
+
+@layer utilities {
+    @keyframes descenderFondo {
+        0% { background-position: top center; }
+        100% { background-position: bottom center; }
+    }
+
+    .animacion-descenso {
+        animation: descenderFondo 10s ease-in-out forwards;
+    }
+}

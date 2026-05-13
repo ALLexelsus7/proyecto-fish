@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="bubbles" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+      <!-- Burbujas de diferentes tamaños -->
+      <circle cx="40" cy="30" r="8" fill="rgba(100, 180, 220, 0.1)" />
+      <circle cx="120" cy="80" r="12" fill="rgba(100, 180, 220, 0.08)" />
+      <circle cx="160" cy="150" r="6" fill="rgba(100, 180, 220, 0.12)" />
+      <circle cx="80" cy="180" r="10" fill="rgba(100, 180, 220, 0.09)" />
+      <circle cx="180" cy="40" r="5" fill="rgba(100, 180, 220, 0.11)" />
+    </pattern>
+    
+    <pattern id="waves" x="0" y="0" width="400" height="100" patternUnits="userSpaceOnUse">
+      <!-- Ondas sutiles -->
+      <path d="M0,50 Q100,20 200,50 T400,50" stroke="rgba(50, 120, 180, 0.15)" stroke-width="1" fill="none"/>
+      <path d="M0,70 Q100,40 200,70 T400,70" stroke="rgba(50, 120, 180, 0.1)" stroke-width="1" fill="none"/>
+    </pattern>
+  </defs>
+  
+  <!-- Fondo degradado base -->
+  <defs>
+    <linearGradient id="deepBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1428;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0d1b2a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#050810;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo base -->
+  <rect width="1200" height="800" fill="url(#deepBlue)"/>
+  
+  <!-- Capas de patrón -->
+  <rect width="1200" height="800" fill="url(#waves)" opacity="0.6"/>
+  <rect width="1200" height="800" fill="url(#bubbles)" opacity="0.8"/>
+  
+  <!-- Siluetas de organismos marinos sutiles -->
+  <g opacity="0.08" fill="rgba(100, 180, 220, 0.5)">
+    <!-- Medusas -->
+    <circle cx="150" cy="100" r="20"/>
+    <path d="M140,120 L135,160 M150,120 L150,170 M160,120 L165,160" stroke="rgba(100, 180, 220, 0.3)" stroke-width="2" fill="none"/>
+    
+    <circle cx="1050" cy="650" r="25"/>
+    <path d="M1035,675 L1025,730 M1050,675 L1050,740 M1065,675 L1075,730" stroke="rgba(100, 180, 220, 0.3)" stroke-width="2" fill="none"/>
+    
+    <!-- Formas abstractas de peces -->
+    <ellipse cx="900" cy="200" rx="30" ry="15" transform="rotate(-30 900 200)"/>
+    <ellipse cx="200" cy="650" rx="35" ry="18" transform="rotate(45 200 650)"/>
+  </g>
+  
+  <!-- Detalles de bioluminiscencia -->
+  <g opacity="0.15">
+    <circle cx="300" cy="300" r="3" fill="#4db8dc"/>
+    <circle cx="800" cy="150" r="2" fill="#7dd3fc"/>
+    <circle cx="500" cy="700" r="2.5" fill="#4db8dc"/>
+    <circle cx="100" cy="400" r="2" fill="#7dd3fc"/>
+    <circle cx="1100" cy="500" r="1.5" fill="#4db8dc"/>
+  </g>
+</svg>
