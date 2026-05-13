@@ -22,11 +22,31 @@
         <button class="hover:text-ojo-aberracion transition">
             <span class="material-symbols-outlined">shopping_cart</span>
         </button>
+        @guest
+        <a href="{{ route('login') }}" class="text-white border border-magma-diablillo px-4 py-2 rounded-lg hover:bg-magma-diablillo transition">Login</a>
+        <a href="{{ route('register') }}" class="text-white border border-magma-diablillo px-4 py-2 rounded-lg hover:bg-magma-diablillo transition">Register</a>
+        @endguest
+
         @auth
-            <a href="{{ route('dashboard') }}" class="text-sm border border-white/20 px-4 py-2 rounded-full hover:bg-white/10">Panel</a>
-        @else
-            <a href="{{ route('login') }}" class="text-sm bg-magma-diablillo px-5 py-2 rounded-full hover:bg-ojo-aberracion transition font-bold hover:text-mar-profundo">Login</a>
-            <a href="{{ route('register') }}" class="text-sm bg-magma-diablillo px-5 py-2 rounded-full hover:bg-ojo-aberracion transition font-bold hover:text-mar-profundo">Register</a>
+            <div class="flex items-center gap-4">
+                @if(Auth::user()->email == 'prueba@prueba.com') {{-- Ajuste temporal --}}
+                    <a href="{{ route('admin.productos.index') }}" class="text-magma-diablillo font-bold hover:text-white transition">
+                        [ Panel Admin ]
+                    </a>
+                @endif
+
+                <a href="{{ route('dashboard') }}" class="text-coral-electrico hover:text-white transition flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">account_circle</span>
+                    Mi Cuenta
+                </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="text-gray-400 hover:text-red-500 transition text-xs uppercase font-black">
+                        Salir
+                    </button>
+                </form>
+            </div>
         @endauth
     </div>
 </nav>

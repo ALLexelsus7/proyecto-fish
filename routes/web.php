@@ -15,14 +15,45 @@ Route::get('/contacto', function () {
 })->name('contacto');
 
 //Rutas protegidas
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth','verified'])->group(function () {
 
-Route::middleware('auth')->group(function () {
+    //Rutas de usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    //Dashboard de usuario
+    Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+
+    //Rutas de admin
+    Route::get('/admin/productos', function () {
+        // Simulamos datos
+        $productos = [
+            (object)[
+                'id' => 1,
+                'nombre' => 'Pez Quimera',
+                'categoria' => 'Abisal',
+                'precio' => 1500,
+                'stock' => 5,
+                'imagen' => 'fish1.png'
+            ],
+            (object)[
+                'id' => 2,
+                'nombre' => 'Rape Abisal',
+                'categoria' => 'Abisal',
+                'precio' => 2200,
+                'stock' => 0,
+                'imagen' => 'fish2.png'
+            ],
+        ];
+        return view('admin.productos.index', compact('productos'));
+    })->name('admin.productos.index');
+
+    // Ruta para el formulario de crear (la usaremos después)
+    Route::get('/admin/productos/create', function () {
+        return view('admin.productos.create');
+    })->name('admin.productos.create');
+
+    
 });
 
 require __DIR__.'/auth.php';

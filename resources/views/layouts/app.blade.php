@@ -22,24 +22,16 @@
     <body class="@yield('body-class', 'font-sans antialiased text-white bg-cover bg-center bg-no-repeat bg-fixed bg-black/10')"
           style="{{ $bodyStyle ?: 'background-image:url(\''.($bodyBackground ?: asset('img/svg/pattern-abismal.svg')).'\');' }}">
           {{-- Aqui el style admite imagenes o colores de fondo y ese svg sera el default --}}
+
         <div class="min-h-screen">
             <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300">
                 @include('layouts.navigation')
             </header>
 
-            {{-- <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset --}}
-
-            <!-- Page Content -->
             <main>
-                {{-- {{ $slot }} --}}
-                @yield('content')
+                {{-- {{ $slot }}  es la froma de Breeze para inyectar contenido--}}
+                {{-- y el contenido se pone entre <x-app-layout> ... </x-app-layout> --}}
+                @yield('content') {{-- pero @yield() es el modo default de Laravel --}}
             </main>
           
             @include('layouts.footer')
