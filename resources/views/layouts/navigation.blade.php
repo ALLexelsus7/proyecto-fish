@@ -22,23 +22,26 @@
         <button class="hover:text-ojo-aberracion transition">
             <span class="material-symbols-outlined">shopping_cart</span>
         </button>
+        {{-- Opciones para los usuarios no registrados --}}
         @guest
         <a href="{{ route('login') }}" class="text-white border border-magma-diablillo px-4 py-2 rounded-lg hover:bg-magma-diablillo transition">Login</a>
         <a href="{{ route('register') }}" class="text-white border border-magma-diablillo px-4 py-2 rounded-lg hover:bg-magma-diablillo transition">Register</a>
         @endguest
 
+        {{-- Opciones para los usuarios registrados --}}
         @auth
             <div class="flex items-center gap-4">
                 @if(Auth::user()->email == 'prueba@prueba.com') {{-- Ajuste temporal --}}
-                    <a href="{{ route('admin.productos.index') }}" class="text-magma-diablillo font-bold hover:text-white transition">
-                        [ Panel Admin ]
+                    <a href="{{ route('admin.dashboard') }}" class="text-magma-diablillo font-bold hover:text-white transition">
+                        <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+                        Panel Admin
                     </a>
-                @endif
-
-                <a href="{{ route('dashboard') }}" class="text-coral-electrico hover:text-white transition flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">account_circle</span>
-                    Mi Cuenta
-                </a>
+                @else
+                    <a href="{{ route('dashboard') }}" class="text-coral-electrico hover:text-white transition flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">account_circle</span>
+                        Panel Usuario
+                    </a>
+                @endif              
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

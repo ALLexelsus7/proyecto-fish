@@ -58,6 +58,10 @@
                     
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-white mb-2">{{ $pez['nombre'] }}</h3>
+                        {{-- Falta el boton de favorito
+                            no seleccionado: bg-pink-500 text-white shadow-red-400/20 
+                            seleccionado: bg-pink-500 hover:text-white --}}
+                        
                         <div class="flex justify-between items-center">
                             <span class="text-coral-electrico font-bold text-lg">${{ number_format($pez['precio'], 2) }}</span>
                             <button class="bg-magma-diablillo p-2 rounded-lg hover:bg-ojo-aberracion transition shadow-lg shadow-magma-diablillo/20">

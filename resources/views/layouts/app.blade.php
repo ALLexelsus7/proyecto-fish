@@ -1,4 +1,4 @@
-{{-- Este es el layout principal --}}
+{{-- Este es el layout principal plantilla para las demas vistas --}}
 <!DOCTYPE html>
 <html lang="es"> {{-- {{ str_replace('_', '-', app()->getLocale()) }} --}}
     <head>
