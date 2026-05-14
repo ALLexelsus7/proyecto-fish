@@ -1,11 +1,12 @@
 @extends('layouts.app')
 {{-- https://gradienty.codes/#google_vignette --}}
-@section('body-style', 'background: linear-gradient(to bottom left, #84cc16, #16a34a, #0f766e);')
+{{-- @section('body-style', 'background: linear-gradient(to bottom left, #84cc16, #16a34a, #0f766e);') --}}
+@section('body-background', asset('img/bg/office2.jpeg'))
 {{-- Seccion con el formulario de contacto --}}
 @section('content')
 <section class="relative min-h-screen pt-60 pb-20 flex items-center justify-center bg-fixed bg-cover bg-center">
-    
-    
+  
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/0 -z-10"></div>  
 
     <div class="relative z-10 max-w-5xl w-full mx-4 grid grid-cols-1 md:grid-cols-2 gap-10">
         

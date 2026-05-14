@@ -37,5 +37,9 @@
             @include('layouts.footer')
             
         </div>
+
+        {{-- Agrego la libreria Parallax.js para hacer scrolls cool y animado --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>    
+        @stack('scripts') {{-- Esto sirve para meter código JS desde otras vistas --}}
     </body>
 </html>

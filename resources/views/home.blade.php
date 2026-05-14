@@ -7,9 +7,13 @@
         <div class="absolute inset-0 bg-gradient-to-b from-mar-profundo/15 via-terror-submarino/10 to-black/40 -z-10"></div>
         
         <div class="text-center px-4">
-            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter drop-shadow-2xl">
-                CAPTURAS DEL <span class="text-magma-diablillo italic">ABISMO</span>
-            </h1>
+            {{-- Implemento el efecto parallax en el titulo --}}
+            {{-- Ver mas atributos en https://github.com/wagerfield/parallax#22-configuration-options --}}
+            <div id="scene" data-hover-only="false" data-invert-x="false" data-invert-y="false">
+                <h1 data-depth="0.1"  class="absolute w-full h-full text-6xl md:text-8xl font-black mb-6 tracking-tighter drop-shadow-2xl">
+                    CAPTURAS DEL <span class="text-magma-diablillo italic">ABISMO</span>
+                </h1>
+            </div>
             <p class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
                 Peces exóticos de aguas profundas, seleccionados para la gastronomía de alta gama y acuarios de colección.
             </p>
@@ -47,4 +51,11 @@
             </div>
         </div>
     </section>
+    {{-- Inicio el efecto parallax --}}
+    @push('scripts')
+    <script>
+        var scene = document.getElementById('scene');
+        var parallaxInstance = new Parallax(scene);
+    </script>
+    @endpush
 @endsection
