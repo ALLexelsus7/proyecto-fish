@@ -19,8 +19,12 @@
     </ul>
 
     <div class="flex items-center gap-5">
-        <button class="hover:text-ojo-aberracion transition">
-            <span class="material-symbols-outlined">shopping_cart</span>
+        {{-- Interactividad al boton con un evento de Alpine.js (solo actua si esta el atributo x-data) --}}
+        <button x-data @click="$dispatch('togglecart')" class="relative hover:text-ojo-aberracion transition p-2">
+            <span class="material-symbols-outlined text-3xl">shopping_cart</span>
+            <span class="absolute top-0 right-0 bg-magma-diablillo/80 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full border-2 border-mar-profundo">
+                3 {{-- Aqui ira una funcion para mostrar la cantidad de productos en el carrito (la logica aparte) --}}
+            </span>
         </button>
         {{-- Opciones para los usuarios no registrados --}}
         @guest
@@ -32,12 +36,12 @@
         @auth
             <div class="flex items-center gap-4">
                 @if(Auth::user()->email == 'prueba@prueba.com') {{-- Ajuste temporal --}}
-                    <a href="{{ route('admin.dashboard') }}" class="text-magma-diablillo font-bold hover:text-white transition">
+                    <a href="{{ route('admin.dashboard') }}" class="text-magma-diablillo font-bold hover:text-mangle-toxico transition flex items-center gap-1 p-2">
                         <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
                         Panel Admin
                     </a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="text-coral-electrico hover:text-white transition flex items-center gap-1">
+                    <a href="{{ route('dashboard') }}" class="text-coral-electrico hover:text-mangle-toxico transition flex items-center gap-1 p-2">
                         <span class="material-symbols-outlined text-sm">account_circle</span>
                         Panel Usuario
                     </a>
@@ -45,7 +49,7 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="text-gray-400 hover:text-red-500 transition text-xs uppercase font-black">
+                    <button type="submit" class="text-gray-400 hover:text-red-500 transition text-xs uppercase font-black p-2">
                         Salir
                     </button>
                 </form>

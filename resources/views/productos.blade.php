@@ -46,25 +46,50 @@
                 @endphp
 
                 @foreach($peces as $pez)
-                <article class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta">
+                {{-- Alpine.js para seleccionar favoritos y categoria --}}
+                <article x-data="{ isFavorite: false, estado_vida: false }" class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta">
                     {{-- opacity-0 oculta las tarjetas hasta que entren en pantalla  con el script de abajo.
                          Translate-y-12 las posiciona fuera de la pantalla --}}
                     
-                    <div class="h-56 overflow-hidden bg-white/5 flex items-center justify-center p-4">
+                    {{-- Boton fav --}}
+                    <button @click="isFavorite = !isFavorite" 
+                            class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 backdrop-blur-md transition-all border border-white/10 flex items-center justify-center hover:bg-pink-500"
+                            :class="isFavorite ? 'text-white bg-pink-500 border-white' : 'text-gray-400 hover:text-white'">
+                        <span class="material-symbols-outlined transition-transform" 
+                            :class="isFavorite ? 'fill-1 scale-110' : 'fill-0'">
+                            favorite
+                        </span>
+                    </button>
+                    
+                    {{-- Imagen --}}
+                    <div class="h-56 overflow-hidden bg-white/5 flex items-center justify-center p-4 rounded-md">
                         <img src="{{ asset('img/fish/' . $pez['img']) }}" 
                             alt="{{ $pez['nombre'] }}" 
-                            class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500">
+                            class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500">
                     </div>
                     
+                    {{-- Nombre, boton categoria, precio y boton de compra --}}
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">{{ $pez['nombre'] }}</h3>
-                        {{-- Falta el boton de favorito
-                            no seleccionado: bg-pink-500 text-white shadow-red-400/20 
-                            seleccionado: bg-pink-500 hover:text-white --}}
+                        <h3 class="text-xl font-bold text-white mb-2">{{ $pez['nombre'] }}</h3>               
                         
+                        <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-white/5 mb-5 mt-2">
+                            <span class="text-[10px] font-black uppercase tracking-widest" 
+                                :class="!estado_vida ? 'text-mangle-toxico' : 'text-gray-500'">Vivo</span>
+                            
+                            <button @click="estado_vida = !estado_vida" 
+                                    class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                    :class="estado_vida ? 'bg-ojo-aberracion' : 'bg-mangle-toxico'">
+                                <span :class="estado_vida ? 'translate-x-5' : 'translate-x-1'"
+                                    class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform"></span>
+                            </button>
+
+                            <span class="text-[10px] font-black uppercase tracking-widest" 
+                                :class="estado_vida ? 'text-ojo-aberracion' : 'text-gray-500'">Consumo</span>
+                        </div>
+
                         <div class="flex justify-between items-center">
                             <span class="text-coral-electrico font-bold text-lg">${{ number_format($pez['precio'], 2) }}</span>
-                            <button class="bg-magma-diablillo p-2 rounded-lg hover:bg-ojo-aberracion transition shadow-lg shadow-magma-diablillo/20">
+                            <button class="bg-magma-diablillo p-2 rounded-lg hover:bg-ojo-aberracion transition shadow-lg shadow-magma-diablillo/20 flex items-center justify-center ml-16">
                                 <span class="material-symbols-outlined text-white">add_shopping_cart</span>
                             </button>
                         </div>
