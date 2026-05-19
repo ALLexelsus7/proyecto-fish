@@ -1,3 +1,4 @@
+<!-- Esta migracion se creo por default y le agregue el atributo de rol -->
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -15,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->enum('rol', ['cliente', 'admin'])->default('cliente');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -47,3 +49,5 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
     }
 };
+
+// Ejecute las migraciones con "php artisan migrate:fresh" para borrar las actuales y poner las nuevas

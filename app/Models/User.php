@@ -1,5 +1,5 @@
 <?php
-
+//  Este modelo se creo por default y le agregue el atributo de rol
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'rol'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {

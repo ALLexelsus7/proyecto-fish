@@ -51,7 +51,7 @@
                     <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
                     Inicio
                 </a>
-                <a href="{{ route('productos') }}" class="text-gray-400 hover:text-coral-electrico flex items-center gap-2 group transition">
+                <a href="{{ route('productos.index') }}" class="text-gray-400 hover:text-coral-electrico flex items-center gap-2 group transition">
                     <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
                     Peces Exóticos
                 </a>

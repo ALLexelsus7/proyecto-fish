@@ -10,7 +10,7 @@
         <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="text-white hover:text-coral-electrico transition">
             Inicio
         </x-nav-link>
-        <x-nav-link :href="route('productos')" :active="request()->routeIs('productos')" class="text-white hover:text-coral-electrico transition">
+        <x-nav-link :href="route('productos.index')" :active="request()->routeIs('productos.index')" class="text-white hover:text-coral-electrico transition">
             Catálogo
         </x-nav-link>
         <x-nav-link :href="route('contacto')" :active="request()->routeIs('contacto')" class="text-white hover:text-coral-electrico transition">
@@ -35,7 +35,7 @@
         {{-- Opciones para los usuarios registrados --}}
         @auth
             <div class="flex items-center gap-4">
-                @if(Auth::user()->email == 'prueba@prueba.com') {{-- Ajuste temporal --}}
+                @if(Auth::user()->email == 'admin@abyssal.com') {{-- Ajuste temporal --}}
                     <a href="{{ route('admin.dashboard') }}" class="text-magma-diablillo font-bold hover:text-mangle-toxico transition flex items-center gap-1 p-2">
                         <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
                         Panel Admin

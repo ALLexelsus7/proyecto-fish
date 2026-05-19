@@ -25,31 +25,14 @@
                 <div class="h-1 w-24 bg-magma-diablillo mx-auto"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
-                @php
-                    // Prueba de datos
-                    $peces = [
-                        ['nombre' => 'Pez Quimera', 'precio' => 1500, 'img' => 'fish1.png'],
-                        ['nombre' => 'Rape Abisal', 'precio' => 2200, 'img' => 'fish2.png'],
-                        ['nombre' => 'Pez Hacha', 'precio' => 800, 'img' => 'fish3.png'],
-                        ['nombre' => 'Anguila Pelícano', 'precio' => 3100, 'img' => 'fish4.png'],
-                        ['nombre' => 'Calamar Vampiro', 'precio' => 4500, 'img' => 'fish5.png'],
-                        ['nombre' => 'Pez Dragón', 'precio' => 1900, 'img' => 'fish6.png'],
-                        ['nombre' => 'Pez Trípode', 'precio' => 1200, 'img' => 'fish7.png'],
-                        ['nombre' => 'Pulpo Dumbo', 'precio' => 5000, 'img' => 'fish8.png'],
-                        ['nombre' => 'Tiburón Duende', 'precio' => 7000, 'img' => 'fish9.png'],
-                        ['nombre' => 'Pez Caracol', 'precio' => 600, 'img' => 'fish10.png'],
-                        ['nombre' => 'Isópodo Gigante', 'precio' => 2500, 'img' => 'fish11.png'],
-                        ['nombre' => 'Medusa Atolla', 'precio' => 3300, 'img' => 'fish12.png'],
-                    ];
-                @endphp
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">               
 
-                @foreach($peces as $pez)
+                {{-- Se recorre cada producto de la base de datos --}}
+                @forelse($productos as $producto)
                 {{-- Alpine.js para seleccionar favoritos y categoria --}}
-                <article x-data="{ isFavorite: false, estado_vida: false }" class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta">
-                    {{-- opacity-0 oculta las tarjetas hasta que entren en pantalla  con el script de abajo.
-                         Translate-y-12 las posiciona fuera de la pantalla --}}
+                <article x-data="{ isFavorite: false, estado_vida: {{ $producto->estado_vida ? 'true' : 'false' }} }" 
+                        class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta">
+                    {{-- opacity-0 y Translate-y-12 oculta las tarjetas hasta que entren en pantalla con el script. --}}
                     
                     {{-- Boton fav --}}
                     <button @click="isFavorite = !isFavorite" 
@@ -63,14 +46,18 @@
                     
                     {{-- Imagen --}}
                     <div class="h-56 overflow-hidden bg-white/5 flex items-center justify-center p-4 rounded-md">
-                        <img src="{{ asset('img/fish/' . $pez['img']) }}" 
-                            alt="{{ $pez['nombre'] }}" 
+                        <img src="{{ asset($producto->imagen_url ?? 'img/peces/fish1.png') }}" {{-- la segunda opcion es por si acaso --}}
+                            alt="{{ $producto->nombre_comun }}" 
                             class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500">
                     </div>
                     
-                    {{-- Nombre, boton categoria, precio y boton de compra --}}
+                    {{-- Nombre, boton estado de vida, precio, boton de compra y categoria --}}
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">{{ $pez['nombre'] }}</h3>               
+                        <h3 class="text-xl font-bold text-white mb-2">{{ $producto->nombre_comun }}</h3> 
+
+                        <p class="text-gray-500 text-xs italic">{{ $producto->nombre_cientifico }}</p>        
+                        
+                        <p class="text-gray-400 text-xs line-clamp-2 mt-2">{{ $producto->descripcion }}</p>
                         
                         <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-white/5 mb-5 mt-2">
                             <span class="text-[10px] font-black uppercase tracking-widest" 
@@ -88,14 +75,21 @@
                         </div>
 
                         <div class="flex justify-between items-center">
-                            <span class="text-coral-electrico font-bold text-lg">${{ number_format($pez['precio'], 2) }}</span>
+                            <span class="text-coral-electrico font-bold text-lg">${{ number_format($producto->precio, 2) }}</span>
                             <button class="bg-magma-diablillo p-2 rounded-lg hover:bg-ojo-aberracion transition shadow-lg shadow-magma-diablillo/20 flex items-center justify-center ml-16">
                                 <span class="material-symbols-outlined text-white">add_shopping_cart</span>
                             </button>
                         </div>
+                        <span class="text-[9px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full uppercase tracking-widest font-mono text-gray-400">
+                            {{ str_replace('_', ' ', $producto->categoria) }}
+                        </span>
                     </div>
                 </article>
-                @endforeach
+                @empty
+                <div class="col-span-full tarjeta-cristal p-12 text-center text-gray-400 italic">
+                    Ninguna criatura ha sobrevivido al ascenso hoy... Inténtalo más tarde.
+                </div>
+                @endforelse
 
             </div>
         </div>

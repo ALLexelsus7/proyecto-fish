@@ -1,18 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 
 //Rutas publicas
-Route::get('/', function () {
-    return view('home'); 
-})->name('home');
-Route::get('/productos', function () {
-    return view('productos');
-})->name('productos');
-Route::get('/contacto', function () {
-    return view('contacto');
-})->name('contacto');
+Route::get('/', function () { return view('home'); })->name('home');
+Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index'); //Aqui uso el controlador de productos
+Route::get('/contacto', function () { return view('contacto'); })->name('contacto');
 
 //Grupo de rutas protegidas
 Route::middleware(['auth','verified'])->group(function () {
