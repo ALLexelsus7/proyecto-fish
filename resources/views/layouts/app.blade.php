@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        {{-- Esto permite precargar imagenes (lo uso en home) y modifique packahe.json agregando svgo y optimize:svgs --}}
+        @stack('head')
     </head>
     {{-- Estilo para el cuerpo de la página según la sección y el tipo de background (imagen o color) --}}
     @php

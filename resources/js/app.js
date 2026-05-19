@@ -4,7 +4,6 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
-Alpine.start();
 
 // Efecto de aparición en cascada para las tarjetas de productos.blade.php
 document.addEventListener("DOMContentLoaded", function() {
@@ -33,3 +32,41 @@ document.addEventListener("DOMContentLoaded", function() {
         observer.observe(el);
     });
 });
+
+// Carrusel de sitios de pesca
+window.carruselSitios = function() {
+    return {
+        currentIndex: 0,
+        sitios: [
+            { name: 'Sidney, Australia', icon: 'Sydney.svg' },
+            { name: 'Barcelona, España', icon: 'Barcelona.svg' },
+            { name: 'Niza, Francia', icon: 'Niza.svg' },
+            { name: 'Rio de Janeiro, Brasil', icon: 'Rio de Janeiro.svg' }
+        ],
+        autoplayDelay: 7000, // milisegundos
+        autoplayInterval: null,
+        init() {
+            // iniciar autoplay al montar el componente
+            this.play();
+        },
+        play() {
+            this.pause();
+            this.autoplayInterval = setInterval(() => this.next(), this.autoplayDelay);
+        },
+        pause() {
+            if (this.autoplayInterval) {
+                clearInterval(this.autoplayInterval);
+                this.autoplayInterval = null;
+            }
+        },
+        next() {
+            this.currentIndex = (this.currentIndex + 1) % this.sitios.length;
+        },
+        prev() {
+            this.currentIndex = (this.currentIndex - 1 + this.sitios.length) % this.sitios.length;
+        }
+    }
+};
+
+// Iniciar Alpine.js después de definir todas las funciones
+Alpine.start();
