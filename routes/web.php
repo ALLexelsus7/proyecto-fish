@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CarritoController;
 use Illuminate\Support\Facades\Route;
 
 //Rutas publicas
@@ -18,6 +19,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //Dashboard de usuario
     Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+    //Agregar al carrito
+    Route::post('/carrito/add', [CarritoController::class, 'store'])->name('carrito.add');
 
     //RUTAS DEL ADMIN//
     // Gestion del catalogo

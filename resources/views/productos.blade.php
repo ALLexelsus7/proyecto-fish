@@ -74,11 +74,28 @@
                                 :class="estado_vida ? 'text-ojo-aberracion' : 'text-gray-500'">Consumo</span>
                         </div>
 
+                        
                         <div class="flex justify-between items-center">
                             <span class="text-coral-electrico font-bold text-lg">${{ number_format($producto->precio, 2) }}</span>
-                            <button class="bg-magma-diablillo p-2 rounded-lg hover:bg-ojo-aberracion transition shadow-lg shadow-magma-diablillo/20 flex items-center justify-center ml-16">
+                            {{-- Boton de poner en carrito con AXIOS --}}
+                            <button @click="
+                                    axios.post('{{ route('carrito.add') }}', {
+                                        producto_id: {{ $producto->id }},
+                                        tipo_compra: estado_vida ? 'consumo' : 'ornamental'
+                                    }).then(response => {
+                                        {{-- Si es correcto, se abre el carrito --}}
+                                        $dispatch('togglecart');
+                                        console.log(response.data.message);
+                                    }).catch(error => {
+                                        if(error.response.status === 401) {
+                                            alert('Debes iniciar sesión en tu bitácora para adquirir criaturas.');
+                                            window.location.href = '{{ route('login') }}';
+                                        }
+                                    })
+                                " 
+                                class="bg-magma-diablillo px-4 py-2 rounded-lg font-black italic text-xs uppercase hover:scale-105 transition shadow-lg shadow-magma-diablillo/20">
                                 <span class="material-symbols-outlined text-white">add_shopping_cart</span>
-                            </button>
+                            </button>       
                         </div>
                         <span class="text-[9px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full uppercase tracking-widest font-mono text-gray-400">
                             {{ str_replace('_', ' ', $producto->categoria) }}
