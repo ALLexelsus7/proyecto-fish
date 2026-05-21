@@ -68,5 +68,49 @@ window.carruselSitios = function() {
     }
 };
 
+// I. Almacen GLOBAL para la cantidad de items en el carrito
+Alpine.store('carritoGlobal', {
+    count: 0
+});
+
+// Funcion para registrar el componente global del CARRITO
+Alpine.data('carrito', (config) => ({
+    open: false,
+    items: [],
+    total: '0.00',
+
+    // Función para cargar los datos desde MySQL vía Axios 
+    cargarCarrito() {
+        axios.get(config.getRoute)
+            .then(response => {
+                this.items = response.data.items;
+                this.total = response.data.total_formateado;
+                // II. calculo del total de items
+                const totalPiezas = this.items.reduce((sum, item) => sum + item.cantidad, 0);                
+                // III. actualiza el almacen GLOBAL
+                Alpine.store('carritoGlobal').count = totalPiezas;
+            })
+            .catch(error => console.error('Error al cargar la red', error));
+    },
+
+    // Función para eliminar un ítem con la URL absoluta
+    eliminarItem(id) {
+        axios.delete(`${config.removeUrl}/${id}`)
+            .then(() => {
+                this.cargarCarrito();
+            })
+            .catch(error => console.error('Error al liberar', error));
+    },
+
+    // Función para modificar cantidades con los botones + y -
+    cambiarCantidad(id, accion) {
+        axios.patch(`${config.updateUrl}/${id}`, { accion: accion })
+            .then(() => {
+                this.cargarCarrito();
+            })
+            .catch(error => console.error('Error al actualizar cantidad', error));
+    }
+}));
+
 // Iniciar Alpine.js después de definir todas las funciones
 Alpine.start();

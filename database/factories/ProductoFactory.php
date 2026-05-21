@@ -37,7 +37,7 @@ class ProductoFactory extends Factory
             'stock' => $this->faker->numberBetween(1, 12),          
             'descripcion' => 'Una de las criaturas más esquivas del océano profundo. ' . $this->faker->paragraph(1),         
             'imagen_url' => 'img/fish/fish' . $this->faker->numberBetween(1, 12) . '.png',        
-            'estado_vida' => $this->faker->boolean(60), // 60% de probabilidad de que sea ornamental
+            'estado_vida' => $this->faker->randomElement(['ambos', 'vivo', 'consumo']),
         ];
     }
 }

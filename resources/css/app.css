@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 /* Rescato algunos estilos de la propuesta inicial del proyecto y agrego otros */
+
+/* Tarjetas de cristal para div */
 @layer components{
     .tarjeta-cristal{
         /* 1. Translucidez: Fondo negro con un 15% de opacidad */
@@ -15,7 +17,7 @@
         /* 4. Sombra: Sombra suave y amplia para que parezca flotar */
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);    
         /* Extras: Curvas para un diseño más amigable */
-        border-radius: 0 0 26px 26px; 
+        border-radius: 26px; 
         padding: 30px;
     }
     .tarjeta-cristal-2{
@@ -24,11 +26,12 @@
         -webkit-backdrop-filter: blur(10px);    
         border: 1px solid rgba(255, 255, 255, 0.3);    
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);    
-        border-radius: 26px 26px 0 0; 
+        border-radius: 26px; 
         padding: 30px;
     } 
 }
 
+/* Animacion para el fondo de catalogo */
 @layer utilities {
     @keyframes descenderFondo {
         0% { background-position: top center; }
@@ -38,4 +41,20 @@
     .animacion-descenso {
         animation: descenderFondo 10s ease-in-out forwards;
     }
+}
+
+/* Clase personalizada para un scrollbar minimalista y temático */
+.scrollbar-abisal::-webkit-scrollbar {
+    width: 6px; /* Delgado */
+}
+.scrollbar-abisal::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente */
+    border-radius: 8px;
+}
+.scrollbar-abisal::-webkit-scrollbar-thumb {
+    background: #ff4500;
+    border-radius: 8px;
+}
+.scrollbar-abisal::-webkit-scrollbar-thumb:hover {
+    background: #ff6347; /* Un tono más claro al pasar el mouse */
 }

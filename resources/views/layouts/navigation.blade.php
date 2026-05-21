@@ -21,9 +21,16 @@
     <div class="flex items-center gap-5">
         {{-- Interactividad al boton con un evento de Alpine.js (solo actua si esta el atributo x-data) --}}
         <button x-data @click="$dispatch('togglecart')" class="relative hover:text-ojo-aberracion transition p-2">
-            <span class="material-symbols-outlined text-3xl">shopping_cart</span>
-            <span class="absolute top-0 right-0 bg-magma-diablillo/80 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full border-2 border-mar-profundo">
-                3 {{-- Aqui ira una funcion para mostrar la cantidad de productos en el carrito (la logica aparte) --}}
+            <span class="material-symbols-outlined text-3xl group-hover:text-magma-diablillo transition-colors">
+                shopping_cart
+            </span>
+            {{-- Se obtiene de app.js el conteo de items en el carrito --}}
+            <span x-data 
+                x-show="$store.carritoGlobal.count > 0" 
+                x-text="$store.carritoGlobal.count"
+                x-transition
+                style="display: none;"
+                class="absolute -top-0.5 -right-0.5 bg-magma-diablillo text-white text-[12px] font-black w-4 h-4 flex items-center justify-center rounded-full shadow-lg shadow-magma-diablillo/40 border border-mar-profundo">
             </span>
         </button>
         {{-- Opciones para los usuarios no registrados --}}

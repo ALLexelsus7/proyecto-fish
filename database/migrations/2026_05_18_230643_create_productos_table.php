@@ -20,7 +20,8 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->text('descripcion')->nullable();
             $table->string('imagen_url')->nullable();
-            $table->boolean('estado_vida')->default(true); //true = vivo/ornamental, false = pescado/consumo
+            // Ahora el admin decide si el pez sera para ambos o solo un tipo
+            $table->enum('estado_vida', ['ambos', 'vivo', 'consumo'])->default('ambos');
             $table->timestamps();
         });
     }

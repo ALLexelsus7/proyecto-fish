@@ -21,12 +21,12 @@
         $bodyStyle = trim($__env->yieldContent('body-style'));
         $bodyBackground = trim($__env->yieldContent('body-background'));
     @endphp
-    <body class="@yield('body-class', 'font-sans antialiased text-white bg-cover bg-center bg-no-repeat bg-fixed bg-black/10')"
+    <body class="@yield('body-class', 'font-sans antialiased text-white bg-cover bg-center bg-no-repeat bg-fixed bg-black/10 scrollbar-abisal')"
           style="{{ $bodyStyle ?: 'background-image:url(\''.($bodyBackground ?: asset('img/svg/pattern-abismal.svg')).'\');' }}">
           {{-- Aqui el style admite imagenes o colores de fondo y ese svg sera el default --}}
 
         <div class="min-h-screen">
-            <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300">
+            <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300 rounded-b-3xl rounded-t-none">
                 @include('layouts.navigation')
             </header>
 
@@ -36,7 +36,9 @@
                 @yield('content') {{-- pero @yield() es el modo default de Laravel --}}
             </main>
           
-            @include('layouts.footer')
+            <footer class="tarjeta-cristal-2 border-t border-white/10 pt-16 pb-8 mt-20 rounded-t-3xl rounded-b-none">
+                @include('layouts.footer')
+            </footer>
             
         </div>
 

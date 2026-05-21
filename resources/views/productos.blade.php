@@ -30,9 +30,14 @@
                 {{-- Se recorre cada producto de la base de datos --}}
                 @forelse($productos as $producto)
                 {{-- Alpine.js para seleccionar favoritos y categoria --}}
-                <article x-data="{ isFavorite: false, estado_vida: {{ $producto->estado_vida ? 'true' : 'false' }} }" 
-                        class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta">
-                    {{-- opacity-0 y Translate-y-12 oculta las tarjetas hasta que entren en pantalla con el script. --}}
+                <article class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all 
+                         duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta"
+                        {{-- opacity-0 y Translate-y-12 oculta las tarjetas hasta que entren en pantalla con el script --}}
+                         x-data="{ 
+                            tipoSeleccionado: '{{ $producto->estado_vida === 'consumo' ? 'consumo' : 'ornamental' }}', 
+                            puedeCambiar: {{ $producto->estado_vida === 'ambos' ? 'true' : 'false' }},
+                            isFavorite: false 
+                        }">
                     
                     {{-- Boton fav --}}
                     <button @click="isFavorite = !isFavorite" 
@@ -51,39 +56,42 @@
                             class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500">
                     </div>
                     
-                    {{-- Nombre, boton estado de vida, precio, boton de compra y categoria --}}
                     <div class="p-6">
+                        {{-- Nombre común, cientifico y descripcion --}}
                         <h3 class="text-xl font-bold text-white mb-2">{{ $producto->nombre_comun }}</h3> 
-
-                        <p class="text-gray-500 text-xs italic">{{ $producto->nombre_cientifico }}</p>        
-                        
+                        <p class="text-gray-500 text-xs italic">{{ $producto->nombre_cientifico }}</p>                       
                         <p class="text-gray-400 text-xs line-clamp-2 mt-2">{{ $producto->descripcion }}</p>
                         
-                        <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-white/5 mb-5 mt-2">
-                            <span class="text-[10px] font-black uppercase tracking-widest" 
-                                :class="!estado_vida ? 'text-mangle-toxico' : 'text-gray-500'">Vivo</span>
-                            
-                            <button @click="estado_vida = !estado_vida" 
-                                    class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                    :class="estado_vida ? 'bg-ojo-aberracion' : 'bg-mangle-toxico'">
-                                <span :class="estado_vida ? 'translate-x-5' : 'translate-x-1'"
+                        {{-- Toggle de categoria --}}
+                        <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-white/5 mb-5 mt-2">    
+                            <span class="text-[10px] font-black uppercase tracking-widest transition-colors" 
+                                :class="tipoSeleccionado === 'ornamental' ? 'text-mangle-toxico' : 'text-gray-500'">
+                                Vivo
+                            </span>                            
+                            <button @click="if(puedeCambiar) tipoSeleccionado = (tipoSeleccionado === 'ornamental' ? 'consumo' : 'ornamental')" 
+                                    :disabled="!puedeCambiar"
+                                    class="relative inline-flex h-5 w-10 items-center rounded-full transition-all focus:outline-none"
+                                    :class="[
+                                        tipoSeleccionado === 'consumo' ? 'bg-ojo-aberracion' : 'bg-mangle-toxico', 
+                                        !puedeCambiar ? 'opacity-30 cursor-not-allowed scale-95' : 'hover:scale-105'
+                                    ]">
+                                <span :class="tipoSeleccionado === 'consumo' ? 'translate-x-5' : 'translate-x-1'" 
                                     class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform"></span>
                             </button>
-
-                            <span class="text-[10px] font-black uppercase tracking-widest" 
-                                :class="estado_vida ? 'text-ojo-aberracion' : 'text-gray-500'">Consumo</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest transition-colors" 
+                                :class="tipoSeleccionado === 'consumo' ? 'text-ojo-aberracion' : 'text-gray-500'">
+                                Consumo
+                            </span>
                         </div>
 
-                        
+                        {{-- Precio y Agregar al carrito con AXIOS --}}
                         <div class="flex justify-between items-center">
-                            <span class="text-coral-electrico font-bold text-lg">${{ number_format($producto->precio, 2) }}</span>
-                            {{-- Boton de poner en carrito con AXIOS --}}
+                            <span class="text-coral-electrico font-bold text-lg">${{ number_format($producto->precio, 2) }}</span>                            
                             <button @click="
                                     axios.post('{{ route('carrito.add') }}', {
                                         producto_id: {{ $producto->id }},
-                                        tipo_compra: estado_vida ? 'consumo' : 'ornamental'
+                                        tipo_compra: tipoSeleccionado, {{-- Se manda exactamente lo que la UI tenga activo --}}
                                     }).then(response => {
-                                        {{-- Si es correcto, se abre el carrito --}}
                                         $dispatch('togglecart');
                                         console.log(response.data.message);
                                     }).catch(error => {
@@ -92,11 +100,16 @@
                                             window.location.href = '{{ route('login') }}';
                                         }
                                     })
-                                " 
-                                class="bg-magma-diablillo px-4 py-2 rounded-lg font-black italic text-xs uppercase hover:scale-105 transition shadow-lg shadow-magma-diablillo/20">
+                                "
+                                class="bg-magma-diablillo px-3 py-2 rounded-lg font-black italic text-xs uppercase hover:scale-105 transition shadow-lg shadow-magma-diablillo/20">
                                 <span class="material-symbols-outlined text-white">add_shopping_cart</span>
+                                {{-- OJO, aqui la logica es: al darle al boton se guarda el producto en la tabla de carrito con AXIOS por si algun
+                                     problema externo cierra la pagina y pierde los datos. Luego, al instante se refleja en la UI del lateral del 
+                                     carrito con alpine.js. Al darle "Hacer pedido" se actualiza el stock de productos, se actualiza la tabla pedido, 
+                                     se congela en detalles pedidos y se borra la tabla de carrito del usuario junto a la UI del carrito --}}
                             </button>       
                         </div>
+                        {{-- Categoria --}}
                         <span class="text-[9px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full uppercase tracking-widest font-mono text-gray-400">
                             {{ str_replace('_', ' ', $producto->categoria) }}
                         </span>

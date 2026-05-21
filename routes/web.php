@@ -19,8 +19,11 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //Dashboard de usuario
     Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
-    //Agregar al carrito
+    // Agregar, leer, eliminar y actualizar productos del carrito
     Route::post('/carrito/add', [CarritoController::class, 'store'])->name('carrito.add');
+    Route::get('/carrito/items', [CarritoController::class, 'getCarrito'])->name('carrito.get');
+    Route::delete('/carrito/remove/{id}', [CarritoController::class, 'destroy'])->name('carrito.remove');
+    Route::patch('/carrito/update/{id}', [CarritoController::class, 'update'])->name('carrito.update');
 
     //RUTAS DEL ADMIN//
     // Gestion del catalogo
