@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// Carrusel de sitios de pesca
+// Carrusel de sitios de pesca en home
 window.carruselSitios = function() {
     return {
         currentIndex: 0,
@@ -72,8 +72,7 @@ window.carruselSitios = function() {
 Alpine.store('carritoGlobal', {
     count: 0
 });
-
-// Funcion para registrar el componente global del CARRITO
+// Varias funciones Alpine & Registrar el componente global del CARRITO
 Alpine.data('carrito', (config) => ({
     open: false,
     items: [],
@@ -109,7 +108,26 @@ Alpine.data('carrito', (config) => ({
                 this.cargarCarrito();
             })
             .catch(error => console.error('Error al actualizar cantidad', error));
+    },
+
+    // Funcion para hacer el pedido
+    realizarAdquisicion() {
+        // Puedo cambiar texto del botón a "Procesando..."
+        axios.post(config.checkoutUrl)
+            .then(response => {
+                // Mensaje de exito del backend
+                alert(response.data.message);                 
+                // Cierra el panel lateral carrito
+                this.open = false;                 
+                // Recarga el carrito (lo deja vacío y actualiza la burbuja del navbar a 0)
+                this.cargarCarrito(); 
+            })
+            .catch(error => {
+                console.error('Error en checkout', error);
+                alert('Hubo un error al procesar tu adquisición en las profundidades.');
+            });
     }
+
 }));
 
 // Iniciar Alpine.js después de definir todas las funciones

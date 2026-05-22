@@ -1,19 +1,20 @@
 <?php
-
+// Recuerda poner todos los controladores aqui!!!
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CarritoController;
 use Illuminate\Support\Facades\Route;
 
-//Rutas publicas
+//► Rutas publicas
 Route::get('/', function () { return view('home'); })->name('home');
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index'); //Aqui uso el controlador de productos
 Route::get('/contacto', function () { return view('contacto'); })->name('contacto');
 
-//Grupo de rutas protegidas
+//► Grupo de rutas protegidas
 Route::middleware(['auth','verified'])->group(function () {
 
-    //RUTAS DEL USUARIO//
+    //☼☼☼☼☼☼☼☼☼☼☼ RUTAS DEL USUARIO ☼☼☼☼☼☼☼☼☼☼☼//
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -24,8 +25,10 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/carrito/items', [CarritoController::class, 'getCarrito'])->name('carrito.get');
     Route::delete('/carrito/remove/{id}', [CarritoController::class, 'destroy'])->name('carrito.remove');
     Route::patch('/carrito/update/{id}', [CarritoController::class, 'update'])->name('carrito.update');
+    // RUTA DEL DISPARADOR FINAL (Hacer pedido)
+    Route::post('/checkout', [PedidoController::class, 'procesarCheckout'])->name('checkout.process');
 
-    //RUTAS DEL ADMIN//
+    //☼☼☼☼☼☼☼☼☼☼☼ RUTAS DEL ADMIN ☼☼☼☼☼☼☼☼☼☼☼//
     // Gestion del catalogo
     Route::get('/admin/productos', function () {
         // Simula datos por ahora
@@ -62,3 +65,9 @@ Route::middleware(['auth','verified'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+/*
+Con estos comandos se limpia el cache de las rutas:
+php artisan route:clear
+php artisan optimize:clear
+*/

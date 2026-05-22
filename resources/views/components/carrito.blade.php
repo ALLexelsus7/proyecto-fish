@@ -1,10 +1,12 @@
 {{-- Componente nuevo para el dropdown lateral del carrito de compra --}}
 @auth
-<div x-data="carrito({ {{-- logica en app.js --}}
+<div x-data="carrito({ 
         getRoute: '{{ route('carrito.get') }}', 
         removeUrl: '{{ url('/carrito/remove') }}', 
-        updateUrl: '{{ url('/carrito/update') }}' 
+        updateUrl: '{{ url('/carrito/update') }}',
+        checkoutUrl: '{{ route('checkout.process') }}'
      })" 
+     {{-- logica en app.js --}}
      {{-- Carga los datos apenas se entra a la página --}}
      x-init="cargarCarrito()"
      {{-- Cuando adquieres un pez, se abre el carrito y vuelve a cargar los datos --}}
@@ -109,9 +111,10 @@
                             </div>
                             
                             <div class="mt-6">
-                                <button class="w-full flex items-center justify-center rounded-xl bg-magma-diablillo px-6 py-4 text-base font-black text-white shadow-lg shadow-magma-diablillo/20 hover:scale-[1.02] transition-transform uppercase italic"
-                                        :disabled="items.length === 0"
-                                        :class="items.length === 0 ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''">
+                                <button @click="realizarAdquisicion()" 
+                                    class="w-full flex items-center justify-center rounded-xl bg-magma-diablillo px-6 py-4 text-base font-black text-white shadow-lg shadow-magma-diablillo/20 hover:scale-[1.02] transition-transform uppercase italic"
+                                    :disabled="items.length === 0"
+                                    :class="items.length === 0 ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''">
                                     Realizar pedido
                                 </button>
                             </div>
