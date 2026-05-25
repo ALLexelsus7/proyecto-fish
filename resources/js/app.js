@@ -5,7 +5,7 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
-// Efecto de aparición en cascada para las tarjetas de productos.blade.php
+// Componente global para el efecto de aparición en cascada para las tarjetas de productos.blade.php
 document.addEventListener("DOMContentLoaded", function() {
     // Creamos un observador que detecta cuando los elementos entran a la pantalla
     const observer = new IntersectionObserver((entries) => {
@@ -129,6 +129,36 @@ Alpine.data('carrito', (config) => ({
     }
 
 }));
+
+// Componente global para el manejo de estatus en el dashboard admin
+document.addEventListener('alpine:init', () => {
+    Alpine.data('manejadorEstatus', (estatusInicial, urlUpdate) => ({
+        estatus: estatusInicial,
+        isUpdating: false,
+        
+        actualizar() {
+            this.isUpdating = true;
+            
+            // Petición Axios a nuestro backend (con post + _method para simular PATCH)
+            axios.post(urlUpdate, {
+                _method: 'PATCH',
+                estatus: this.estatus
+            })
+            .then(response => {
+                // Quita el estado de carga
+                this.isUpdating = false;
+                console.log('Estatus actualizado con éxito.');
+            })
+            .catch(error => {
+                console.error('Error táctico:', error);
+                this.isUpdating = false;
+                alert('Fallo en la comunicación con la Base de Datos.');
+                // Revierte el selector si fallo
+                this.estatus = estatusInicial; 
+            });
+        }
+    }));
+});
 
 // Iniciar Alpine.js después de definir todas las funciones
 Alpine.start();

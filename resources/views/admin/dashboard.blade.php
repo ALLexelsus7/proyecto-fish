@@ -154,32 +154,8 @@
                                     (empaquetados, cambios de estado, etc.), sin APIs externas. 
                                     Así también evita fallos de integración y mantiene la última palabra ante fraudes o errores.
                                 --}}
-                                <td class="px-6 py-4" x-data="{
-                                    estatus: '{{ $pedido->estado }}',
-                                    isUpdating: false,
-                                    
-                                    actualizar() {
-                                        this.isUpdating = true;
-                                        
-                                        // Petición Axios a nuestro backend (con post + _method para simular PATCH)
-                                        axios.post('{{ route('admin.pedidos.estatus', $pedido->id) }}', {
-                                            _method: 'PATCH',
-                                            estatus: this.estatus
-                                        })
-                                        .then(response => {
-                                            // Quita el estado de carga
-                                            this.isUpdating = false;   
-                                            console.log('Estatus actualizado con exito.');                                     
-                                        })
-                                        .catch(error => {
-                                            console.error('Error táctico:', error);
-                                            this.isUpdating = false;
-                                            alert('Fallo en la comunicación con la Base de Datos.');
-                                            // Revertimos el selector si falló
-                                            this.estatus = '{{ $pedido->estado }}'; 
-                                        });
-                                    }
-                                }">                                  
+                                {{-- Logica en app.js --}}
+                                <td class="px-6 py-4" x-data="manejadorEstatus('{{ $pedido->estado }}', '{{ route('admin.pedidos.estatus', $pedido->id) }}')">    
                                     <select 
                                         x-model="estatus" 
                                         @change="actualizar"
