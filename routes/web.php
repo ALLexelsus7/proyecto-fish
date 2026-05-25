@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\FavoritoController;
+use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
 //► Rutas publicas
@@ -32,15 +33,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/checkout', [PedidoController::class, 'procesarCheckout'])->name('checkout.process');
 
     //☼☼☼☼☼☼☼☼☼☼☼ RUTAS DEL ADMIN ☼☼☼☼☼☼☼☼☼☼☼//
-    // Gestion del catalogo
-    Route::get('/admin/productos', function () {
-        // Simula datos por ahora
-        $productos = [
-            (object)['id' => 1,'nombre' => 'Pez Quimera','categoria' => 'Abisal','precio' => 1500,'stock' => 5,'imagen' => 'fish1.png'],
-            (object)['id' => 2,'nombre' => 'Rape Abisal','categoria' => 'Abisal','precio' => 2200,'stock' => 0,'imagen' => 'fish2.png'],
-        ];
-        return view('admin.productos.index', compact('productos'));
-    })->name('admin.productos.index');
+    // Gestion del catalogo (ahora con controlador)
+    Route::get('/admin/productos', [ProductoController::class, 'index'])->name('admin.productos.index');
     // Formulario de crear
     Route::get('/admin/productos/create', function () {
         return view('admin.productos.create');
@@ -51,10 +45,11 @@ Route::middleware(['auth','verified'])->group(function () {
         $producto = (object)['id' => $id,'nombre_comun' => 'Pez de Prueba','nombre_cientifico' => 'Pruebus scientificus','categoria' => 'Consumo','precio' => 999.99,'stock' => 10,'descripcion' => 'Descripción de prueba para ver el formulario lleno.','imagen_url' => 'default.png'];
         return view('admin.productos.edit', compact('producto'));
     })->name('admin.productos.edit');
-    //Dashboard admin
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    //Dashboard admin (ahora con controlador)
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    // Actualizar estatus de pedido
+    Route::patch('/admin/pedidos/{pedido}/estatus', [AdminDashboardController::class, 'updateEstatus'])
+    ->name('admin.pedidos.estatus');
 
     // --- RUTAS FALSAS (Para que los formularios no den error antes del Sprint 2) ---
     Route::put('/admin/productos/{id}', function($id) {
@@ -73,4 +68,5 @@ require __DIR__.'/auth.php';
 Con estos comandos se limpia el cache de las rutas:
 php artisan route:clear
 php artisan optimize:clear
+php artisan view:clear
 */

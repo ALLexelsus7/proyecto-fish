@@ -1,5 +1,5 @@
 <?php
-// con "php artisan make:controller UserDashboardController
+// con "php artisan make:controller UserDashboardController"
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;

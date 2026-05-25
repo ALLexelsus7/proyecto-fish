@@ -54,35 +54,48 @@
         </div>
 
         {{-- Datos estadisticos rapidos --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="tarjeta-cristal p-6 flex items-center gap-4 border border-white/5">
-                <div class="p-4 bg-coral-electrico/20 rounded-lg text-coral-electrico">
-                    <span class="material-symbols-outlined text-3xl">phishing</span>
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-coral-electrico/50 transition-colors">
+                <div class="p-3 bg-coral-electrico/20 rounded-full text-coral-electrico mb-2">
+                    <span class="material-symbols-outlined text-2xl">phishing</span>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-400 font-bold uppercase">Especies en BD</p>
-                    <p class="text-3xl font-black text-white">42</p> </div>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Especies BD</p>
+                <p class="text-2xl font-black text-white">{{ $especiesEnBd }}</p> 
             </div>
 
-            <div class="tarjeta-cristal p-6 flex items-center gap-4 border border-white/5">
-                <div class="p-4 bg-green-500/20 rounded-lg text-green-400">
-                    <span class="material-symbols-outlined text-3xl">inventory_2</span>
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-green-400/50 transition-colors">
+                <div class="p-3 bg-green-500/20 rounded-full text-green-400 mb-2">
+                    <span class="material-symbols-outlined text-2xl">inventory_2</span>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-400 font-bold uppercase">Stock Total</p>
-                    <p class="text-3xl font-black text-white">1,204</p>
-                </div>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Stock Total</p>
+                <p class="text-2xl font-black text-white">{{ number_format($stockTotal) }}</p>
             </div>
 
-            <div class="tarjeta-cristal p-6 flex items-center gap-4 border border-white/5">
-                <div class="p-4 bg-magma-diablillo/20 rounded-lg text-magma-diablillo">
-                    <span class="material-symbols-outlined text-3xl">warning</span>
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-magma-diablillo/50 transition-colors">
+                <div class="p-3 bg-magma-diablillo/20 rounded-full text-magma-diablillo mb-2">
+                    <span class="material-symbols-outlined text-2xl">warning</span>
                 </div>
-                <div>
-                    <p class="text-sm text-gray-400 font-bold uppercase">Sin Stock</p>
-                    <p class="text-3xl font-black text-white">3</p>
-                </div>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Sin Stock</p>
+                <p class="text-2xl font-black text-white">{{ $sinStock }}</p>
             </div>
+
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-amber-400/50 transition-colors">
+                <div class="p-3 bg-amber-500/20 rounded-full text-amber-400 mb-2">
+                    <span class="material-symbols-outlined text-2xl">pending_actions</span>
+                </div>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Envíos Pendientes</p>
+                <p class="text-2xl font-black text-white">{{ $pedidosPendientes }}</p>
+            </div>
+
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-fuchsia-500/50 transition-colors">
+                <div class="p-3 bg-fuchsia-500/20 rounded-full text-fuchsia-400 mb-2">
+                    <span class="material-symbols-outlined text-2xl">payments</span>
+                </div>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Ingresos Mes</p>
+                <p class="text-2xl font-black text-white">${{ number_format($ingresosMes, 2) }}</p>
+            </div>
+
         </div>
 
         {{-- Gestión de Inventario --}}
@@ -96,55 +109,112 @@
             </a>          
         </div>
 
-        {{-- Hisorial de pedidos --}}
-        <div class="flex justify-between items-end mb-8">
-            <div>
-                <h2 class="text-3xl font-black text-white italic tracking-tighter uppercase">Monitor de <span class="text-coral-electrico">Pedidos</span></h2>
-                <p class="text-gray-400 text-sm">Gestión global de ventas y logística de entrega.</p>
+        {{-- Monitor de pedidos --}}
+        <div>
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-black text-white italic tracking-tighter uppercase">Monitor de <span class="text-coral-electrico">Pedidos</span></h2>
+                    <p class="text-gray-400 text-sm">Gestión global de ventas y logística de entrega.</p>
+                </div>
+                <div class="flex gap-2">
+                    <span class="bg-black/40 text-xs text-gray-400 p-2 rounded border border-white/5 italic">Total Ventas: ${{ number_format($totalVentas, 2) }}</span>
+                </div>
             </div>
-            <div class="flex gap-2">
-                <span class="bg-black/40 text-xs text-gray-400 p-2 rounded border border-white/5 italic">Total Ventas: $45,200.00</span>
-            </div>
-        </div>
 
-        <div class="tarjeta-cristal overflow-hidden border border-white/5">
-            <table class="w-full text-left text-sm">
-                <thead class="bg-black/60 text-white uppercase font-black tracking-widest border-b border-white/10">
-                    <tr>
-                        <th class="px-6 py-4">Orden</th>
-                        <th class="px-6 py-4">Cliente</th>
-                        <th class="px-6 py-4">Detalle</th>
-                        <th class="px-6 py-4">Total</th>
-                        <th class="px-6 py-4">Estatus</th>
-                        <th class="px-6 py-4 text-right">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-white/5 text-gray-300">
-                    <tr class="hover:bg-white/5 transition">
-                        <td class="px-6 py-4 font-mono">#EXP-102</td>
-                        <td class="px-6 py-4">
-                            <div class="flex flex-col">
-                                <span class="text-white font-bold">Alex Ruiz</span>
-                                <span class="text-[10px] text-gray-500">alex@abyssal.com</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">3x Pez Linterna (Ornamental)</td>
-                        <td class="px-6 py-4 font-bold text-coral-electrico">$4,500</td>
-                        <td class="px-6 py-4">
-                            <select class="bg-black/40 border-none text-[10px] uppercase font-black rounded text-magma-diablillo focus:ring-0">
-                                <option>Pendiente</option>
-                                <option>En Camino</option>
-                                <option selected>Entregado</option>
-                            </select>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="text-gray-500 hover:text-white transition">
-                                <span class="material-symbols-outlined">visibility</span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="tarjeta-cristal overflow-hidden border border-white/5">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-black/60 text-white uppercase font-black tracking-widest border-b border-white/10">
+                        <tr>
+                            <th class="px-6 py-4">Orden</th>
+                            <th class="px-6 py-4">Cliente</th>
+                            <th class="px-6 py-4">Total</th>
+                            <th class="px-6 py-4">Fecha</th>
+                            <th class="px-6 py-4">Estatus</th>
+                            <th class="px-6 py-4 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-gray-300">
+                        @forelse($pedidos as $pedido)
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="px-6 py-4 font-mono">#EXP-{{ str_pad($pedido->id, 4, '0', STR_PAD_LEFT) }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col">
+                                        {{-- Relación estándar de Laravel: $pedido->user --}}
+                                        <span class="text-white font-bold">{{ $pedido->user->name ?? 'Usuario Desconocido' }}</span>
+                                        <span class="text-[10px] text-gray-500">{{ $pedido->user->email ?? 'N/A' }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 font-bold text-coral-electrico">${{ number_format($pedido->total, 2) }}</td>
+                                <td class="px-6 py-4 text-xs">{{ $pedido->created_at->format('d M, Y') }}</td>
+
+                                {{-- Cambio de estatus dinámico con Alpine.js y Axios
+                                    En teoría, este campo podría actualizarse automáticamente vía webhooks 
+                                    (ej. Stripe/PayPal cambia de Pendiente a Pagado, FedEx/DHL a Enviado, o el cliente a Cancelado).
+                                    Pero al ser una startup de crecimiento orgánico, el admin gestiona todo manualmente 
+                                    (empaquetados, cambios de estado, etc.), sin APIs externas. 
+                                    Así también evita fallos de integración y mantiene la última palabra ante fraudes o errores.
+                                --}}
+                                <td class="px-6 py-4" x-data="{
+                                    estatus: '{{ $pedido->estado }}',
+                                    isUpdating: false,
+                                    
+                                    actualizar() {
+                                        this.isUpdating = true;
+                                        
+                                        // Petición Axios a nuestro backend (con post + _method para simular PATCH)
+                                        axios.post('{{ route('admin.pedidos.estatus', $pedido->id) }}', {
+                                            _method: 'PATCH',
+                                            estatus: this.estatus
+                                        })
+                                        .then(response => {
+                                            // Quita el estado de carga
+                                            this.isUpdating = false;   
+                                            console.log('Estatus actualizado con exito.');                                     
+                                        })
+                                        .catch(error => {
+                                            console.error('Error táctico:', error);
+                                            this.isUpdating = false;
+                                            alert('Fallo en la comunicación con la Base de Datos.');
+                                            // Revertimos el selector si falló
+                                            this.estatus = '{{ $pedido->estado }}'; 
+                                        });
+                                    }
+                                }">                                  
+                                    <select 
+                                        x-model="estatus" 
+                                        @change="actualizar"
+                                        :disabled="isUpdating"
+                                        class="bg-black/40 border-none text-[10px] uppercase font-black rounded focus:ring-0 cursor-pointer transition-all duration-300 outline-none shadow-sm"
+                                        :class="{
+                                            'text-amber-400 shadow-amber-400/20': estatus === 'pendiente',
+                                            'text-coral-electrico shadow-coral-electrico/20': estatus === 'enviado',
+                                            'text-green-400 shadow-green-400/20': estatus === 'entregado',
+                                            'text-gray-500 shadow-gray-500/20': estatus === 'cancelado',
+                                            'opacity-50 cursor-wait': isUpdating
+                                        }"
+                                    >
+                                        <option value="pendiente" class="text-amber-400 bg-gray-900">Pendiente</option>
+                                        <option value="enviado" class="text-coral-electrico bg-gray-900">Enviado</option>
+                                        <option value="entregado" class="text-green-400 bg-gray-900">Entregado</option>
+                                        <option value="cancelado" class="text-gray-500 bg-gray-900">Cancelado</option>
+                                    </select>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <button class="text-gray-500 hover:text-white transition" title="Ver Detalles de la Orden">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-8 text-center text-gray-500 italic">
+                                    El radar está limpio. No hay expediciones registradas.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
