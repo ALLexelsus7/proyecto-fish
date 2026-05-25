@@ -4,6 +4,8 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\FavoritoController;
 use Illuminate\Support\Facades\Route;
 
 //► Rutas publicas
@@ -18,8 +20,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    //Dashboard de usuario
-    Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+    //Dashboard de usuario (ahora con controlador)
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/favoritos/toggle/{id}', [FavoritoController::class, 'toggle'])->name('favoritos.toggle');
     // Agregar, leer, eliminar y actualizar productos del carrito
     Route::post('/carrito/add', [CarritoController::class, 'store'])->name('carrito.add');
     Route::get('/carrito/items', [CarritoController::class, 'getCarrito'])->name('carrito.get');

@@ -27,8 +27,13 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">               
 
+                
                 {{-- Se recorre cada producto de la base de datos --}}
                 @forelse($productos as $producto)
+                {{-- Se comprueba antes si un pez es favorito --}}
+                @php                    
+                    $esFavorito = in_array($producto->id, $favoritosUser);
+                @endphp
                 {{-- Alpine.js para seleccionar favoritos y categoria --}}
                 <article class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all 
                          duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta"
@@ -36,15 +41,29 @@
                          x-data="{ 
                             tipoSeleccionado: '{{ $producto->estado_vida === 'consumo' ? 'consumo' : 'ornamental' }}', 
                             puedeCambiar: {{ $producto->estado_vida === 'ambos' ? 'true' : 'false' }},
-                            isFavorite: false 
+                            esFavorito: {{ $esFavorito ? 'true' : 'false' }}
                         }">
                     
-                    {{-- Boton fav --}}
-                    <button @click="isFavorite = !isFavorite" 
+                        
+                    {{-- Boton fav --}}                    
+                    <button @click.prevent="
+                            @auth
+                                // Si está logueado, disparamos a nuestra ruta toggle
+                                axios.post('{{ url('/favoritos/toggle') }}/{{ $producto->id }}')
+                                    .then(response => {
+                                        // Cambiamos el estado reactivo según lo que diga el backend
+                                        esFavorito = response.data.es_favorito;
+                                    })
+                                    .catch(error => console.error('Error en el radar:', error));
+                            @else
+                                // Si no está logueado, lo mandamos a identificarse
+                                window.location.href = '{{ route('login') }}';
+                            @endauth
+                            "
                             class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 backdrop-blur-md transition-all border border-white/10 flex items-center justify-center hover:bg-pink-500"
-                            :class="isFavorite ? 'text-white bg-pink-500 border-white' : 'text-gray-400 hover:text-white'">
+                            :class="esFavorito ? 'text-white bg-pink-500 border-white' : 'text-gray-400 hover:text-white'">
                         <span class="material-symbols-outlined transition-transform" 
-                            :class="isFavorite ? 'fill-1 scale-110' : 'fill-0'">
+                            :class="esFavorito ? 'fill-1 scale-110' : 'fill-0'">
                             favorite
                         </span>
                     </button>

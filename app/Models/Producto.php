@@ -14,4 +14,9 @@ class Producto extends Model
 
     protected $table = 'productos';
 
+    public function deseadoPorUsuarios()
+    {
+        return $this->belongsToMany(User::class, 'favoritos', 'producto_id', 'user_id')->withTimestamps();
+    }
+
 }

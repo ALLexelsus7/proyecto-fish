@@ -47,15 +47,49 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5 text-white">
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4 font-mono text-gray-400">#AB-9923</td>
-                            <td class="px-6 py-4">12 May 2026</td>
-                            <td class="px-6 py-4">2x Pez Quimera</td>
-                            <td class="px-6 py-4 font-bold text-coral-electrico">$3,200.00</td>
-                            <td class="px-6 py-4 text-right">
-                                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">Enviado</span>
-                            </td>
-                        </tr>
+                        @forelse ($pedidos as $pedido)
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="px-6 py-4 font-mono text-gray-400">
+                                    #AB-{{ str_pad($pedido->id, 4, '0', STR_PAD_LEFT) }}
+                                    {{-- str_pad le da un formato a la cadena --}}
+                                </td>
+                                
+                                <td class="px-6 py-4">
+                                    {{ $pedido->created_at->format('d M Y') }}
+                                </td>
+                                
+                                <td class="px-6 py-4 text-xs text-gray-300">
+                                    @foreach($pedido->detalles as $detalle)
+                                        <div class="truncate max-w-[200px]">
+                                            <span class="text-magma-diablillo font-bold">{{ $detalle->cantidad }}x</span> 
+                                            {{ $detalle->producto->nombre_comun ?? 'Especie clasificada' }}
+                                        </div>
+                                    @endforeach
+                                </td>
+                                
+                                <td class="px-6 py-4 font-bold text-coral-electrico">
+                                    ${{ number_format($pedido->total, 2) }}
+                                </td>
+                                
+                                <td class="px-6 py-4 text-right">
+                                    @if($pedido->estado === 'pendiente')
+                                        <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">Procesando</span>
+                                    @elseif($pedido->estado === 'enviado')
+                                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">En Tránsito</span>
+                                    @elseif($pedido->estado === 'entregado')
+                                        <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">Capturado</span>
+                                    @else
+                                        <span class="bg-gray-500/20 text-gray-400 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">{{ $pedido->estado }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-gray-500 italic text-sm">
+                                    Tu bitácora está en blanco. No hay registro de expediciones aún.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -64,11 +98,44 @@
         {{-- Tab de favoritos --}}
         <div x-show="tab === 'favoritos'" x-transition:enter="fade-in" style="display: none;">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="tarjeta-cristal p-4">
-                    <p class="text-gray-500 italic text-center py-10">Tu acuario de favoritos está vacío por ahora.</p>
-                </div>
+                @forelse($favoritos as $producto)
+                    <div class="tarjeta-cristal p-4 relative flex flex-col justify-between group border border-white/5 overflow-hidden rounded-2xl" 
+                        id="fav-card-{{ $producto->id }}"
+                        x-data="{ eliminado: false }"
+                        x-show="!eliminado"
+                        x-transition:leave="transition ease-in duration-300 transform opacity-0 scale-95">
+                        
+                        <div>
+                            <div class="w-full h-40 bg-black/40 rounded-xl overflow-hidden relative mb-4 flex items-center justify-center">
+                                <img src="{{ asset($producto->imagen_url ?? 'img/fish/fish1.png') }}" 
+                                    alt="{{ $producto->nombre_comun }}" 
+                                    class="w-90% h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+
+                            <h3 class="text-lg font-black text-white italic tracking-tight">{{ $producto->nombre_comun }}</h3>
+                            <p class="text-xs text-gray-400 font-mono italic mb-2">{{ $producto->nombre_cientifico }}</p>
+                            <p class="text-xl font-bold text-coral-electrico mb-4">${{ number_format($producto->precio, 2) }}</p>
+                        </div>
+
+                        <div class="flex gap-2">                            
+                            <button @click.prevent="axios.post('{{ route('favoritos.toggle', $producto->id) }}').then(r => eliminado = true).catch(e => console.error(e))" 
+                                    class="p-2 bg-red-500/50 hover:bg-magma-diablillo text-white rounded-xl transition-all" 
+                                    title="Remover del radar">
+                                <span class="material-symbols-outlined text-sm block">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full tarjeta-cristal p-8 border border-white/5 text-center rounded-2xl">
+                        <span class="material-symbols-outlined text-4xl text-gray-600 mb-2">heart_broken</span>
+                        <p class="text-gray-400 italic text-sm">Tu acuario de favoritos está vacío por ahora.</p>
+                        <a href="{{ url('/productos') }}" class="inline-block mt-4 text-xs font-black text-magma-diablillo uppercase italic tracking-wider hover:underline">
+                            Explorar el catálogo →
+                        </a>
+                    </div>
+                @endforelse
             </div>
-        </div>       
+        </div>   
 
     </div>
 </div>

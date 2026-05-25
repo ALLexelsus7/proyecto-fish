@@ -1,5 +1,5 @@
 <?php
-//  Este modelo se creo por default y le agregue el atributo de rol
+//  Este modelo se creo por default y le agregue cosas
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -28,5 +28,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function favoritos()
+    {
+        // Relación de muchos a muchos
+        return $this->belongsToMany(Producto::class, 'favoritos', 'user_id', 'producto_id')->withTimestamps();
     }
 }
