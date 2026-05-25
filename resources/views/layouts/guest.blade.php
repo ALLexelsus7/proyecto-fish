@@ -8,8 +8,11 @@
         <title>Abyssal Catch Co. Login</title>
 
         <!-- Fonts -->
+        <!-- Fonts & Icons -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -18,6 +21,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-black/90">
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white/20 shadow-lg overflow-hidden sm:rounded-lg">
                 {{ $slot }}
+                {{-- Se inserta el codigo con {{ slot }} como @yield --}}
             </div>
         </div>
     </body>

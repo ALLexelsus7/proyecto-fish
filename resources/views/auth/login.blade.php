@@ -9,32 +9,36 @@
             <h2 class="text-white text-2xl font-black text-center mb-6 tracking-widest uppercase">
                 Acceso <span class="text-magma-diablillo text-3xl">Abyssal</span>
             </h2>
-            <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <!-- Email Address -->
                 <div>
                     <x-input-label for="email" class="text-white font-bold" :value="__('Email')"/>
                     <x-text-input id="email" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-ojo-aberracion focus:ring-magma-diablillo focus:border-magma-diablillo" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
-                <!-- Password -->
-                <div class="mt-4">
+                {{-- Por default no muestra el string del password --}}
+                <div class="mt-4" x-data="{ show: false }">
                     <x-input-label for="password" :value="__('Password')" class="text-white font-bold"/>
 
-                    <x-text-input id="password" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-ojo-aberracion focus:ring-magma-diablillo focus:border-magma-diablillo"
-                                    type="password"
-                                    name="password"
-                                    required autocomplete="current-password" />
+                    <div class="relative mt-1">
+                        <x-text-input id="password" 
+                            class="block w-full pr-10 bg-ojo-aberracion/10 border-white/20 text-ojo-aberracion focus:ring-magma-diablillo focus:border-magma-diablillo"
+                            x-bind:type="show ? 'text' : 'password'"
+                            name="password"
+                            required autocomplete="current-password" />
+                        
+                        <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-magma-diablillo transition focus:outline-none">
+                            <span class="material-symbols-outlined text-sm" x-text="show ? 'visibility_off' : 'visibility'">visibility</span>
+                        </button>
+                    </div>
 
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
-                <!-- Remember Me -->
                 <div class="block mt-4">
                     <label for="remember_me" class="inline-flex items-center">
                         <input id="remember_me" type="checkbox" class="rounded bg-white/10 border-white/20 text-magma-diablillo shadow-sm focus:ring-magma-diablillo" name="remember">

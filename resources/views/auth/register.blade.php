@@ -25,20 +25,38 @@
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
-                <div class="mt-4">
+                <div class="mt-4" x-data="{ show: false }">
                     <x-input-label for="password" class="text-white font-bold" :value="__('Clave de Acceso')" />
-                    <x-text-input id="password" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-ojo-aberracion focus:ring-magma-diablillo focus:border-magma-diablillo"
-                                    type="password"
-                                    name="password"
-                                    required autocomplete="new-password" />
+                    
+                    <div class="relative mt-1">
+                        <x-text-input id="password" 
+                            class="block w-full pr-10 bg-ojo-aberracion/10 border-white/20 text-ojo-aberracion focus:ring-magma-diablillo focus:border-magma-diablillo"
+                            x-bind:type="show ? 'text' : 'password'"
+                            name="password"
+                            required autocomplete="new-password" />
+                        
+                        <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-magma-diablillo transition focus:outline-none">
+                            <span class="material-symbols-outlined text-sm" x-text="show ? 'visibility_off' : 'visibility'">visibility</span>
+                        </button>
+                    </div>
+
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
-                <div class="mt-4">
+                <div class="mt-4" x-data="{ show: false }">
                     <x-input-label for="password_confirmation" class="text-white font-bold" :value="__('Confirmar Clave')" />
-                    <x-text-input id="password_confirmation" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-ojo-aberracion focus:ring-magma-diablillo focus:border-magma-diablillo"
-                                    type="password"
-                                    name="password_confirmation" required autocomplete="new-password" />
+                    
+                    <div class="relative mt-1">
+                        <x-text-input id="password_confirmation" 
+                            class="block w-full pr-10 bg-ojo-aberracion/10 border-white/20 text-ojo-aberracion focus:ring-magma-diablillo focus:border-magma-diablillo"
+                            x-bind:type="show ? 'text' : 'password'"
+                            name="password_confirmation" required autocomplete="new-password" />
+                        
+                        <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-magma-diablillo transition focus:outline-none">
+                            <span class="material-symbols-outlined text-sm" x-text="show ? 'visibility_off' : 'visibility'">visibility</span>
+                        </button>
+                    </div>
+
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
 
