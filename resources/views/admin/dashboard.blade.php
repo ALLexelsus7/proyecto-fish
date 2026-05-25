@@ -4,12 +4,53 @@
 <div class="min-h-screen py-64 flex items-center justify-center">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
         
-        {{-- Titulo --}}
+        {{-- Titulo, config. perfil y musica de fondo On-Demand que solo se escucha en esta vista --}}
         <div class="tarjeta-cristal p-8 border-l-8 border-magma-diablillo flex justify-between items-center">
             <div>
                 <h2 class="text-3xl font-black text-white italic tracking-tighter">PANEL DE <span class="text-magma-diablillo">ADMINISTRACIÓN</span></h2>
                 <p class="text-gray-400">Bienvenido Comandante <span class="text-fuchsia-500 uppercase">{{ Auth::user()->name }}</span>. Los sistemas MySQL están en línea.</p>
-            </div>            
+            </div>  
+            <div class="flex items-center gap-6">
+                <div x-data="{ 
+                        playing: false, 
+                        audio: null,
+                        toggleAudio() {
+                            if (!this.audio) {
+                                // El archivo SOLO se empieza a descargar en este instante
+                                this.audio = new Audio('{{ asset('audio/Lo-Fi_Abyssal_2.0.mp3') }}');
+                                this.audio.loop = true;
+                                this.audio.volume = 0.3; 
+                            }
+                            
+                            if (this.playing) {
+                                this.audio.pause();
+                            } else {
+                                this.audio.play().catch(e => console.log('Interacción requerida:', e));
+                            }
+                            this.playing = !this.playing;
+                        }
+                    }" 
+                    class="hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center">
+                    <button @click="toggleAudio()" class="focus:outline-none group">
+                        <span class="material-symbols-outlined text-4xl transition-colors duration-300"
+                              :class="playing ? 'text-mangle-toxico animate-pulse' : 'text-gray-500 group-hover:text-gray-300'">
+                            <span x-text="playing ? 'volume_up' : 'volume_off'">volume_off</span>
+                        </span>   
+                        <p class="text-xs font-bold mt-1 text-center transition-colors duration-300"
+                           :class="playing ? 'text-mangle-toxico' : 'text-gray-500 group-hover:text-gray-300'">
+                            Sónar Ambiental
+                        </p>
+                    </button>
+                </div>
+
+                {{-- Config. Perfil --}}
+                <div class="hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center">
+                    <a href="{{ route('profile.edit') }}" class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-4xl text-luz-de-linterna">admin_panel_settings</span>   
+                        <p class="text-xs text-luz-de-linterna font-bold mt-1 text-center">Config. Perfil</p>
+                    </a>
+                </div>  
+            </div>       
         </div>
 
         {{-- Datos estadisticos rapidos --}}

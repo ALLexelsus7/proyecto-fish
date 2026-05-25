@@ -35,4 +35,10 @@ class User extends Authenticatable
         // Relación de muchos a muchos
         return $this->belongsToMany(Producto::class, 'favoritos', 'user_id', 'producto_id')->withTimestamps();
     }
+
+    // Función para verificar el rol del usuario (la uso en el blade edit.blade.php del perfil)
+    public function hasRol(string $rol): bool
+    {
+        return $this->rol === $rol;
+    }
 }
