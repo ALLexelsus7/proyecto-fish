@@ -70,7 +70,7 @@
                     
                     {{-- Imagen --}}
                     <div class="h-56 overflow-hidden bg-white/5 flex items-center justify-center p-4 rounded-md">
-                        <img src="{{ asset($producto->imagen_url ?? 'img/peces/fish1.png') }}" {{-- la segunda opcion es por si acaso --}}
+                        <img src="{{ asset('img/fish/' . $producto->imagen_url ?? 'img/peces/fish1.png') }}" {{-- la segunda opcion es por si acaso --}}
                             alt="{{ $producto->nombre_comun }}" 
                             class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500">
                     </div>

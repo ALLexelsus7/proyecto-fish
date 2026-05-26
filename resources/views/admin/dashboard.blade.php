@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen py-64 flex items-center justify-center">
+<div class="min-h-screen py-64 flex items-center justify-center" x-data="visorPedidos">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
         
         {{-- Titulo, config. perfil y musica de fondo On-Demand que solo se escucha en esta vista --}}
@@ -99,7 +99,7 @@
         </div>
 
         {{-- Gestión de Inventario --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="w-full flex justify-center items-center">
             <a href="{{ route('admin.productos.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-magma-diablillo transition-all cursor-pointer">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-bold text-white">Gestión de Inventario</h3>
@@ -176,7 +176,10 @@
                                     </select>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <button class="text-gray-500 hover:text-white transition" title="Ver Detalles de la Orden">
+                                    <button 
+                                        @click="cargarDetalles('{{ route('admin.pedidos.detalles', $pedido->id) }}')"
+                                        class="text-gray-500 hover:text-coral-electrico transition" 
+                                        title="Ver Detalles de la Orden">
                                         <span class="material-symbols-outlined">visibility</span>
                                     </button>
                                 </td>
@@ -194,5 +197,130 @@
         </div>
 
     </div>
+
+    {{-- Modal de detalles de pedido --}}
+    <div 
+        x-show="abierto" 
+        style="display: none;"
+        class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black/80 backdrop-blur-sm"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+    >
+        <div 
+            @click.away="abierto = false"
+            class="relative w-full max-w-3xl p-6 my-8 tarjeta-cristal border border-coral-electrico/30 shadow-2xl shadow-coral-electrico/10"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+        >
+            {{-- Botón Cerrar --}}
+            <button @click="abierto = false" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            {{-- Estado de Carga: Pez Espada Animado con SVG y CSS puro --}}
+            <div x-show="cargando" class="py-16 flex flex-col items-center justify-center">
+                <svg class="w-32 h-32 text-coral-electrico mb-4" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="currentColor">
+                        <path d="M5,25 C25,25 35,15 55,15 C75,15 90,25 95,25 C90,35 75,35 55,35 C35,35 25,25 5,25 Z" />
+                        <polygon points="45,15 55,2 60,15" />
+                        <polygon points="45,28 35,40 50,30" />
+                        <circle cx="35" cy="22" r="2" fill="#000" />
+                        
+                        <animateTransform 
+                            attributeName="transform" 
+                            type="translate" 
+                            values="0,0; 8,-4; 0,0" 
+                            dur="1.2s" 
+                            repeatCount="indefinite"
+                        />
+                    </g>
+                </svg>
+                <p class="text-gray-400 animate-pulse tracking-widest uppercase text-sm font-bold">Rastreando especies...</p>
+            </div>
+
+            {{-- Contenido de la Orden --}}
+            <div x-show="!cargando && pedido">
+                <h3 class="text-2xl font-black text-white italic tracking-tighter uppercase mb-6 border-b border-white/10 pb-4">
+                    Orden <span class="text-coral-electrico" x-text="'#EXP-' + String(pedido?.id).padStart(4, '0')"></span>
+                </h3>
+
+                {{-- Datos del Cliente --}}
+                <div class="grid grid-cols-2 gap-4 mb-6 text-sm">
+                    <div class="bg-black/40 p-4 rounded border border-white/5">
+                        <p class="text-gray-500 uppercase font-bold text-[10px] mb-1">Cliente</p>
+                        <p class="text-white font-bold" x-text="pedido?.user?.name"></p>
+                        <p class="text-gray-400" x-text="pedido?.user?.email"></p>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded border border-white/5">
+                        <p class="text-gray-500 uppercase font-bold text-[10px] mb-1">Fecha de Operación</p>
+                        <p class="text-white font-bold" x-text="new Date(pedido?.created_at).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })"></p>
+                    </div>
+                </div>
+
+                {{-- Lista de Productos --}}
+                <div class="overflow-x-auto border border-white/10 rounded">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-black/60 text-white uppercase text-[10px] tracking-widest border-b border-white/10">
+                            <tr>
+                                <th class="px-4 py-3">Especie</th>
+                                <th class="px-4 py-3">Categoría</th>
+                                <th class="px-4 py-3">Tipo de compra</th>
+                                <th class="px-4 py-3 text-center">Cant.</th>
+                                <th class="px-4 py-3 text-right">Precio Unit.</th>
+                                <th class="px-4 py-3 text-right">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            {{-- Itera sobre los detalles del pedido --}}
+                            <template x-for="detalle in pedido?.detalles" :key="detalle.id">
+                                <tr class="hover:bg-white/5 transition">
+                                    {{-- El nombre del pez y la categoria vive dentro del objeto producto anidado --}}
+                                    <td class="px-4 py-3 font-bold text-white" x-text="detalle.producto?.nombre_comun || 'Especie no encontrada'"></td>                
+                                    <td class="px-4 py-3 font-bold text-white" x-text="detalle.producto?.categoria || 'Categoria no encontrada'"></td>                                    
+                                    
+                                    {{-- El tipo de compra, la cantidad y el precio unitario viven directamente en el detalle --}}
+                                    <td class="px-4 py-3 font-bold text-white" x-text="detalle.tipo_compra || 'Tipo no reconocido'"></td>
+                                    <td class="px-4 py-3 text-center" x-text="detalle.cantidad"></td>
+                                    <td class="px-4 py-3 text-right" x-text="formatearMoneda(detalle.precio_unitario)"></td>
+                                    
+                                    {{-- Calculamos el subtotal multiplicando los campos del detalle --}}
+                                    <td class="px-4 py-3 text-right text-coral-electrico font-bold" x-text="formatearMoneda(detalle.cantidad * detalle.precio_unitario)"></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Acciones y Totales --}}
+                <div class="mt-8 flex flex-col sm:flex-row justify-between items-end sm:items-center border-t border-white/10 pt-6">
+                    
+                    {{-- Botón de PDF --}}
+                    <div class="mb-4 sm:mb-0">
+                        <a :href="'/pedidos/' + pedido?.id + '/recibo-pdf'" 
+                            target="_blank"
+                            class="inline-flex items-center gap-2 bg-transparent border border-coral-electrico text-coral-electrico
+                             hover:bg-coral-electrico hover:text-black px-6 py-3 rounded font-black uppercase text-xs tracking-widest 
+                             transition-all duration-300 shadow-[0_0_15px_rgba(255,127,80,0.1)] hover:shadow-fosforescencia-abisal">
+                            <span class="material-symbols-outlined text-sm">download</span>
+                            Descargar Recibo PDF
+                        </a>
+                    </div>
+
+                    {{-- Total del Pedido --}}
+                    <div class="bg-coral-electrico/10 border border-coral-electrico/20 p-4 rounded min-w-[200px] text-right">
+                        <p class="text-gray-400 text-xs uppercase tracking-widest font-bold mb-1">Gran Total</p>
+                        <p class="text-3xl font-black text-white" x-text="formatearMoneda(pedido?.total)"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- FIN DEL MODAL --}} 
+
 </div>
 @endsection

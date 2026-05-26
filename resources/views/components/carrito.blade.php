@@ -56,14 +56,14 @@
                                             <li class="flex py-6 transition-all hover:bg-white/5 p-2 rounded-lg -mx-2">
                                                 {{-- Imagen --}}
                                                 <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-white/10 bg-black/40 p-2">
-                                                    <img :src="item.imagen" class="h-full w-full object-contain">
+                                                    <img :src="item.imagen_url" class="h-full w-full object-contain">
                                                 </div>
 
                                                 <div class="ml-4 flex flex-1 flex-col justify-between">
                                                     {{-- Nombre, precio y categoria --}}
                                                     <div>
                                                         <div class="flex justify-between text-base font-bold text-white">
-                                                            <h3 x-text="item.nombre"></h3>
+                                                            <h3 x-text="item.nombre_comun"></h3>
                                                             <p class="ml-4 text-coral-electrico" x-text="'$' + item.precio_formateado"></p>
                                                         </div>
                                                         <p class="mt-1 text-[10px] text-gray-500 uppercase tracking-widest italic" 

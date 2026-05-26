@@ -36,10 +36,22 @@ class ProductoFactory extends Factory
             'precio' => $this->faker->randomFloat(2, 450, 7500),  
             'stock' => $this->faker->numberBetween(1, 12),          
             'descripcion' => 'Una de las criaturas más esquivas del océano profundo. ' . $this->faker->paragraph(1),         
-            'imagen_url' => 'img/fish/fish' . $this->faker->numberBetween(1, 12) . '.png',        
+            'imagen_url' => 'fish' . $this->faker->numberBetween(1, 12) . '.png',        
             'estado_vida' => $this->faker->randomElement(['ambos', 'vivo', 'consumo']),
         ];
     }
 }
 
 // Lo ejecuto con "php artisan migrate:fresh --seed" desde DatabaseSeeder.php
+
+/*
+OJO, le quite el prefijo /img/fish a imagen_url para mantenerlo limpio y eficiente
+y para no rehacer las tablas con "php artisan migrate:fresh --seed" y perder los datos de prueba guardados en otras tablas
+en lugar solo modifique los valores del campo para quitarles el prefijo con
+"php artisan tinker" 
+y 
+"App\Models\Producto::where('imagen_url', 'like', 'img/fish/%')->get()->each(function($producto) {
+$producto->imagen_url = str_replace('img/fish/', '', $producto->imagen_url);
+$producto->save();
+});"
+*/

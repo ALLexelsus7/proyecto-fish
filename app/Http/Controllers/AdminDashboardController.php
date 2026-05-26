@@ -59,4 +59,13 @@ class AdminDashboardController extends Controller
             'message' => 'Estatus actualizado correctamente.'
         ]);
     }
+
+    // Mostrar los detalles del pedido
+    public function getDetalles(Pedido $pedido)
+    {
+        // Cargamos el usuario y los detalles, y de cada detalle cargamos SU producto relacionado
+        $pedido->load(['user', 'detalles.producto']);
+        
+        return response()->json($pedido);
+    }
 }

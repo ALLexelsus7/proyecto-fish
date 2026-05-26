@@ -62,8 +62,9 @@ class CarritoController extends Controller
             return [
                 'carrito_id' => $item->id, // El ID de la fila en el carrito (para poder borrarlo)
                 'producto_id' => $item->producto_id,
-                'nombre' => $item->producto->nombre_comun,
-                'imagen' => asset($item->producto->imagen_url ?? 'img/fish/fish1.png'),
+                'nombre_comun' => $item->producto->nombre_comun,
+                // Se construye la ruta + el nombre del pez
+                'imagen_url' => asset('img/fish/' . ($item->producto->imagen_url ?? 'fish1.png')),
                 'tipo_compra' => $item->tipo_compra,
                 'cantidad' => $item->cantidad,
                 'precio' => $item->producto->precio,

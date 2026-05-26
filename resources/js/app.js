@@ -130,8 +130,9 @@ Alpine.data('carrito', (config) => ({
 
 }));
 
-// Componente global para el manejo de estatus en el dashboard admin
+// Componente global para varias cosas
 document.addEventListener('alpine:init', () => {
+    // Manejo de estatus en el dashboard admin
     Alpine.data('manejadorEstatus', (estatusInicial, urlUpdate) => ({
         estatus: estatusInicial,
         isUpdating: false,
@@ -156,6 +157,35 @@ document.addEventListener('alpine:init', () => {
                 // Revierte el selector si fallo
                 this.estatus = estatusInicial; 
             });
+        }
+    }));
+
+    // Abrir el modal central de detalles pedidos en dashboard admin
+    Alpine.data('visorPedidos', () => ({
+        abierto: false,
+        cargando: false,
+        pedido: null,
+
+        cargarDetalles(url) {
+            this.abierto = true;
+            this.cargando = true;
+            this.pedido = null;
+
+            axios.get(url)
+                .then(response => {
+                    this.pedido = response.data;
+                    this.cargando = false;
+                })
+                .catch(error => {
+                    console.error('Fallo de intercepción:', error);
+                    this.cargando = false;
+                    this.abierto = false;
+                    alert('Error al obtener los manifiestos de carga.');
+                });
+        },
+        
+        formatearMoneda(valor) {
+            return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(valor);
         }
     }));
 });
