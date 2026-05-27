@@ -9,6 +9,22 @@
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
+        {{-- Alerta de Operación Exitosa --}}
+        @if(session('success'))
+            <div x-data="{ show: true }" 
+                 x-show="show" 
+                 x-transition.duration.500ms
+                 class="mb-6 bg-green-500/10 border border-green-500/30 text-green-400 px-6 py-4 rounded-xl flex justify-between items-center shadow-[0_0_15px_rgba(34,197,94,0.1)]">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined">task_alt</span>
+                    <span class="font-bold tracking-wide">{{ session('success') }}</span>
+                </div>
+                <button @click="show = false" class="text-green-400/50 hover:text-green-400 transition">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+        @endif
+
         <div class="flex justify-between items-center mb-8">
             <div>
                 <div class="flex items-center gap-4 mb-2">
@@ -25,23 +41,7 @@
                 <span class="material-symbols-outlined">add_circle</span>
                 Nueva Captura
             </a>
-        </div>
-
-        {{-- Alerta de Operación Exitosa --}}
-        @if(session('success'))
-            <div x-data="{ show: true }" 
-                 x-show="show" 
-                 x-transition.duration.500ms
-                 class="mb-6 bg-green-500/10 border border-green-500/30 text-green-400 px-6 py-4 rounded-xl flex justify-between items-center shadow-[0_0_15px_rgba(34,197,94,0.1)]">
-                <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined">task_alt</span>
-                    <span class="font-bold tracking-wide">{{ session('success') }}</span>
-                </div>
-                <button @click="show = false" class="text-green-400/50 hover:text-green-400 transition">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-        @endif
+        </div>       
 
         <div class="tarjeta-cristal overflow-hidden border border-white/10">
             <table class="w-full text-left border-collapse">
@@ -107,6 +107,7 @@
                         </td>
                         {{-- FIN CELDA STOCK --}}
 
+                        {{-- Acciones de edicion o eliminar --}}
                         <td class="px-6 py-4">
                             <div class="flex justify-center gap-3">
                                 <a href="{{ route('admin.productos.edit', $producto->id) }}" class="text-gray-400 hover:text-white transition">

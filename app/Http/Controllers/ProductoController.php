@@ -55,7 +55,7 @@ class ProductoController extends Controller
     {
         return view('admin.productos.create');
     }
-    // Almacenar el producto nuevo
+    // Funcion de Almacenar el producto nuevo
     public function store(Request $request)
     {
         // Valida los datos entrantes
@@ -97,16 +97,75 @@ class ProductoController extends Controller
                          ->with('success', 'Especie "' . $producto->nombre_comun . '" registrada exitosamente en el tanque.');
     }
 
-    // Editar producto
+    // Vista de Editar producto (manda los datos del producto)
     public function edit(Producto $producto)
     {
         return view('admin.productos.edit', compact('producto'));
     }
+    // Funcion de actualizar producto
+    public function update(Request $request, $id)
+    {
+        // Localiza el producto especifico
+        $producto = Producto::findOrFail($id);
 
-    // Eliminar producto
+        // Valida los datos entrantes
+        $request->validate([
+            'nombre_comun'      => 'required|string|max:255',
+            'nombre_cientifico' => 'required|string|max:255',
+            'categoria'         => 'required|in:shallow_coastal,oceanic,hadal_zone',
+            'estado_vida'       => 'required|in:ambos,vivo,consumo',
+            'precio'            => 'required|numeric|min:0',
+            'stock'             => 'required|integer|min:0',
+            'descripcion'       => 'required|string',
+            'imagen_url'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', 
+            // nullable por ser opcional
+        ]);
+
+        // Extrae los datos validados EXCEPTO la imagen
+        $data = $request->except(['imagen_url', '_token', '_method']);
+
+        // Procesa la imagen si se subio una nueva
+        if ($request->hasFile('imagen_url')) {
+            $file = $request->file('imagen_url');            
+            // Genera un nombre unico para evitar colisiones
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();            
+            //Mueve el archivo a la ruta
+            $file->move(public_path('img/fish'), $fileName);            
+            // Adjunta el nuevo nombre al paquete de datos a guardar
+            $data['imagen_url'] = $fileName;
+            // Destruye la imagen vieja para no saturar el servidor
+            $rutaImagenVieja = public_path('img/fish/' . $producto->imagen_url);
+            if ($producto->imagen_url && file_exists($rutaImagenVieja)) {
+                // Evitamos borrar las imágenes "semilla" por defecto
+                if (!str_starts_with($producto->imagen_url, 'fish')) {
+                    unlink($rutaImagenVieja);
+                }
+            }
+        }
+
+        // Se actualiza
+        $producto->update($data);
+
+        return redirect()->route('admin.productos.index')
+                         ->with('success', '¡Los datos de la criatura han sido actualizados con éxito!');
+    }
+
+    // Funcion de Eliminar producto
     public function destroy(Producto $producto)
     {
+        // Destruye la imagen física del servidor
+        $rutaImagen = public_path('img/fish/' . $producto->imagen_url);        
+        // Verifica que la imagen exista y protegemos las imágenes "semilla" (fish1.png, etc.)
+        if ($producto->imagen_url && file_exists($rutaImagen)) {
+            if (!str_starts_with($producto->imagen_url, 'fish')) {
+                unlink($rutaImagen);
+            }
+        }
+
+        // Elimina el producto
         $producto->delete();
-        return response()->redirect(route('admin.productos.index'));
+
+        return redirect()->route('admin.productos.index')
+                         ->with('success', '¡La especie ha sido eliminada permanentemente del catálogo abisal!');
     }
 }

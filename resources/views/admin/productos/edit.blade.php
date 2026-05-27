@@ -25,57 +25,107 @@
                 @csrf
                 @method('PUT')
 
+                {{-- Grid principal de 6 campos (3 filas de 2 columnas en escritorio) --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="nombre_comun" class="text-white font-bold uppercase text-xs tracking-widest">Nombre Común</label>
-                        <input type="text" id="nombre_comun" name="nombre_comun" value="{{ $producto->nombre_comun }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>
+                        <input type="text" id="nombre_comun" name="nombre_comun" value="{{ old('nombre_comun', $producto->nombre_comun) }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>
+                        @error('nombre_comun') <span class="text-red-400 text-xs italic mt-1">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label for="nombre_cientifico" class="text-white font-bold uppercase text-xs tracking-widest">Nombre Científico</label>
-                        <input type="text" id="nombre_cientifico" name="nombre_cientifico" value="{{ $producto->nombre_cientifico }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md italic" required>
+                        <input type="text" id="nombre_cientifico" name="nombre_cientifico" value="{{ old('nombre_cientifico', $producto->nombre_cientifico) }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md italic" required>
+                        @error('nombre_cientifico') <span class="text-red-400 text-xs italic mt-1">{{ $message }}</span> @enderror
                     </div>
 
+                    {{-- Ajustado a Zona de Profundidad (Mantiene name="categoria" para tu BD) --}}
                     <div>
-                        <label for="categoria" class="text-white font-bold uppercase text-xs tracking-widest">Categoría</label>
-                        <select id="categoria" name="categoria" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md [&>option]:bg-mar-profundo">
-                            <option value="Consumo" {{ $producto->categoria == 'Consumo' ? 'selected' : '' }}>Para Consumo</option>
-                            <option value="Ornamental" {{ $producto->categoria == 'Ornamental' ? 'selected' : '' }}>Ornamental</option>
+                        <label for="categoria" class="text-white font-bold uppercase text-xs tracking-widest">Categoria</label>
+                        <select id="categoria" name="categoria" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md [&>option]:bg-mar-profundo" required>
+                            <option value="hadal_zone" {{ old('categoria', $producto->categoria) == 'hadal_zone' ? 'selected' : '' }}> 
+                                Zona Hadal (Hadal Zone)
+                            </option>
+                            <option value="oceanic" {{ old('categoria', $producto->categoria) == 'oceanic' ? 'selected' : '' }}>
+                                Oceánica (Oceanic)
+                            </option>
+                            <option value="shallow_coastal" {{ old('categoria', $producto->categoria) == 'shallow_coastal' ? 'selected' : '' }}>
+                                Costa Poco Profunda (Shallow Coastal)
+                            </option>
                         </select>
+                        @error('categoria') <span class="text-red-400 text-xs italic mt-1">{{ $message }}</span> @enderror
+                    </div>
+
+                    {{-- NUEVO: Campo Estado de Vida integrado perfectamente --}}
+                    <div>
+                        <label for="estado_vida" class="text-white font-bold uppercase text-xs tracking-widest">Estado de Vida</label>
+                        <select id="estado_vida" name="estado_vida" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md [&>option]:bg-mar-profundo" required>
+                            <option value="ambos" {{ old('estado_vida', $producto->estado_vida) == 'ambos' ? 'selected' : '' }}>
+                                Ambos (Vivo o Consumo)
+                            </option>
+                            <option value="vivo" {{ old('estado_vida', $producto->estado_vida) == 'vivo' ? 'selected' : '' }}>
+                                Solo Vivo (Ornamental)
+                            </option>
+                            <option value="consumo" {{ old('estado_vida', $producto->estado_vida) == 'consumo' ? 'selected' : '' }}>
+                                Solo Consumo (Gastronómico)
+                            </option>
+                        </select>
+                        @error('estado_vida') <span class="text-red-400 text-xs italic mt-1">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label for="precio" class="text-white font-bold uppercase text-xs tracking-widest">Precio Unitario</label>
-                        <input type="number" id="precio" name="precio" step="0.01" min="0" value="{{ $producto->precio }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-coral-electrico font-mono focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>
+                        <input type="number" id="precio" name="precio" step="0.01" min="0" value="{{ old('precio', $producto->precio) }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-coral-electrico font-mono focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>
+                        @error('precio') <span class="text-red-400 text-xs italic mt-1">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label for="stock" class="text-white font-bold uppercase text-xs tracking-widest">Stock Disponible</label>
-                        <input type="number" id="stock" name="stock" min="0" value="{{ $producto->stock }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>
+                        <input type="number" id="stock" name="stock" min="0" value="{{ old('stock', $producto->stock) }}" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-white focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>
+                        @error('stock') <span class="text-red-400 text-xs italic mt-1">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <div>
                     <label for="descripcion" class="text-white font-bold uppercase text-xs tracking-widest">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" rows="4" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-gray-300 focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>{{ $producto->descripcion }}</textarea>
+                    <textarea id="descripcion" name="descripcion" rows="4" class="block mt-1 w-full bg-ojo-aberracion/10 border-white/20 text-gray-300 focus:ring-magma-diablillo focus:border-magma-diablillo rounded-md" required>{{ old('descripcion', $producto->descripcion) }}</textarea>
+                    @error('descripcion') <span class="text-red-400 text-xs italic mt-1">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                {{-- Imagen actual y nueva (con alpine) --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">                    
                     <div>
                         <label class="text-white font-bold uppercase text-xs tracking-widest block mb-2">Imagen Actual</label>
-                        <img src="{{ asset('img/peces/' . $producto->imagen_url) }}" alt="{{ $producto->nombre_comun }}" class="h-32 object-contain rounded-lg bg-black/40 border border-white/10 p-2">
+                        <img src="{{ asset('img/fish/' . $producto->imagen_url) }}" alt="{{ $producto->nombre_comun }}" class="h-32 w-full object-contain rounded-lg bg-black/40 border border-white/10 p-2">
                     </div>
-                    <div>
+                    <div x-data="{ fileName: null }">
                         <label class="text-white font-bold uppercase text-xs tracking-widest block mb-2">Actualizar Imagen (Opcional)</label>
                         <div class="flex items-center justify-center w-full">
-                            <label for="imagen_url" class="flex flex-col items-center justify-center w-full h-32 border-2 border-white/20 border-dashed rounded-lg cursor-pointer bg-ojo-aberracion/5 hover:bg-ojo-aberracion/20 transition">
-                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <span class="material-symbols-outlined text-3xl text-gray-400 mb-2">image</span>
-                                    <p class="text-xs text-gray-400">Subir nueva imagen</p>
+                            <label for="imagen_url" class="flex flex-col items-center justify-center w-full h-32 border-2 border-white/20 border-dashed rounded-lg cursor-pointer bg-ojo-aberracion/5 hover:bg-ojo-aberracion/20 transition relative overflow-hidden">
+                                
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center" :class="{ 'opacity-50': fileName }">
+                                    <span class="material-symbols-outlined text-4xl mb-2" :class="fileName ? 'text-coral-electrico' : 'text-gray-400'">
+                                        <span x-text="fileName ? 'check_circle' : 'cloud_upload'"></span>
+                                    </span>
+                                    <p class="mb-2 text-sm text-gray-300">
+                                        <span x-show="!fileName"><span class="font-semibold text-magma-diablillo">Haz clic para subir</span> o arrastra</span>
+                                        <span x-show="fileName" class="font-bold text-coral-electrico" x-text="fileName"></span>
+                                    </p>
+                                    <p x-show="!fileName" class="text-xs text-gray-200">PNG, JPG o WebP (MAX. 2MB)</p>
                                 </div>
-                                <input id="imagen_url" name="imagen_url" type="file" class="hidden" accept="image/*" />
+                                
+                                {{-- Sin el atributo "required" --}}
+                                <input 
+                                    id="imagen_url" 
+                                    name="imagen_url" 
+                                    type="file" 
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                                    accept="image/*" 
+                                    @change="fileName = $event.target.files[0].name" 
+                                />
                             </label>
                         </div>
+                        @error('imagen_url') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                     </div>
                 </div>
 

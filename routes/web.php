@@ -9,50 +9,57 @@ use App\Http\Controllers\FavoritoController;
 use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
-//► Rutas publicas
+//► Rutas publicas (sin loguear)
 Route::get('/', function () { return view('home'); })->name('home');
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
 Route::get('/contacto', function () { return view('contacto'); })->name('contacto');
 
-//► Grupo de rutas protegidas
+//► Grupo de rutas protegidas (para los logueados y verificados)
 Route::middleware(['auth','verified'])->group(function () {
 
     //☼☼☼☼☼☼☼☼☼☼☼ RUTAS DEL USUARIO ☼☼☼☼☼☼☼☼☼☼☼//
     //Dashboard de usuario (ahora con controlador)
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
     Route::post('/favoritos/toggle/{id}', [FavoritoController::class, 'toggle'])->name('favoritos.toggle');
-    // Rutas de perfil
+
+    // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');  
+
     // Agregar, leer, eliminar y actualizar productos del carrito
     Route::post('/carrito/add', [CarritoController::class, 'store'])->name('carrito.add');
     Route::get('/carrito/items', [CarritoController::class, 'getCarrito'])->name('carrito.get');
     Route::delete('/carrito/remove/{id}', [CarritoController::class, 'destroy'])->name('carrito.remove');
     Route::patch('/carrito/update/{id}', [CarritoController::class, 'update'])->name('carrito.update');
-    // RUTA DEL DISPARADOR FINAL (Hacer pedido)
+    
+    // DISPARADOR FINAL (Hacer pedido o checkout)
     Route::post('/checkout', [PedidoController::class, 'procesarCheckout'])->name('checkout.process');
 
     //☼☼☼☼☼☼☼☼☼☼☼ RUTAS DEL ADMIN ☼☼☼☼☼☼☼☼☼☼☼//
-    //Dashboard admin (ahora con controlador)
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    // Actualizar estatus de pedido
-    Route::patch('/admin/pedidos/{pedido}/estatus', [AdminDashboardController::class, 'updateEstatus'])
-    ->name('admin.pedidos.estatus');
-    // Ver detalles de pedido
-    Route::get('/admin/pedidos/{pedido}/detalles', [AdminDashboardController::class, 'getDetalles'])
-    ->name('admin.pedidos.detalles');
-    // Gestion del inventario (ahora con controlador)
-    Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos.index');
-    // Actualización rápida de stock desde la tabla (vía AJAX/Axios)
-    Route::patch('/admin/productos/{producto}/stock', [ProductoController::class, 'updateStock'])->name('admin.productos.updateStock');
-    // Formulario de Crear y ruta para recibir y guardar 
-    Route::get('/admin/productos/create', [ProductoController::class, 'create'])->name('admin.productos.create');
-    Route::post('/admin/productos', [ProductoController::class, 'store'])->name('admin.productos.store');
-    
-    Route::get('/admin/productos/{producto}/edit', [ProductoController::class, 'edit'])->name('admin.productos.edit');
-    Route::put('/admin/productos/{producto}', [ProductoController::class, 'update'])->name('admin.productos.update');
-    Route::delete('/admin/productos/{producto}', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');
+    // Solo el admin puede entrar a estas rutas. Se agrega el prefijo y nombre para ahorrar escribirlo.
+    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+        //Dashboard admin (ahora con controlador)
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        // Actualizar estatus de pedido
+        Route::patch('/pedidos/{pedido}/estatus', [AdminDashboardController::class, 'updateEstatus'])->name('pedidos.estatus');
+        // Ver detalles de pedido
+        Route::get('/pedidos/{pedido}/detalles', [AdminDashboardController::class, 'getDetalles'])->name('pedidos.detalles');
+
+        // Gestion del inventario (ahora con controlador)
+        Route::get('/productos', [ProductoController::class, 'adminIndex'])->name('productos.index');
+        // Vista de Crear y funcion para guardar producto
+        Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
+        Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+        // Actualización rápida de stock desde la tabla (vía AJAX/Axios)
+        Route::patch('/productos/{producto}/stock', [ProductoController::class, 'updateStock'])->name('productos.updateStock');  
+        // Vista de editar y funcion para editar producto
+        Route::get('/productos/{producto}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+        Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
+        // Funcion para eliminar producto
+        Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+    });
     
 });
 
