@@ -1,5 +1,5 @@
 <?php
-
+// Se creo automaticamente con Breeze
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
@@ -51,6 +51,12 @@ class ProfileController extends Controller
         Auth::logout();
 
         $user->delete();
+        /* "Elimina" el usuario (solo marca deleted_at y se deshabilita)
+        Ojo, si se usa forceDelete() si se borra realmente.
+        Se podria restaurar con
+        User::withTrashed()->get() 
+        User::onlyTrashed()->get()
+        $user->restore() */
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

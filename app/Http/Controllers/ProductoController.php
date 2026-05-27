@@ -162,8 +162,14 @@ class ProductoController extends Controller
             }
         }
 
-        // Elimina el producto
+        // "Elimina" el producto (solo marca deleted_at y se deshabilita). Igual para users.
         $producto->delete();
+        /* Ojo, se podria restaurar con
+        User::withTrashed()->get() o Producto::withTrashed()->get()
+        User::onlyTrashed()->get()
+        $user->restore()
+        */
+        // Ojo, si se usa forceDelete() si se borra realmente
 
         return redirect()->route('admin.productos.index')
                          ->with('success', '¡La especie ha sido eliminada permanentemente del catálogo abisal!');
