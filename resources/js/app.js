@@ -1,4 +1,4 @@
-// Importacion del archivo bootstrap.js
+// Importacion del archivo bootstrap.js (aqui se importa axios, pero ojo, ver la info que puse alli...)
 import './bootstrap';
 //Alpine.js es un framework de JavaScript para crear interfaces de usuario reactivas.
 import Alpine from 'alpinejs';
