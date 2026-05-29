@@ -45,7 +45,15 @@
                             puedeCambiar: {{ $producto->estado_vida === 'ambos' ? 'true' : 'false' }},
                             esFavorito: {{ $esFavorito ? 'true' : 'false' }}
                         }">
-                    
+
+                {{-- OVERLAY de "sin stock" cuando es 0 --}}
+                @if($producto->stock <= 0)
+                    <div class="absolute inset-0 z-20 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+                        <div class="bg-red-600/80 text-white font-black text-xl px-6 py-2 uppercase tracking-widest border-2 border-white/20 shadow-2xl shadow-red-600/50 transform -rotate-12">
+                            Agotado
+                        </div>
+                    </div>
+                @endif
                         
                     {{-- Boton fav --}}                    
                     <button @click.prevent="
@@ -62,7 +70,7 @@
                                 window.location.href = '{{ route('login') }}';
                             @endauth
                             "
-                            class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 backdrop-blur-md transition-all border border-white/10 flex items-center justify-center hover:bg-pink-500"
+                            class="z-20 absolute top-4 right-4 p-2 rounded-full bg-black/40 backdrop-blur-md transition-all border border-white/10 flex items-center justify-center hover:bg-pink-500"
                             :class="esFavorito ? 'text-white bg-pink-500 border-white' : 'text-gray-400 hover:text-white'">
                         <span class="material-symbols-outlined transition-transform" 
                             :class="esFavorito ? 'fill-1 scale-110' : 'fill-0'">
@@ -70,18 +78,22 @@
                         </span>
                     </button>
                     
-                    {{-- Imagen --}}
+                    {{-- Imagen (se pone gris si no hay stock) --}}
                     <div class="h-56 overflow-hidden bg-white/5 flex items-center justify-center p-4 rounded-md">
                         <img src="{{ asset('img/fish/' . $producto->imagen_url ?? 'img/peces/fish1.png') }}" {{-- la segunda opcion es por si acaso --}}
                             alt="{{ $producto->nombre_comun }}" 
-                            class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500">
+                            class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500
+                                    {{ $producto->stock <= 0 ? 'grayscale blur-[1px]' : '' }}">
                     </div>
                     
                     <div class="p-6">
-                        {{-- Nombre común, cientifico y descripcion --}}
+                        {{-- Nombre común, cientifico, breve descripcion y stock --}}
                         <h3 class="text-xl font-bold text-white mb-2">{{ $producto->nombre_comun }}</h3> 
                         <p class="text-gray-500 text-xs italic">{{ $producto->nombre_cientifico }}</p>                       
                         <p class="text-gray-400 text-xs line-clamp-2 mt-2">{{ $producto->descripcion }}</p>
+                        <p class="text-xs mt-1 {{ $producto->stock > 0 ? 'text-gray-600' : 'text-red-400 font-bold' }}">
+                            Stock: {{ $producto->stock > 0 ? $producto->stock . ' unidades' : '0 unidades' }}
+                        </p>
                         
                         {{-- Toggle de categoria --}}
                         <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-white/5 mb-5 mt-2">    
@@ -107,28 +119,33 @@
 
                         {{-- Precio y Agregar al carrito con AXIOS --}}
                         <div class="flex justify-between items-center">
-                            <span class="text-coral-electrico font-bold text-lg">${{ number_format($producto->precio, 2) }}</span>                            
-                            <button @click="
-                                    axios.post('{{ route('carrito.add') }}', {
-                                        producto_id: {{ $producto->id }},
-                                        tipo_compra: tipoSeleccionado, {{-- Se manda exactamente lo que la UI tenga activo --}}
-                                    }).then(response => {
-                                        $dispatch('togglecart');
-                                        console.log(response.data.message);
-                                    }).catch(error => {
-                                        if(error.response.status === 401) {
-                                            alert('Debes iniciar sesión en tu bitácora para adquirir criaturas.');
-                                            window.location.href = '{{ route('login') }}';
-                                        }
-                                    })
-                                "
-                                class="bg-magma-diablillo px-3 py-2 rounded-lg font-black italic text-xs uppercase hover:scale-105 transition shadow-lg shadow-magma-diablillo/20">
-                                <span class="material-symbols-outlined text-white">add_shopping_cart</span>
-                                {{-- OJO, aqui la logica es: al darle al boton se guarda el producto en la tabla de carrito con AXIOS por si algun
-                                     problema externo cierra la pagina y pierde los datos. Luego, al instante se refleja en la UI del lateral del 
-                                     carrito con alpine.js. Al darle "Hacer pedido" se actualiza el stock de productos, se actualiza la tabla pedido, 
-                                     se congela en detalles pedidos y se borra la tabla de carrito del usuario junto a la UI del carrito --}}
-                            </button>       
+                            <span class="text-coral-electrico font-bold text-lg">${{ number_format($producto->precio, 2) }}</span> 
+                            @if($producto->stock > 0) {{-- Hay stock --}}                           
+                                <button @click="axios.post('{{ route('carrito.add') }}', {
+                                            producto_id: {{ $producto->id }},
+                                            tipo_compra: tipoSeleccionado, {{-- Se manda exactamente lo que la UI tenga activo --}}
+                                        }).then(response => {
+                                            $dispatch('togglecart');
+                                            console.log(response.data.message);
+                                        }).catch(error => {
+                                            if(error.response.status === 401) {
+                                                alert('Debes iniciar sesión en tu bitácora para adquirir criaturas.');
+                                                window.location.href = '{{ route('login') }}';
+                                            }
+                                        })
+                                    "
+                                    class="bg-magma-diablillo px-3 py-2 rounded-lg font-black italic text-xs uppercase hover:scale-105 transition shadow-lg shadow-magma-diablillo/20">
+                                    <span class="material-symbols-outlined text-white">add_shopping_cart</span>
+                                    {{-- OJO, aqui la logica es: al darle al boton se guarda el producto en la tabla de carrito con AXIOS por si algun
+                                        problema externo cierra la pagina y pierde los datos. Luego, al instante se refleja en la UI del lateral del 
+                                        carrito con alpine.js. Al darle "Hacer pedido" se actualiza el stock de productos, se actualiza la tabla pedido, 
+                                        se congela en detalles pedidos y se borra la tabla de carrito del usuario junto a la UI del carrito --}}
+                                </button> 
+                            @else {{-- No hay stock, boton desactivado --}}                                
+                                <button disabled class="bg-gray-800 text-gray-500 px-3 py-2 rounded-lg font-black italic text-xs uppercase cursor-not-allowed">
+                                    <span class="material-symbols-outlined align-middle">block</span>
+                                </button>
+                            @endif
                         </div>
                         {{-- Categoria --}}
                         <span class="text-[9px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full uppercase tracking-widest font-mono text-gray-400">
