@@ -1,6 +1,8 @@
 @extends('layouts.app')
 {{-- Seccion con el catalogo de peces --}}
 @section('content')
+{{-- Invocar el componente de carga --}}
+@include('components.loader')
 <div>    
     {{-- Animación de descenso --}}
     <section class="relative h-screen w-full bg-cover bg-no-repeat animacion-descenso flex items-center justify-center"
