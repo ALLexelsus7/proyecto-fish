@@ -6,7 +6,10 @@
 @section('content')
 <section class="relative min-h-screen pt-60 pb-20 flex items-center justify-center bg-fixed bg-cover bg-center">
   
-    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/0 -z-10"></div>  
+    <div class="absolute inset-0 bg-black/30 backdrop-blur-sm  -z-10
+                [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] 
+                -webkit-[mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
+    </div>  
 
     <div class="relative z-10 max-w-5xl w-full mx-4 grid grid-cols-1 md:grid-cols-2 gap-10">
         

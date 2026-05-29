@@ -1,5 +1,5 @@
 {{-- Este es el navbar --}}
-<nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<nav class="relative z-[60] max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
     <a href="{{ route('home') }}" class="flex items-center gap-3 text-2xl font-bold tracking-tighter">
         <img src="{{ asset('img/logos/logo.png') }}" alt="logo" class="w-20 ">
         <span>ABYSSAL <span class="text-magma-diablillo">CATCH</span></span>

@@ -8,19 +8,58 @@ use App\Models\Producto;
 
 class ProductoController extends Controller
 {
-    // Muestra el catalogo publico
-    public function index()
-    {     
-        // Se traen todos los productos activos indexados en MySQL
-        $productos = Producto::all();
+    // Muestra el catalogo de productos para los clientes (Con Filtros y Paginación)
+    public function index(Request $request)
+    {
+        // Consulta base de Eloquent
+        $query = Producto::query();
+        //sin Producto::all(); para no cargar todo el conjunto de golpe
+
+        // Extrae los favoritos del usuario logeado y guarda los IDs en un array nativo
         $favoritosUser = [];
-        // Si el usuario esta logeado, extraemos SOLO los IDs de sus favoritos
-        if (auth()->check()) {
+        if (auth()->check()) {            
             $favoritosUser = auth()->user()->favoritos()->pluck('producto_id')->toArray();
         }
-        // Mas adelante filtros o paginacion
 
-        // Se retorna la vista + los datos con compact
+        // Filtro para mostrar solo Favoritos (si los hay)
+        if ($request->filled('solo_favoritos')) {
+            // Se restringe la consulta de MySQL
+            $query->whereIn('id', $favoritosUser);
+        }
+
+        // Filtro de Búsqueda por Texto (Nombre común, científico o descripción)
+        // mediante coincidencias parciales %...%
+        if ($request->filled('search')) {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('nombre_comun', 'LIKE', $searchTerm)
+                  ->orWhere('nombre_cientifico', 'LIKE', $searchTerm)
+                  ->orWhere('descripcion', 'LIKE', $searchTerm);
+            });
+        }
+
+        // Filtro por Categoría (zona de profundidad)
+        if ($request->filled('categoria')) {
+            $query->where('categoria', $request->categoria);
+        }
+
+        // Filtro por Estado de Vida
+        if ($request->filled('estado_vida')) {
+            $query->where('estado_vida', $request->estado_vida);
+        }
+
+        // Filtro por Rango de Precios
+        if ($request->filled('precio_min')) {
+            $query->where('precio', '>=', $request->precio_min);
+        }
+        if ($request->filled('precio_max')) {
+            $query->where('precio', '<=', $request->precio_max);
+        }
+
+        // Ejecución y Paginación Estricta (withQueryString conserva los filtros al cambiar de página)
+        $productos = $query->paginate(12)->withQueryString();
+
+        //Retorna productos con filtros y los favoritos para ser marcados
         return view('productos', compact('productos', 'favoritosUser'));
     }
 

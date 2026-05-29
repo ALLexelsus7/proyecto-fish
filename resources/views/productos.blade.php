@@ -4,27 +4,44 @@
 {{-- Invocar el componente de carga --}}
 @include('components.loader')
 <div>    
-    {{-- Animación de descenso --}}
-    <section class="relative h-screen w-full bg-cover bg-no-repeat animacion-descenso flex items-center justify-center"
+    {{-- Animación de descenso una sola vez por sesion --}}
+    <section x-data="{ 
+                animacionVista: sessionStorage.getItem('descenso_{{ session()->getId() }}'),
+                iniciarOmision() {
+                    sessionStorage.setItem('descenso_{{ session()->getId() }}', 'true');
+                    this.animacionVista = true;
+                }
+             }"
+             x-show="!animacionVista"
+             x-init="if(!animacionVista) { setTimeout(() => iniciarOmision(), 10000) }"
+             x-transition:leave="transition ease-in duration-700 opacity-0 translate-y-[-10%]"
+             class="relative h-screen w-full bg-cover bg-no-repeat animacion-descenso flex items-center justify-center"
              style="background-image: url('{{ asset('img/bg/bg_expanded6.png') }}');">
-        <div class="absolute inset-0 bg-black/10"></div>
-        {{-- inset-0 hace que el div cubra todo el área del contenedor padre --}}
         
-        <div class="relative z-10 text-center" x-show="!animacionTerminada" x-transition:leave="transition ease-in duration-500 opacity-0">
+        <div class="absolute inset-0 bg-black/10"></div>
+        
+        <div class="relative z-10 text-center">
             <h2 class="text-5xl md:text-7xl font-black text-white italic tracking-widest drop-shadow-2xl">
                 DESCENDIENDO...
             </h2>
             <p class="text-coral-electrico font-bold mt-4">Explorando la zona abisal</p>
-            <a href="#catalogo" class="mt-2 text-xs text-gray-100/50 animate-pulse hover:text-ojo-aberracion transition-all duration-300">↓ Continua abajo ↓</a>
+            <button @click="iniciarOmision()" class="mt-8 px-4 py-2 border border-white/20 text-xs text-gray-400 hover:text-white hover:border-white transition-all rounded">
+                Omitir Secuencia ⏭
+            </button>
         </div>
     </section>
 
-    {{-- Catalogo --}}
-    <section id="catalogo" class="pt-60 bg-gradient-to-b from-black/100 via-black/5 to-black/0 min-h-screen">        
+    {{-- Catalogo y alpine para sidebar con filtros --}}
+    <section id="catalogo" x-data="{ filtrosOpen: false }" class="relative pt-60 bg-gradient-to-b from-black/100 via-black/5 to-black/0 min-h-screen">        
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
+            {{-- Titulo y boton de filtro --}}
+            <div class="text-center mb-16 flex flex-col items-center justify-center gap-4">
                 <h2 class="text-4xl font-bold text-white mb-2">Nuestro Catálogo Exótico</h2>
-                <div class="h-1 w-24 bg-magma-diablillo mx-auto"></div>
+                <div class="h-1 w-24 bg-magma-diablillo mx-auto -mt-3 mb-3"></div>
+                <button @click="filtrosOpen = true" class="flex items-center gap-2 bg-black/50 hover:bg-magma-diablillo text-white border border-white/20 py-2 px-6 rounded-lg transition shadow-lg shadow-black/50">
+                    <span class="material-symbols-outlined">tune</span>
+                    <span class="font-bold tracking-widest text-sm uppercase">Filtros Avanzados</span>
+                </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">               
@@ -160,7 +177,17 @@
                 @endforelse
 
             </div>
+
+            {{-- Paginación de Laravel --}}
+            <div class="mt-12">
+                {{ $productos->links() }}
+            </div>
+
         </div>
+
+        {{-- Invoco el componente de filtros --}}
+        @include('components.filtros-sidebar')
+
     </section>
 </div>
 @endsection
