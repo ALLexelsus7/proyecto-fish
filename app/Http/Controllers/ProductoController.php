@@ -56,6 +56,14 @@ class ProductoController extends Controller
             $query->where('precio', '<=', $request->precio_max);
         }
 
+        // Filtro por stock
+        if ($request->filled('stock_min')) {
+            $query->where('stock', '>=', $request->stock_min);
+        }
+        if ($request->filled('stock_max')) {
+            $query->where('stock', '<=', $request->stock_max);
+        }
+
         // Ejecución y Paginación Estricta (withQueryString conserva los filtros al cambiar de página)
         $productos = $query->paginate(12)->withQueryString();
 
@@ -64,10 +72,42 @@ class ProductoController extends Controller
     }
 
     // Muestra el catalogo para el admin
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        // Se traen los productos ordenador por menor stock y paginados
-        $productos = Producto::orderBy('stock', 'asc')->paginate(5);
+        //ya no uso Producto::orderBy('stock', 'asc')->paginate(5);
+        $query = Producto::query();
+
+        // Filtros textuales (nombres e ID)
+        if ($request->filled('search')) {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('nombre_comun', 'LIKE', $searchTerm)
+                ->orWhere('nombre_cientifico', 'LIKE', $searchTerm)
+                ->orWhere('id', 'LIKE', $searchTerm); // Útil para admin buscar por ID
+            });
+        }
+
+        // Filtros categegoria y estado vida
+        if ($request->filled('categoria')) $query->where('categoria', $request->categoria);
+        if ($request->filled('estado_vida')) $query->where('estado_vida', $request->estado_vida);
+        
+        // Filtros precio
+        if ($request->filled('precio_min')) $query->where('precio', '>=', $request->precio_min);
+        if ($request->filled('precio_max')) $query->where('precio', '<=', $request->precio_max);
+
+        // Filtros Stock
+        if ($request->filled('stock_min')) $query->where('stock', '>=', $request->stock_min);
+        if ($request->filled('stock_max')) $query->where('stock', '<=', $request->stock_max);
+
+        // Filtros Orden / Antigüedad
+        if ($request->filled('orden') && $request->orden === 'antiguos') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc'); // Por defecto: Más recientes primero
+        }
+
+        // Paginación de admin
+        $productos = $query->paginate(15)->withQueryString();
 
         return view('admin.productos.index', compact('productos'));
     }

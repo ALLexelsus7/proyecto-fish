@@ -3,9 +3,11 @@
 
 {{-- Gestions de productos del admin--}}
 @section('content')
-<div class="py-64 min-h-screen flex items-center justify-center">
+<div class="relative pt-60 min-h-screen flex items-center justify-center" x-data="{ filtrosOpen: false }">
     
-    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/0 -z-10"></div>
+    <div class="absolute inset-0 bg-black/30 backdrop-blur-sm 
+            [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] 
+            -webkit-[mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] -z-10"></div>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
@@ -25,7 +27,7 @@
             </div>
         @endif
 
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex justify-between items-center mb-8 gap-10">
             <div>
                 <div class="flex items-center gap-4 mb-2">
                     <a href="{{ route('admin.dashboard') }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-magma-diablillo text-white transition">
@@ -37,10 +39,14 @@
                 </div>
                 <p class="text-gray-300 text-sm pl-20">Gestiona las existencias de la zona abisal.</p>
             </div>
+            <button @click="filtrosOpen = true" class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 py-2 px-4 rounded-lg transition">
+                <span class="material-symbols-outlined">tune</span>
+                Filtros Avanzados
+            </button>
             <a href="{{ route('admin.productos.create') }}" class="bg-magma-diablillo hover:bg-ojo-aberracion text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg shadow-magma-diablillo/20">
                 <span class="material-symbols-outlined">add_circle</span>
                 Nueva Captura
-            </a>
+            </a>            
         </div>       
 
         <div class="tarjeta-cristal overflow-hidden border border-white/10">
@@ -134,6 +140,14 @@
             {{ $productos->links() }}
         </div>
 
+        
+
     </div>
+
+    {{-- incluyo el componente de filtros aclarando que es el de admin --}}
+    @include('components.filtros-sidebar', [
+            'isAdmin' => true, 
+            'rutaAction' => route('admin.productos.index')
+        ])
 </div>
 @endsection
