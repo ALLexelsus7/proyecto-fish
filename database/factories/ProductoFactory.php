@@ -34,8 +34,8 @@ class ProductoFactory extends Factory
             'nombre_cientifico' => $pezAleatorio['cientifico'],        
             'categoria' => $this->faker->randomElement(['shallow_coastal', 'oceanic', 'hadal_zone']),     
             'precio' => $this->faker->randomFloat(2, 450, 7500),  
-            'stock' => $this->faker->numberBetween(1, 12),          
-            'descripcion' => 'Una de las criaturas más esquivas del océano profundo. ' . $this->faker->paragraph(1),         
+            'stock' => $this->faker->numberBetween(0, 12),          
+            'descripcion' => $this->faker->paragraph(1),         
             'imagen_url' => 'fish' . $this->faker->numberBetween(1, 12) . '.png',        
             'estado_vida' => $this->faker->randomElement(['ambos', 'vivo', 'consumo']),
         ];

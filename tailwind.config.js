@@ -9,7 +9,11 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.js',
     ],
-
+    // Esta es una ORDEN DIRECTA. No permite borrar estas clases en el NPM RUN BUILD
+    safelist: [
+        'tarjeta-cristal',
+        'tarjeta-cristal-2',
+    ],
     theme: {
         extend: {
             fontFamily: {

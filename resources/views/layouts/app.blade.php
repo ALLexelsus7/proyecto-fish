@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-        <!-- Scripts -->
+        <!-- Scripts y Estilos -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         {{-- Esto permite precargar imagenes (lo uso en home) y modifique packahe.json agregando svgo y optimize:svgs --}}
         @stack('head')

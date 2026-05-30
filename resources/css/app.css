@@ -1,70 +1,77 @@
+/* Rescato algunos estilos de la propuesta inicial del proyecto y agrego otros */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Rescato algunos estilos de la propuesta inicial del proyecto y agrego otros */
+/*∭∭∭ CAPA BASE: Diseños con estilos globales y comportamiento del navegador ∭∭∭*/
+@layer base {
+    /* Sobreescribir el fondo de autocompletado del navegador */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active{
+        /* -webkit-box-shadow: 0 0 0 30px inset !important;  */
+        -webkit-text-fill-color: #FFC800 !important;
+        transition: background-color 5000s ease-in-out 0s; /* Evitar destellos */
+    }    
+}
 
-/* Tarjetas de cristal para div */
-@layer components{
-    .tarjeta-cristal{
-        /* 1. Translucidez: Fondo negro con un 15% de opacidad */
-        background: rgba(0, 0, 0, 0.15);    
-        /* 2. La magia: Desenfoca lo que está detrás del elemento */
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px); /* Necesario para que funcione en Safari/Apple */    
-        /* 3. Borde sutil: Un borde blanco muy transparente para simular el filo */
-        border: 1px solid rgba(255, 255, 255, 0.3);    
-        /* 4. Sombra: Sombra suave y amplia para que parezca flotar */
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);    
-        /* Extras: Curvas para un diseño más amigable */
-        border-radius: 26px; 
-        padding: 30px;
+/*∭∭∭ CAPA COMPONENTS: Elementos complejos con mas de 3 propiedades y reutilizables ∭∭∭*/
+/* Ojo, los dejo con las caracteristicas basicas que todos deberan de tener, pero sin especificar
+por ejemplo, el border radius, ya que si tambien lo declaro con tailwind en una etiqueta,
+se sobreescribe, se corrompe y no se muestra el componente con los estilos deseados */
+@layer components {
+    .tarjeta-cristal {
+        /* 1. Translucidez estricta al 15% */
+        background-color: rgba(0, 0, 0, 0.15) !important;            
+        /* 2. Filtro de cristal + prefijos para otros navegadores web */
+        -webkit-backdrop-filter: blur(12px) !important; 
+        backdrop-filter: blur(12px) !important;        
+        /* 3. Borde sutil que hereda direcciones si se requiere */
+        border-width: 1px;
+        border-color: rgba(255, 255, 255, 0.15);            
+        /* 4. Sombra de profundidad abisal */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);    
     }
-    .tarjeta-cristal-2{
-        background: rgba(0, 0, 0, 0.45);    
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);    
-        border: 1px solid rgba(255, 255, 255, 0.3);    
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);    
-        border-radius: 26px; 
-        padding: 30px;
+
+    .tarjeta-cristal-2 {
+        /* Variante ligeramente más oscura para footers o secciones densas */
+        background-color: rgba(0, 0, 0, 0.55) !important;    
+        -webkit-backdrop-filter: blur(12px) !important; 
+        backdrop-filter: blur(12px) !important;
+        border-width: 1px;
+        border-color: rgba(255, 255, 255, 0.15);    
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);    
     } 
 }
 
-/* Animacion para el fondo de catalogo */
+/*∭∭∭ CAPA UTILITIES: Efectos y herramientas con proposito unico ∭∭∭*/
 @layer utilities {
+    /* Animacion para el fondo de catalogo */
     @keyframes descenderFondo {
         0% { background-position: top center; }
         100% { background-position: bottom center; }
     }
-
     .animacion-descenso {
         animation: descenderFondo 10s ease-in-out forwards;
     }
+
+    /* Personalizacion del scrollbar minimalista y temático */
+    .scrollbar-abisal::-webkit-scrollbar {
+        width: 6px; /* Delgado */
+    }
+    .scrollbar-abisal::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente */
+        border-radius: 8px;
+    }
+    .scrollbar-abisal::-webkit-scrollbar-thumb {
+        background: #ff4500;
+        border-radius: 8px;
+    }
+    .scrollbar-abisal::-webkit-scrollbar-thumb:hover {
+        background: #ff6347; /* Un tono más claro al pasar el mouse */
+    }
 }
 
-/* Clase personalizada para un scrollbar minimalista y temático */
-.scrollbar-abisal::-webkit-scrollbar {
-    width: 6px; /* Delgado */
-}
-.scrollbar-abisal::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente */
-    border-radius: 8px;
-}
-.scrollbar-abisal::-webkit-scrollbar-thumb {
-    background: #ff4500;
-    border-radius: 8px;
-}
-.scrollbar-abisal::-webkit-scrollbar-thumb:hover {
-    background: #ff6347; /* Un tono más claro al pasar el mouse */
-}
-
-/* Sobreescribir el fondo de autocompletado del navegador */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    /* -webkit-box-shadow: 0 0 0 30px inset !important;  */
-    -webkit-text-fill-color: #FFC800 !important;
-    transition: background-color 5000s ease-in-out 0s; /* Evitar destellos */
-}
+/* php artisan view:clear limpia el archivo temporal llamado 'hot' dentro de /public
+   creado por hacer npm run dev. Se puede usar para limpiarlo y luego hacer npm run build */
