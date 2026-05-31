@@ -33,8 +33,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::delete('/carrito/remove/{id}', [CarritoController::class, 'destroy'])->name('carrito.remove');
     Route::patch('/carrito/update/{id}', [CarritoController::class, 'update'])->name('carrito.update');
     
-    // DISPARADOR FINAL (Hacer pedido o checkout)
-    Route::post('/checkout', [PedidoController::class, 'procesarCheckout'])->name('checkout.process');
+    // DISPARADOR FINAL (Hacer pedido o checkout + blade)
+    Route::post('/checkout/process', [PedidoController::class, 'procesarCheckout'])->name('checkout.process');
+    Route::get('/checkout/success/{id}', [PedidoController::class, 'success'])->name('checkout.success');
 
     //☼☼☼☼☼☼☼☼☼☼☼ RUTAS DEL ADMIN ☼☼☼☼☼☼☼☼☼☼☼//
     // Solo el admin puede entrar a estas rutas. Se agrega el prefijo y nombre para ahorrar escribirlo.

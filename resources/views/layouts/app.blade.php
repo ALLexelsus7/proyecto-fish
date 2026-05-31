@@ -27,7 +27,7 @@
           {{-- Aqui el style admite imagenes o colores de fondo y ese svg sera el default --}}
 
         <div class="min-h-screen">
-            <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300 rounded-b-3xl rounded-t-none py-8 px-6">
+            <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300 rounded-b-3xl rounded-t-none py-8 px-6 print:hidden">
                 @include('layouts.navigation')
             </header>
 
@@ -37,7 +37,7 @@
                 @yield('content') {{-- pero @yield() es el modo default de Laravel --}}
             </main>
           
-            <footer class="tarjeta-cristal-2 border-t border-white/10 pt-16 pb-8 mt-20 rounded-t-3xl rounded-b-none">
+            <footer class="tarjeta-cristal-2 border-t border-white/10 pt-16 pb-8 mt-20 rounded-t-3xl rounded-b-none print:hidden">
                 @include('layouts.footer')
             </footer>
             

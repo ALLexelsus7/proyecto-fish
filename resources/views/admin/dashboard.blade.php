@@ -2,7 +2,9 @@
 
 @section('content')
 <div class="min-h-screen pt-40 flex items-center justify-center" x-data="visorPedidos">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+
+    {{-- Interfaz Contenedor principal (Oculto en impresión) --}}
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8 print:hidden">
         
         {{-- Titulo, config. perfil y musica de fondo On-Demand que solo se escucha en esta vista --}}
         <div class="tarjeta-cristal p-8 border-l-8 border-magma-diablillo flex justify-between items-center rounded-l-2xl rounded-r-lg">
@@ -197,12 +199,13 @@
         </div>
 
     </div>
+    {{-- fin contenedor principal --}}
 
-    {{-- Modal de detalles de pedido --}}
+    {{-- Interfaz Modal Detalles Pedidos (Oculta en impresión) --}}
     <div 
         x-show="abierto" 
         style="display: none;"
-        class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black/80 backdrop-blur-sm"
+        class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black/80 backdrop-blur-sm print:hidden"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
@@ -222,23 +225,17 @@
                 <span class="material-symbols-outlined">close</span>
             </button>
 
-            {{-- Estado de Carga: Pez Espada Animado con SVG y CSS puro --}}
+            {{-- Estado de Carga: Gota de Agua Cayendo y Disolviéndose (HTML, CSS y SVG puro) --}}
             <div x-show="cargando" class="py-16 flex flex-col items-center justify-center">
-                <svg class="w-32 h-32 text-coral-electrico mb-4" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor">
-                        <path d="M5,25 C25,25 35,15 55,15 C75,15 90,25 95,25 C90,35 75,35 55,35 C35,35 25,25 5,25 Z" />
-                        <polygon points="45,15 55,2 60,15" />
-                        <polygon points="45,28 35,40 50,30" />
-                        <circle cx="35" cy="22" r="2" fill="#000" />
-                        
-                        <animateTransform 
-                            attributeName="transform" 
-                            type="translate" 
-                            values="0,0; 8,-4; 0,0" 
-                            dur="1.2s" 
-                            repeatCount="indefinite"
-                        />
-                    </g>
+                <svg class="w-32 h-32 text-coral-electrico mb-4" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Gota de agua que cae y se disuelve -->
+                    <path d="M 50 10 C 50 10, 35 30, 35 45 C 35 60, 41.73 70, 50 70 C 58.27 70, 65 60, 65 45 C 65 30, 50 10, 50 10 Z" 
+                          fill="currentColor">
+                        <!-- Animación de caída (0 a 60 píxeles hacia abajo) -->
+                        <animateTransform attributeName="transform" type="translate" values="0,0; 0,60" dur="2s" repeatCount="indefinite"/>
+                        <!-- Animación de desvanecimiento (se disuelve al final) -->
+                        <animate attributeName="opacity" values="1; 1; 1; 0" dur="2s" repeatCount="indefinite"/>
+                    </path>
                 </svg>
                 <p class="text-gray-400 animate-pulse tracking-widest uppercase text-sm font-bold">Rastreando especies...</p>
             </div>
@@ -297,30 +294,95 @@
                 </div>
 
                 {{-- Acciones y Totales --}}
-                <div class="mt-8 flex flex-col sm:flex-row justify-between items-end sm:items-center border-t border-white/10 pt-6">
-                    
-                    {{-- Botón de PDF --}}
+                <div class="mt-8 flex flex-col sm:flex-row justify-between items-end sm:items-center border-t border-white/10 pt-6">                    
+                    {{-- Botón de PDF (logica en app.js) --}}
                     <div class="mb-4 sm:mb-0">
-                        <a :href="'/pedidos/' + pedido?.id + '/recibo-pdf'" 
-                            target="_blank"
+                        <button 
+                            @click="window.AbyssalApp.imprimirRecibo()" 
                             class="inline-flex items-center gap-2 bg-transparent border border-coral-electrico text-coral-electrico
                              hover:bg-coral-electrico hover:text-black px-6 py-3 rounded font-black uppercase text-xs tracking-widest 
-                             transition-all duration-300 shadow-[0_0_15px_rgba(255,127,80,0.1)] hover:shadow-fosforescencia-abisal">
-                            <span class="material-symbols-outlined text-sm">download</span>
-                            Descargar Recibo PDF
-                        </a>
+                             transition-all duration-300 shadow-[0_0_15px_rgba(255,127,80,0.1)] hover:shadow-fosforescencia-abisal cursor-pointer">
+                            <span class="material-symbols-outlined text-sm">print</span>
+                            Imprimir Recibo
+                        </button>
                     </div>
-
                     {{-- Total del Pedido --}}
                     <div class="bg-coral-electrico/10 border border-coral-electrico/20 p-4 rounded min-w-[200px] text-right">
                         <p class="text-gray-400 text-xs uppercase tracking-widest font-bold mb-1">Gran Total</p>
                         <p class="text-3xl font-black text-white" x-text="formatearMoneda(pedido?.total)"></p>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
-    {{-- FIN DEL MODAL --}} 
+    {{-- fin modal --}} 
+
+    {{-- Contenedor para impresion (nativo, limpio y ahorro de tinta) --}}
+    <div class="hidden print:block bg-white text-black p-8 w-full font-sans text-sm" x-show="pedido">
+        {{-- Defino que por default se ponga en horizontal con esos margenes --}}
+        <style> @media print { @page { size: landscape; margin: 10mm; } } </style>
+        <div class="flex justify-between items-start border-b-4 border-black pb-4 mb-6">
+            <div>
+                <h1 class="text-2xl font-black tracking-tighter">ABYSSAL CATCH CO.</h1>
+                <p class="text-xs text-gray-600">Alta Gastronomía e Importaciones del Abismo</p>
+                <p class="text-xs text-gray-500">Operaciones Marítimas y Control de Calidad MySQL</p>
+            </div>
+            <div class="text-right">
+                <h2 class="text-xl font-bold tracking-tight" x-text="'RECIBO: #EXP-' + String(pedido?.id).padStart(4, '0')"></h2>
+                <p class="text-xs text-gray-600" x-text="'Emisión: ' + (pedido ? new Date(pedido.created_at).toLocaleDateString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit' }) : '')"></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8 mb-8">
+            <div class="border border-black p-4 rounded">
+                <p class="text-[10px] uppercase font-black tracking-wider text-gray-500 mb-1">Datos del Cliente</p>
+                <p class="font-bold text-base" x-text="pedido?.user?.name"></p>
+                <p class="text-gray-700" x-text="pedido?.user?.email"></p>
+            </div>
+            <div class="border border-black p-4 rounded">
+                <p class="text-[10px] uppercase font-black tracking-wider text-gray-500 mb-1">Metadatos de Expedición</p>
+                <p class="font-medium">Estatus de Sistema: <span class="uppercase font-bold" x-text="pedido?.estado"></span></p>
+                <p class="text-gray-700 text-xs" x-text="'Registro horario: ' + (pedido ? new Date(pedido.created_at).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }) : '')"></p>
+            </div>
+        </div>
+
+        <table class="w-full text-left border-collapse mb-8">
+            <thead>
+                <tr class="border-b-2 border-black text-[11px] uppercase font-bold tracking-wider">
+                    <th class="py-2">Especie Extraída</th>
+                    <th class="py-2">Categoría</th>
+                    <th class="py-2">Tipo de Compra</th>
+                    <th class="py-2 text-center">Cant.</th>
+                    <th class="py-2 text-right">P. Unitario</th>
+                    <th class="py-2 text-right">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="detalle in pedido?.detalles" :key="detalle.id">
+                    <tr class="border-b border-gray-300 text-xs">
+                        <td class="py-3 font-bold" x-text="detalle.producto?.nombre_comun"></td>
+                        <td class="py-3 text-gray-700" x-text="detalle.producto?.categoria"></td>
+                        <td class="py-3 uppercase text-[10px]" x-text="detalle.tipo_compra"></td>
+                        <td class="py-3 text-center font-medium" x-text="detalle.cantidad"></td>
+                        <td class="py-3 text-right" x-text="formatearMoneda(detalle.precio_unitario)"></td>
+                        <td class="py-3 text-right font-bold" x-text="formatearMoneda(detalle.cantidad * detalle.precio_unitario)"></td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+        <div class="flex justify-end">
+            <div class="w-1/3 border-t-2 border-black pt-4 text-right">
+                <div class="flex justify-between items-center font-black text-lg">
+                    <span>TOTAL:</span>
+                    <span class="text-xl" x-text="formatearMoneda(pedido?.total)"></span>
+                </div>
+                <p class="text-[9px] text-gray-500 mt-2 italic">Este documento sirve como comprobante digital de liquidación de especies comerciales.</p>
+            </div>
+        </div>
+    </div>
+    {{-- fin contenedor impresion --}}
 
 </div>
 @endsection

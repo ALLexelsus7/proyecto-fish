@@ -2,7 +2,7 @@
 @section('body-background', asset('img/bg/table2.jpeg'))
 {{-- Gestion del usuario --}}
 @section('content')
-<div class="min-h-screen py-60" x-data="{ tab: 'pedidos' }">
+<div class="min-h-screen pt-48" x-data="{ tab: 'pedidos' }">
     <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/0 -z-10"></div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         

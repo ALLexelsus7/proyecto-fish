@@ -112,10 +112,10 @@
                             
                             <div class="mt-6">
                                 <button @click="realizarAdquisicion()" 
-                                    class="w-full flex items-center justify-center rounded-xl bg-magma-diablillo px-6 py-4 text-base font-black text-white shadow-lg shadow-magma-diablillo/20 hover:scale-[1.02] transition-transform uppercase italic"
-                                    :disabled="items.length === 0"
-                                    :class="items.length === 0 ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''">
-                                    Realizar pedido
+                                    class="w-full flex items-center justify-center rounded-xl bg-magma-diablillo px-6 py-4 text-base font-black text-white shadow-lg shadow-magma-diablillo/20 transition-all uppercase italic"
+                                    :disabled="items.length === 0 || procesando"
+                                    :class="(items.length === 0 || procesando) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02] hover:shadow-magma-diablillo/40 cursor-pointer'"
+                                    x-text="procesando ? 'PESCANDO...' : 'REALIZAR PEDIDO'">
                                 </button>
                             </div>
                             <div class="mt-6 flex justify-center text-center text-sm text-gray-400">

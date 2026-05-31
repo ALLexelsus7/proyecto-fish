@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
+    // Funcion para procesar el pedido 
     public function procesarCheckout()
     {
         $userId = Auth::id();
@@ -21,6 +22,7 @@ class PedidoController extends Controller
         // Se obtiene el carrito del usuario
         $itemsCarrito = Carrito::with('producto')->where('user_id', $userId)->get();
 
+        // Valida que no este vacio el carrito
         if ($itemsCarrito->isEmpty()) {
             return response()->json(['status' => 'error', 'message' => 'Tu red de captura está vacía.'], 400);
         }
@@ -63,9 +65,11 @@ class PedidoController extends Controller
             // (●'◡'●) Si no hubo ningun error interno/externo, se confirman los cambios en MYSQL 
             DB::commit();
 
+            // Se redirige a la vista de chekout para descargar su recibo
             return response()->json([
                 'status' => 'success',
-                'message' => '¡Adquisición exitosa! Tu pedido #' . $pedido->id . ' está en la bitácora.'
+                'message' => '¡Adquisición exitosa! Tu pedido #' . $pedido->id . ' está en la bitácora.',
+                'redirect_url' => route('checkout.success', ['id' => $pedido->id])
             ]);
 
         } catch (\Exception $e) {
@@ -78,5 +82,16 @@ class PedidoController extends Controller
                 'linea_del_error' => $e->getLine()   // en opc. de desarrollador de la web -> network -> output
             ], 500);
         }
+    }
+
+    // Verificacion y redireccion a la vista despues de procesarCheckout()
+    public function success($id)
+    {
+        // Buscamos el pedido y nos aseguramos de que pertenezca al usuario logueado
+        $pedido = Pedido::with(['detalles.producto', 'user'])
+                    ->where('user_id', Auth::id())
+                    ->findOrFail($id);
+
+        return view('checkout.success', compact('pedido'));
     }
 }

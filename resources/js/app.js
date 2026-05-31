@@ -5,6 +5,10 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+// ==============================================================================
+//               UTILIDADES Y EFECTOS INDEPENDIENTES (Vanilla JS)
+// ==============================================================================
+
 // Componente global para el efecto de aparición en cascada para las tarjetas de productos.blade.php
 document.addEventListener("DOMContentLoaded", function() {
     // Creamos un observador que detecta cuando los elementos entran a la pantalla
@@ -33,9 +37,33 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// Carrusel de sitios de pesca en home
-window.carruselSitios = function() {
-    return {
+// Contenedor global para funciones exclusivas del navegador
+window.AbyssalApp = {
+    /**
+     * Dispara el cuadro de diálogo de impresión nativo del sistema operativo.
+     * Gracias a las utilidades print: de Tailwind, el navegador sabrá exactamente
+     * qué elementos mostrar en el papel/PDF y cuáles ignorar.
+     */
+    imprimirRecibo() {
+        window.print();
+    }
+};
+
+// ==============================================================================
+//                  ECOSISTEMA ALPINE.JS (Componentes y Stores)
+// ==============================================================================
+
+document.addEventListener('alpine:init', () => {
+
+    // I. Almacen GLOBAL para la cantidad de items en el carrito
+    Alpine.store('carritoGlobal', {
+        count: 0
+    });
+
+    // --- COMPONENTES (Data) ---
+
+    // Carrusel de sitios de pesca en home
+    Alpine.data('carruselSitios', () => ({
         currentIndex: 0,
         sitios: [
             { name: 'Sidney, Australia', icon: 'Sydney.svg' },
@@ -65,73 +93,65 @@ window.carruselSitios = function() {
         prev() {
             this.currentIndex = (this.currentIndex - 1 + this.sitios.length) % this.sitios.length;
         }
-    }
-};
+    }));
 
-// I. Almacen GLOBAL para la cantidad de items en el carrito
-Alpine.store('carritoGlobal', {
-    count: 0
-});
-// Varias funciones Alpine & Registrar el componente global del CARRITO
-Alpine.data('carrito', (config) => ({
-    open: false,
-    items: [],
-    total: '0.00',
+    // Manejo del Carrito lateral
+    Alpine.data('carrito', (config) => ({
+        open: false,
+        items: [],
+        total: '0.00',
+        procesando: false, //Bandera de seguridad para prevencion de doble click
 
-    // Función para cargar los datos desde MySQL vía Axios 
-    cargarCarrito() {
-        axios.get(config.getRoute)
-            .then(response => {
-                this.items = response.data.items;
-                this.total = response.data.total_formateado;
-                // II. calculo del total de items
-                const totalPiezas = this.items.reduce((sum, item) => sum + item.cantidad, 0);                
-                // III. actualiza el almacen GLOBAL
-                Alpine.store('carritoGlobal').count = totalPiezas;
-            })
-            .catch(error => console.error('Error al cargar la red', error));
-    },
+        // Función para cargar los datos del carrito desde MySQL vía Axios 
+        cargarCarrito() {
+            axios.get(config.getRoute)
+                .then(response => {
+                    this.items = response.data.items;
+                    this.total = response.data.total_formateado;
+                    // II. calculo del total de items
+                    const totalPiezas = this.items.reduce((sum, item) => sum + item.cantidad, 0);                
+                    // III. actualiza el almacen GLOBAL
+                    Alpine.store('carritoGlobal').count = totalPiezas;
+                })
+                .catch(error => console.error('Error al cargar la red', error));
+        },
 
-    // Función para eliminar un ítem con la URL absoluta
-    eliminarItem(id) {
-        axios.delete(`${config.removeUrl}/${id}`)
-            .then(() => {
-                this.cargarCarrito();
-            })
-            .catch(error => console.error('Error al liberar', error));
-    },
+        // Función para eliminar un ítem con la URL absoluta
+        eliminarItem(id) {
+            axios.delete(`${config.removeUrl}/${id}`)
+                .then(() => {
+                    this.cargarCarrito();
+                })
+                .catch(error => console.error('Error al liberar', error));
+        },
 
-    // Función para modificar cantidades con los botones + y -
-    cambiarCantidad(id, accion) {
-        axios.patch(`${config.updateUrl}/${id}`, { accion: accion })
-            .then(() => {
-                this.cargarCarrito();
-            })
-            .catch(error => console.error('Error al actualizar cantidad', error));
-    },
+        // Función para modificar cantidades con los botones + y -
+        cambiarCantidad(id, accion) {
+            axios.patch(`${config.updateUrl}/${id}`, { accion: accion })
+                .then(() => {
+                    this.cargarCarrito();
+                })
+                .catch(error => console.error('Error al actualizar cantidad', error));
+        },
 
-    // Funcion para hacer el pedido
-    realizarAdquisicion() {
-        // Puedo cambiar texto del botón a "Procesando..."
-        axios.post(config.checkoutUrl)
-            .then(response => {
-                // Mensaje de exito del backend
-                alert(response.data.message);                 
-                // Cierra el panel lateral carrito
-                this.open = false;                 
-                // Recarga el carrito (lo deja vacío y actualiza la burbuja del navbar a 0)
-                this.cargarCarrito(); 
-            })
-            .catch(error => {
-                console.error('Error en checkout', error);
-                alert('Hubo un error al procesar tu adquisición en las profundidades.');
-            });
-    }
+        // Función para hacer el pedido
+        realizarAdquisicion() {
+            this.procesando = true; // Activa el bloqueo del botón
+            axios.post(config.checkoutUrl)
+                .then(response => {
+                    // En lugar de un alert(), redirigimos a la URL de éxito que nos mandará el backend
+                    if (response.data.redirect_url) {
+                        window.location.href = response.data.redirect_url;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en checkout', error);
+                    alert('Hubo un error al procesar tu adquisición en las profundidades.');
+                    this.procesando = false; // Libera el botón si hay error
+                });
+        }
+    }));
 
-}));
-
-// Componente global para varias cosas
-document.addEventListener('alpine:init', () => {
     // Manejo de estatus en el dashboard admin
     Alpine.data('manejadorEstatus', (estatusInicial, urlUpdate) => ({
         estatus: estatusInicial,
@@ -173,8 +193,11 @@ document.addEventListener('alpine:init', () => {
 
             axios.get(url)
                 .then(response => {
-                    this.pedido = response.data;
-                    this.cargando = false;
+                    // Simula un delay mínimo de 3 segundos para apreciar la animación
+                    setTimeout(() => {
+                        this.pedido = response.data;
+                        this.cargando = false;
+                    }, 3000);
                 })
                 .catch(error => {
                     console.error('Fallo de intercepción:', error);
@@ -190,5 +213,7 @@ document.addEventListener('alpine:init', () => {
     }));
 });
 
-// Iniciar Alpine.js después de definir todas las funciones
+// ==============================================================================
+//           Iniciar Alpine.js después de definir todas las funciones
+// ==============================================================================
 Alpine.start();
