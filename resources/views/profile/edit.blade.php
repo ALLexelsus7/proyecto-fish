@@ -2,7 +2,7 @@
 
 {{-- Seccion para editar perfil de usuario --}}
 @section('content')
-<div class="min-h-screen py-64">
+<div class="min-h-screen pt-40">
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
         <div class="flex gap-4 mb-8">
@@ -13,19 +13,19 @@
             <h2 class="text-3xl font-black text-white italic tracking-tighter">AJUSTES DE <span class="text-magma-diablillo">BITÁCORA</span></h2>
         </div>
 
-        <div class="tarjeta-cristal p-8 border border-white/10">
+        <div class="tarjeta-cristal p-8 border border-white/10 rounded-2xl">
             <div class="max-w-xl">
                 @include('profile.partials.update-profile-information-form')
             </div>
         </div>
 
-        <div class="tarjeta-cristal p-8 border border-white/10">
+        <div class="tarjeta-cristal p-8 border border-white/10 rounded-2xl">
             <div class="max-w-xl">
                 @include('profile.partials.update-password-form')
             </div>
         </div>
 
-        <div class="tarjeta-cristal p-8 border border-red-900/30">
+        <div class="tarjeta-cristal p-8 border-[3px] border-red-900/50 rounded-2xl">
             <div class="max-w-xl text-red-400">
                 @include('profile.partials.delete-user-form')
             </div>

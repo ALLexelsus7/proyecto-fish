@@ -32,7 +32,7 @@
     </section>
 
     {{-- Catalogo y alpine para sidebar con filtros --}}
-    <section id="catalogo" x-data="{ filtrosOpen: false }" class="relative pt-60 bg-gradient-to-b from-black/100 via-black/5 to-black/0 min-h-screen">        
+    <section id="catalogo" x-data="{ filtrosOpen: false }" class="relative pt-40 bg-gradient-to-b from-black/100 via-black/5 to-black/0 min-h-screen">        
         <div class="max-w-7xl mx-auto px-6">
             {{-- Titulo y boton de filtro --}}
             <div class="text-center mb-16 flex flex-col items-center justify-center gap-4">
@@ -55,7 +55,7 @@
                 @endphp
                 {{-- Alpine.js para seleccionar favoritos y categoria --}}
                 <article class="tarjeta-cristal overflow-hidden group hover:border-magma-diablillo transition-all 
-                         duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta"
+                         duration-700 ease-out opacity-0 translate-y-12 observar-tarjeta rounded-lg"
                         {{-- opacity-0 y Translate-y-12 oculta las tarjetas hasta que entren en pantalla con el script --}}
                          x-data="{ 
                             tipoSeleccionado: '{{ $producto->estado_vida === 'consumo' ? 'consumo' : 'ornamental' }}', 
@@ -171,7 +171,7 @@
                     </div>
                 </article>
                 @empty
-                <div class="col-span-full tarjeta-cristal p-12 text-center text-gray-400 italic">
+                <div class="col-span-full tarjeta-cristal p-12 text-center text-gray-400 italic rounded-lg">
                     Ninguna criatura ha sobrevivido al ascenso hoy... Inténtalo más tarde.
                 </div>
                 @endforelse

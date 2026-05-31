@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <form action="#" class="tarjeta-cristal p-8 space-y-5 border border-white/10 text-white">
+        <form action="#" class="tarjeta-cristal p-8 space-y-5 border border-white/10 text-white rounded-xl">
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <label class="text-xs font-bold uppercase tracking-widest">Nombre</label>

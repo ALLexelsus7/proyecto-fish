@@ -2,12 +2,12 @@
 @section('body-background', asset('img/bg/table2.jpeg'))
 {{-- Gestion del usuario --}}
 @section('content')
-<div class="min-h-screen py-64" x-data="{ tab: 'pedidos' }">
+<div class="min-h-screen py-60" x-data="{ tab: 'pedidos' }">
     <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/0 -z-10"></div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
         {{-- Cambio de tabs --}}
-        <div class="tarjeta-cristal p-8 mb-8 border-l-8 border-magma-diablillo flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div class="tarjeta-cristal p-8 mb-8 border-l-8 border-magma-diablillo flex flex-col md:flex-row justify-between items-start md:items-center gap-4 rounded-l-3xl rounded-r-lg">
             <div>
                 <h2 class="text-4xl font-black text-white italic tracking-tighter">MI <span class="text-magma-diablillo">BITÁCORA</span></h2>
                 <p class="text-gray-200 text-xs tracking-[0.2em] font-bold">Registro de expediciones de <span class="text-red-400 font-bold uppercase">{{ Auth::user()->name }}</span>.</p>
@@ -35,7 +35,7 @@
 
         {{-- Tab de historial de pedidos --}}
         <div x-show="tab === 'pedidos'" x-transition:enter="fade-in">
-            <div class="tarjeta-cristal overflow-hidden border border-white/5">
+            <div class="tarjeta-cristal overflow-hidden border border-white/5 rounded-lg">
                 <table class="w-full text-left">
                     <thead class="bg-black/60 text-magma-diablillo uppercase text-xs font-black tracking-widest">
                         <tr>
@@ -99,7 +99,7 @@
         <div x-show="tab === 'favoritos'" x-transition:enter="fade-in" style="display: none;">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse($favoritos as $producto)
-                    <div class="tarjeta-cristal p-4 relative flex flex-col justify-between group border border-white/5 overflow-hidden rounded-2xl" 
+                    <div class="tarjeta-cristal p-4 relative flex flex-col justify-between group border border-white/5 overflow-hidden rounded-3xl" 
                         id="fav-card-{{ $producto->id }}"
                         x-data="{ eliminado: false }"
                         x-show="!eliminado"
@@ -107,7 +107,7 @@
                         
                         <div>
                             <div class="w-full h-40 bg-black/40 rounded-xl overflow-hidden relative mb-4 flex items-center justify-center">
-                                <img src="{{ asset($producto->imagen_url ?? 'img/fish/fish1.png') }}" 
+                                <img src="{{ asset('img/fish/' . $producto->imagen_url ?? 'img/peces/fish1.png') }}" 
                                     alt="{{ $producto->nombre_comun }}" 
                                     class="w-90% h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             </div>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full tarjeta-cristal p-8 border border-white/5 text-center rounded-2xl">
+                    <div class="col-span-full tarjeta-cristal p-8 border border-white/5 text-center rounded-3xl">
                         <span class="material-symbols-outlined text-4xl text-gray-600 mb-2">heart_broken</span>
                         <p class="text-gray-400 italic text-sm">Tu acuario de favoritos está vacío por ahora.</p>
                         <a href="{{ url('/productos') }}" class="inline-block mt-4 text-xs font-black text-magma-diablillo uppercase italic tracking-wider hover:underline">

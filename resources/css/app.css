@@ -25,8 +25,8 @@ se sobreescribe, se corrompe y no se muestra el componente con los estilos desea
         /* 1. Translucidez estricta al 15% */
         background-color: rgba(0, 0, 0, 0.15) !important;            
         /* 2. Filtro de cristal + prefijos para otros navegadores web */
-        -webkit-backdrop-filter: blur(12px) !important; 
-        backdrop-filter: blur(12px) !important;        
+        -webkit-backdrop-filter: blur(10px) !important; 
+        backdrop-filter: blur(10px) !important;        
         /* 3. Borde sutil que hereda direcciones si se requiere */
         border-width: 1px;
         border-color: rgba(255, 255, 255, 0.15);            
@@ -37,8 +37,8 @@ se sobreescribe, se corrompe y no se muestra el componente con los estilos desea
     .tarjeta-cristal-2 {
         /* Variante ligeramente más oscura para footers o secciones densas */
         background-color: rgba(0, 0, 0, 0.55) !important;    
-        -webkit-backdrop-filter: blur(12px) !important; 
-        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(10px) !important; 
+        backdrop-filter: blur(10px) !important;
         border-width: 1px;
         border-color: rgba(255, 255, 255, 0.15);    
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);    

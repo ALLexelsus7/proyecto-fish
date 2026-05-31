@@ -19,7 +19,7 @@
          x-transition:leave="transition ease-in duration-300 transform"
          x-transition:leave-start="translate-x-0"
          x-transition:leave-end="-translate-x-full"
-         class="sticky top-[170px] left-0 w-[26rem] max-w-[85vw] h-[calc(100vh-12rem)] rounded-r-3xl
+         class="sticky top-[140px] left-0 w-[20rem] max-w-[85vw] h-[calc(100vh-10rem)] rounded-r-3xl
                 bg-gray-900 border-y border-r border-white/10 shadow-2xl flex flex-col z-50">
     @else
     {{-- Panel lateral normal --}}
@@ -30,7 +30,7 @@
          x-transition:leave="transition ease-in duration-300 transform"
          x-transition:leave-start="translate-x-0"
          x-transition:leave-end="-translate-x-full"
-         class="sticky top-[170px] left-0 w-[16rem] max-w-[85vw] h-[calc(100vh-12rem)] rounded-r-3xl
+         class="sticky top-[140px] left-0 w-[16rem] max-w-[85vw] h-[calc(100vh-10rem)] rounded-r-3xl
                 bg-gray-900 border-y border-r border-white/10 shadow-2xl flex flex-col z-50">
     @endif
         

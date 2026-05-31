@@ -5,7 +5,7 @@
             <img src="{{ asset('img/logos/logo.png') }}" class="h-32 fill-current" />          
         </a>
 
-        <div class="z-10 w-full sm:max-w-md mt-6 px-6 py-8 tarjeta-cristal overflow-hidden border border-white/10 shadow-2xl shadow-magma-diablillo/20">
+        <div class="z-10 w-full sm:max-w-md mt-6 px-6 py-8 tarjeta-cristal overflow-hidden border border-white/10 shadow-2xl shadow-magma-diablillo/20 rounded-xl">
             <h2 class="text-white text-2xl font-black text-center mb-6 tracking-widest uppercase">
                 Nueva <span class="text-magma-diablillo text-3xl">Expedición</span>
             </h2>

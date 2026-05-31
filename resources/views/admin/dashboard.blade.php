@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen py-64 flex items-center justify-center" x-data="visorPedidos">
+<div class="min-h-screen pt-40 flex items-center justify-center" x-data="visorPedidos">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
         
         {{-- Titulo, config. perfil y musica de fondo On-Demand que solo se escucha en esta vista --}}
-        <div class="tarjeta-cristal p-8 border-l-8 border-magma-diablillo flex justify-between items-center">
+        <div class="tarjeta-cristal p-8 border-l-8 border-magma-diablillo flex justify-between items-center rounded-l-2xl rounded-r-lg">
             <div>
                 <h2 class="text-3xl font-black text-white italic tracking-tighter">PANEL DE <span class="text-magma-diablillo">ADMINISTRACIÓN</span></h2>
                 <p class="text-gray-400">Bienvenido Comandante <span class="text-fuchsia-500 uppercase">{{ Auth::user()->name }}</span>. Los sistemas MySQL están en línea.</p>
@@ -56,7 +56,7 @@
         {{-- Datos estadisticos rapidos --}}
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
             
-            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-coral-electrico/50 transition-colors">
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-coral-electrico/50 transition-colors rounded-2xl">
                 <div class="p-3 bg-coral-electrico/20 rounded-full text-coral-electrico mb-2">
                     <span class="material-symbols-outlined text-2xl">phishing</span>
                 </div>
@@ -64,7 +64,7 @@
                 <p class="text-2xl font-black text-white">{{ $especiesEnBd }}</p> 
             </div>
 
-            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-green-400/50 transition-colors">
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-green-400/50 transition-colors rounded-2xl">
                 <div class="p-3 bg-green-500/20 rounded-full text-green-400 mb-2">
                     <span class="material-symbols-outlined text-2xl">inventory_2</span>
                 </div>
@@ -72,7 +72,7 @@
                 <p class="text-2xl font-black text-white">{{ number_format($stockTotal) }}</p>
             </div>
 
-            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-magma-diablillo/50 transition-colors">
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-magma-diablillo/50 transition-colors rounded-2xl">
                 <div class="p-3 bg-magma-diablillo/20 rounded-full text-magma-diablillo mb-2">
                     <span class="material-symbols-outlined text-2xl">warning</span>
                 </div>
@@ -80,7 +80,7 @@
                 <p class="text-2xl font-black text-white">{{ $sinStock }}</p>
             </div>
 
-            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-amber-400/50 transition-colors">
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-amber-400/50 transition-colors rounded-2xl">
                 <div class="p-3 bg-amber-500/20 rounded-full text-amber-400 mb-2">
                     <span class="material-symbols-outlined text-2xl">pending_actions</span>
                 </div>
@@ -88,7 +88,7 @@
                 <p class="text-2xl font-black text-white">{{ $pedidosPendientes }}</p>
             </div>
 
-            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-fuchsia-500/50 transition-colors">
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-fuchsia-500/50 transition-colors rounded-2xl">
                 <div class="p-3 bg-fuchsia-500/20 rounded-full text-fuchsia-400 mb-2">
                     <span class="material-symbols-outlined text-2xl">payments</span>
                 </div>
@@ -100,7 +100,7 @@
 
         {{-- Gestión de Inventario --}}
         <div class="w-full flex justify-center items-center">
-            <a href="{{ route('admin.productos.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-magma-diablillo transition-all cursor-pointer">
+            <a href="{{ route('admin.productos.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-magma-diablillo transition-all cursor-pointer rounded-3xl">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-bold text-white">Gestión de Inventario</h3>
                     <span class="material-symbols-outlined text-gray-500 group-hover:text-magma-diablillo transition">arrow_forward</span>
@@ -121,7 +121,7 @@
                 </div>
             </div>
 
-            <div class="tarjeta-cristal overflow-hidden border border-white/5">
+            <div class="tarjeta-cristal overflow-hidden border border-white/5 rounded-lg">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-black/60 text-white uppercase font-black tracking-widest border-b border-white/10">
                         <tr>
@@ -212,7 +212,7 @@
     >
         <div 
             @click.away="abierto = false"
-            class="relative w-full max-w-3xl p-6 my-8 tarjeta-cristal border border-coral-electrico/30 shadow-2xl shadow-coral-electrico/10"
+            class="relative w-full max-w-3xl p-6 my-8 tarjeta-cristal border border-coral-electrico/30 shadow-2xl shadow-coral-electrico/10 rounded-2xl"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"

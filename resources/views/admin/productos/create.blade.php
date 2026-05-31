@@ -2,13 +2,13 @@
 @section('body-background', asset('img/bg/workstation2.jpeg'))
 {{-- Seccion para agregar productos --}}
 @section('content')
-<div class="py-48 min-h-screen flex items-center justify-center">
+<div class="pt-40 min-h-screen flex items-center justify-center">
 
     <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/0 -z-10"></div>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
-        <div class="flex items-center justify-center gap-4 mb-8">
+        <div class="flex items-center justify-start gap-4 mb-8">
             <a href="{{ route('admin.productos.index') }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-magma-diablillo text-white transition">
                 <span class="material-symbols-outlined">arrow_back</span>
             </a>
@@ -21,7 +21,7 @@
         </div>
 
         {{-- Formulario de Registro de Productos --}}
-        <div class="tarjeta-cristal p-8 border border-white/10 shadow-2xl shadow-magma-diablillo/10">
+        <div class="tarjeta-cristal p-8 border border-white/10 shadow-2xl shadow-magma-diablillo/10 rounded-2xl">
             <form action="{{ route('admin.productos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 {{-- enctype="multipart/form-data" permite el envio de archivos --}}
                 @csrf

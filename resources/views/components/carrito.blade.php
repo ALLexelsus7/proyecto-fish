@@ -31,13 +31,13 @@
                      x-transition:leave="transform transition ease-in-out duration-500" 
                      x-transition:leave-start="translate-x-0" 
                      x-transition:leave-end="translate-x-full" 
-                     class="pointer-events-auto w-screen max-w-lg">
+                     class="pointer-events-auto w-screen max-w-md">
                     
                     <div class="flex h-full flex-col tarjeta-cristal bg-mar-profundo/25 border-l border-white/10 shadow-2xl rounded-l-3xl rounded-r-none">
                         {{-- Titulo y boton de cierre --}}
-                        <div class="flex items-start justify-between border-b border-white/10 pb-6">
-                            <h2 class="text-2xl font-black text-white italic tracking-tighter">TU <span class="text-magma-diablillo">CARGAMENTO</span></h2>
-                            <button @click="open = false" class="text-gray-400 hover:text-white transition">
+                        <div class="flex items-center justify-between border-b border-white/10 py-6 pl-6 pr-2">
+                            <h2 class="text-2xl font-black text-white italic tracking-tighter leading-none">TU <span class="text-magma-diablillo">CARGAMENTO</span></h2>
+                            <button @click="open = false" class="inline-flex h-10 w-10 items-center justify-center text-gray-400 hover:text-white transition">
                                 <span class="material-symbols-outlined">close</span>
                             </button>
                         </div>

@@ -27,7 +27,7 @@
           {{-- Aqui el style admite imagenes o colores de fondo y ese svg sera el default --}}
 
         <div class="min-h-screen">
-            <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300 rounded-b-3xl rounded-t-none">
+            <header class="fixed w-full z-50 tarjeta-cristal transition-all duration-300 rounded-b-3xl rounded-t-none py-8 px-6">
                 @include('layouts.navigation')
             </header>
 

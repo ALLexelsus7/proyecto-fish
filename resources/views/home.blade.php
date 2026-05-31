@@ -31,22 +31,22 @@
         </div>
     </section>
 
-    <section id="proceso" class="bg-gradient-to-b from-black/40 via-black/25 to-black/0 relative h-screen rounded-3xl">
+    <section id="proceso" class="bg-gradient-to-b from-black/40 via-black/25 to-black/0 relative h-screen rounded-3xl pt-[5rem]">
         <div class="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center h-full">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <article class="tarjeta-cristal p-8 text-center border-t-4 border-coral-electrico">
+                <article class="tarjeta-cristal p-8 text-center border-t-4 border-coral-electrico rounded-t-2xl">
                     <span class="material-symbols-outlined text-5xl text-coral-electrico mb-4">tsunami</span>
                     <h3 class="text-2xl font-bold mb-3 italic">Origen Profundo</h3>
                     <p class="text-gray-400">Capturados a más de 2000 metros bajo el nivel del mar con tecnología de punta.</p>
                 </article>
 
-                <article class="tarjeta-cristal p-8 text-center border-t-4 border-ojo-aberracion">
+                <article class="tarjeta-cristal p-8 text-center border-t-4 border-ojo-aberracion rounded-b-2xl">
                     <span class="material-symbols-outlined text-5xl text-ojo-aberracion mb-4">ac_unit</span>
                     <h3 class="text-2xl font-bold mb-3 italic">Cadena de Frío</h3>
                     <p class="text-gray-400">Garantizamos la frescura criogénica desde el anzuelo hasta tu mesa o tanque.</p>
                 </article>
 
-                <article class="tarjeta-cristal p-8 text-center border-t-4 border-magma-diablillo">
+                <article class="tarjeta-cristal p-8 text-center border-t-4 border-magma-diablillo rounded-t-2xl">
                     <span class="material-symbols-outlined text-5xl text-magma-diablillo mb-4">verified_user</span>
                     <h3 class="text-2xl font-bold mb-3 italic">Exclusividad</h3>
                     <p class="text-gray-400">Solo 5 ejemplares de cada especie disponibles por temporada.</p>
@@ -55,7 +55,7 @@
         </div>
     </section>
 
-    <section id="sitios" class="relative h-screen rounded-3xl">
+    <section id="sitios" class="relative h-screen rounded-3xl pt-[8rem]">
         {{-- Esto permite precargar las imagenes --}}
         @push('head')
             <link rel="preload" href="{{ asset('img/svg/Sydney.svg') }}" as="image">
@@ -71,9 +71,9 @@
                 <div class="overflow-hidden">
                     <div class="flex transition-transform duration-500 ease-out" :style="`transform: translateX(-${currentIndex * 100}%)`">
                         {{-- Sydney --}}
-                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full">
+                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full rounded-2xl">
                             <div class="flex-1 flex items-center justify-center mb-6">
-                                <img src="{{ asset('img/svg/Sydney.svg') }}" alt="Sydney" class="w-full h-auto max-h-96 object-contain" loading="eager" fetchpriority="high" width="960" height="768">
+                                <img src="{{ asset('img/svg/Sydney.svg') }}" alt="Sydney" class="w-full h-auto max-h-96 object-contain rounded-[6rem]" loading="eager" fetchpriority="high" width="960" height="768">
                             </div>
                             <div class="flex-none">
                                 <h3 class="text-2xl font-bold mb-3 italic">Sidney, Australia</h3>
@@ -82,9 +82,9 @@
                         </article>
 
                         {{-- Barcelona --}}
-                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full">
+                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full rounded-2xl">
                             <div class="flex-1 flex items-center justify-center mb-6">
-                                <img src="{{ asset('img/svg/Barcelona.svg') }}" alt="Barcelona" class="w-full h-auto max-h-96 object-contain" loading="eager" fetchpriority="high" width="960" height="768">
+                                <img src="{{ asset('img/svg/Barcelona.svg') }}" alt="Barcelona" class="w-full h-auto max-h-96 object-contain rounded-[6rem]" loading="eager" fetchpriority="high" width="960" height="768">
                             </div>
                             <div class="flex-none">
                                 <h3 class="text-2xl font-bold mb-3 italic">Barcelona, España</h3>
@@ -93,9 +93,9 @@
                         </article>
 
                         {{-- Niza --}}
-                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full">
+                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full rounded-2xl">
                             <div class="flex-1 flex items-center justify-center mb-6">
-                                <img src="{{ asset('img/svg/Niza.svg') }}" alt="Niza" class="w-full h-auto max-h-96 object-contain" loading="eager" fetchpriority="high" width="960" height="768">
+                                <img src="{{ asset('img/svg/Niza.svg') }}" alt="Niza" class="w-full h-auto max-h-96 object-contain rounded-[6rem]" loading="eager" fetchpriority="high" width="960" height="768">
                             </div>
                             <div class="flex-none">
                                 <h3 class="text-2xl font-bold mb-3 italic">Niza, Francia</h3>
@@ -104,9 +104,9 @@
                         </article>
 
                         {{-- Rio de Janeiro --}}
-                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full">
+                        <article class="w-full flex-shrink-0 tarjeta-cristal p-8 text-center border-t-4 border-madera-humeda flex flex-col h-full rounded-2xl">
                             <div class="flex-1 flex items-center justify-center mb-6">
-                                <img src="{{ asset('img/svg/Rio de Janeiro.svg') }}" alt="Rio de Janeiro" class="w-full h-auto max-h-96 object-contain" loading="eager" fetchpriority="high" width="960" height="768">
+                                <img src="{{ asset('img/svg/Rio de Janeiro.svg') }}" alt="Rio de Janeiro" class="w-full h-auto max-h-96 object-contain rounded-[6rem]" loading="eager" fetchpriority="high" width="960" height="768">
                             </div>
                             <div class="flex-none">
                                 <h3 class="text-2xl font-bold mb-3 italic">Rio de Janeiro, Brasil</h3>

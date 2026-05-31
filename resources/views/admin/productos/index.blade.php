@@ -3,7 +3,7 @@
 
 {{-- Gestions de productos del admin--}}
 @section('content')
-<div class="relative pt-60 min-h-screen flex items-center justify-center" x-data="{ filtrosOpen: false }">
+<div class="relative pt-40 min-h-screen flex items-center justify-center" x-data="{ filtrosOpen: false }">
     
     <div class="absolute inset-0 bg-black/30 backdrop-blur-sm 
             [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] 
@@ -49,7 +49,7 @@
             </a>            
         </div>       
 
-        <div class="tarjeta-cristal overflow-hidden border border-white/10">
+        <div class="tarjeta-cristal overflow-hidden border border-white/10 rounded-xl">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-white/5 text-coral-electrico uppercase text-xs tracking-widest">
