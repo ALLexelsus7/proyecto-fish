@@ -34,7 +34,7 @@
         <div class="absolute inset-4 rounded-full border-2 border-b-magma-diablillo border-l-transparent border-t-coral-electrico border-r-transparent animate-spin opacity-30" style="animation-direction: reverse; animation-duration: 3s;"></div>
 
         <img 
-            src="{{ asset('img/logos/pezElegidoPlus.png') }}" 
+            src="{{ asset('img/logos/pezScroll.png') }}" 
             alt="Cargando..." 
             class="pez-giratorio relative z-10 w-32 h-32 object-contain"
         >

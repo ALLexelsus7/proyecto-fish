@@ -8,7 +8,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Abyssal Catch Co.</title> 
         {{-- Icono --}}
-        <link rel="icon" type="image/x-icon" href="{{ asset('img/logos/logo.ico') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('img/logos/icono.ico') }}">
         <!-- Fonts & Icons -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
