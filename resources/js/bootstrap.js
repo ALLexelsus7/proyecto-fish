@@ -40,7 +40,7 @@ silenciosamente en el script automatico postinstall de nmp, por lo que se debe:
 4. Escanear en modo profundo el sistema operativo con un antivirus, ya que el malware intenta instalar
 binarios ocultos para mantener un acceso remoto persistente.
 
-✔️¿QUE HACER AHORA? -> PNPM 😀
+✔️¿QUE HACER AHORA? 😀
 a) Se pueden usar herraminetas de analisis en tiempo real como (Socket.dev o Synk)
 que analizan los paquetes de npm buscando comportamientos raros.
 Se puede instalar su extension o integrarlo en los repositores de github
@@ -53,7 +53,10 @@ para parchear el codigo si se detectan vulnerabilidades en su base de datos.
 
 d) Seguir cuentas en redes sociales de divulgacion de ciberseguridad para mantenerse informado.
 
-e) Extra: Aunque esto no hubiese evitado la infeccion, se recomienda  dejar de usar 'npm' y en su 
+e) usa "npm config set min-release-age 7" para que solo se instalen dependencias de no mas de 7 dias
+de antiguo
+
+f) Extra: Aunque esto no hubiese evitado la infeccion, se recomienda  dejar de usar 'npm' y en su 
 lugar usar 'pnpm'. El tradicional duplica librerias por cada vez que se use en un proyecto distinto, 
 pero con el pnpm se instala una sola version glabal y en cada proyecto se llega a estos paquetes 
 con "accesos directos". De igual manera al usar 'yarn'.
@@ -61,3 +64,29 @@ Ademas, el archivo pnpm-lock.yaml bloquea dependencias fantasma y hacer 'pnmp au
 y eficiente
 
 */
+
+/*⚠️OJO Hubo otra Vulnerabilidad 😁 ⚠️ 
+Esta vez laravel-lang y composer el 22 de mayo.
+Me salve de nuevo ya que yo hice en terminal composer install o require el 11 de mayo 
+y desde entonces no use el comando...
+✔️Que hacer?
+Verifica con: 
+'composer audit' 
+a mi me salen advertencias de bugs en mi proyecto, pero no malware,
+por lo que actualice esas librerias con: 
+'composer update symfony/http-foundation symfony/http-kernel symfony/mailer symfony/mime symfony/polyfill-intl-idn symfony/routing --with-dependencies'
+lo que solamente actualiza esas en especifico, sin riesgo de las librerias infectadas... 
+
+Actualiza composer:
+'composer self-update' 
+para la ultima version global, o
+'composer update --prefer-dist --no-cache' 
+para evitar el cache con posible infeccion, o
+'rm composer.lock' y luego 'composer install --prefer-dist --no-cache' 
+para hacerlo completamente limpio y desde 0
+*/
+
+/* Nota Final: 
+1. Usa herramientas como Socket.dev o el CLI de Synk
+2. Ejecuta npm audit y composer audit cada cierto tiempo.
+3. Sigue redes sociales que informan de esto. */
