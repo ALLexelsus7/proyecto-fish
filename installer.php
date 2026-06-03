@@ -61,6 +61,8 @@ ejecutar('php artisan key:generate');
 // 6. Ejecutar Migraciones y Seeders (Destruye y recrea la BD)
 // Usamos --force para evitar que nos pida confirmación
 ejecutar('php artisan migrate:fresh --seed --force');
+// Extra: si falla algo de las api se hace:
+//ejecutar('php artisan install:api --force');
 
 // 7. Enlace Simbólico (CRÍTICO para que las fotos de los peces se vean)
 // Primero eliminamos el enlace anterior si existe, para evitar errores en la nueva PC
@@ -95,6 +97,7 @@ echo "=====================================================================\n";
         o (git clone https://github.com/ALLexelsus7/proyecto-fish.git) en la carpeta deseada
         del otro computador para mantener el historial y hacer git commit o git push, y en la laptop
         de desarrollo original, hacer git pull.
+    Para ambos casos, pon el proyecto en C:\laragon\www
 6. El archivo .env.example debe tener:
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
@@ -105,5 +108,8 @@ echo "=====================================================================\n";
 7. proyecto_fish (DB) vs proyecto-fish (Carpeta)
     No importa que se llamen distinto, el primero usa snake_case (guiones bajos) para evitar confusion con el signo menos '-'
     y el segundo usa kebab-case (guiones medios) porque los S.O o Navegadores lo leen mejor.
+8. No hacen falta mas configuraciones de laragon en este installer, ya que los virtualhost los crea al
+detectar una nueva carpeta en C:\laragon\www, y se crea el archivo de config de
+Apache/Nginx para que el proyecto responda a la URL http://nombredelacarpeta.test
 */
  
