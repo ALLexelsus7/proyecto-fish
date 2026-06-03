@@ -56,7 +56,9 @@ d) Seguir cuentas en redes sociales de divulgacion de ciberseguridad para manten
 e) usa "npm config set min-release-age 7" para que solo se instalen dependencias de no mas de 7 dias
 de antiguo
 
-f) Extra: Aunque esto no hubiese evitado la infeccion, se recomienda  dejar de usar 'npm' y en su 
+f) Actualiza npm con "npm install -g npm@latest"
+
+g) Extra: Aunque esto no hubiese evitado la infeccion, se recomienda  dejar de usar 'npm' y en su 
 lugar usar 'pnpm'. El tradicional duplica librerias por cada vez que se use en un proyecto distinto, 
 pero con el pnpm se instala una sola version glabal y en cada proyecto se llega a estos paquetes 
 con "accesos directos". De igual manera al usar 'yarn'.

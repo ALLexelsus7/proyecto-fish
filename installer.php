@@ -81,6 +81,12 @@ echo "[🏆] DESPLIEGUE TÁCTICO COMPLETADO CON ÉXITO.\n";
 echo "[🚀] Ejecuta 'php artisan serve' para encender los motores.\n";
 echo "=====================================================================\n";
 
+// OJO⚠️ antes de ejecutarlo, descarga:
+// laragon (en variables de entorno poner donde este su php.exe) (y descomentar ;extension=zip en su php.ini), 
+//composer (con la dir. de php de laragon),
+//nodejs (para el npm), y enciende laragon (dandole persmiso para que cree los virtual host
+// y configure apache/nginx)
+
 /* NOTAS:
 1. Ejecuta este instalador en terminal: php installer.php
 2. El .gitingore evita que se copien ciertos archivos en github
