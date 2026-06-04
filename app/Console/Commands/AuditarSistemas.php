@@ -56,3 +56,5 @@ class AuditarSistemas extends Command
 }
 // Prueba manual con 'php artisan seguridad:auditar'
 // Sino, este archivo se manda a llamar desde routes/console.php
+// y cuando este en produccion, con la herramienta del S.O 'Cron Job'
+// se le dice que ejecute este comando con el tiempo que se le defina
