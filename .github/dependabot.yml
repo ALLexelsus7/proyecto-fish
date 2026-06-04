@@ -1,11 +1,28 @@
+# Dependabot viene integrado nativamente en GitHub.
+# Cree este archivo desde mi repo en github -> Settings -> Security and quality -> Advanced Security
+# Y active: Dependency graph, Dependabot alerts, Dependabot malware alerts y
+# Dependabot version updates (el cual crea la plantilla .yml, pero tambien lo pude crear manualmente)
+# Este .yml si descubre que uso una versión con una vulnerabilidad conocida (CVE), 
+# crea un Pull Request automático con el código ya corregido para que solo le de a "Merge".
+# Ademas. Instale la extencion de 'GitHub Actions'
+# Visita https://github.com/dependabot
+# Revisa package.json y composer.json
+
+version: 2
+updates:
+  # Audita NPM para JavaScript/Frontend
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Audita Composer para PHP/Backend
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
 # To get started with Dependabot version updates, you'll need to specify which
 # package ecosystems to update and where the package manifests are located.
 # Please see the documentation for all configuration options:
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
-version: 2
-updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"

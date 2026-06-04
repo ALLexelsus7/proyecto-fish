@@ -1,94 +1,110 @@
-// Este documento no tiene nada que ver con Bootstrap CSS, 
-// Axios es una biblioteca de JavaScript para hacer solicitudes HTTP (es como el mesero en un restaurant)
-// sin tener que recargar la pagina. Es muy útil para enviar datos al servidor 
-// o pedir información sin interrumpir la experiencia del usuario.
+/* Este documento no tiene nada que ver con Bootstrap CSS, Axios es una biblioteca de JavaScript
+para hacer solicitudes HTTP (es como el mesero en un restaurant) sin tener que recargar la pagina. 
+Es muy útil para enviar datos al servidor o pedir información sin interrumpir la experiencia del usuario.*/
 import axios from 'axios'; //hice "npm install axios" (ya que no lo incluye Laravel ni Breeze)
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /*⚠️OJO Hubo una Vulnerabilidad ⚠️
-npm fue vulnerado el 31 de marzo de 2026 (justo antes de iniciar el proyecto), 
-y de entre las librerias, axios... las versiones 1.14.1 y 0.30.4, y la dependencia malisiosa:
-plain-crypto-js@4.2.1 Esto instalaba un RAT (Remote Access Troyan) y un .bat para persistir. 
-Unas horas despues el equipo de Axios lo soluciono y actualizo a versiones parche 1.15.0, 1.16.0 
-(Al iniciar el proyecto me instalo la 1.16.0 por lo que me salve... esa version se lanzo a inicios de mayo
-y la mas actual es la 1.16.1, por lo que hice: npm install axios@latest)
-Para verificarlo use en terminal:
+♦️SUCESO:
+npm fue vulnerado el 31 de marzo de 2026 (justo antes de iniciar el proyecto).
+Entre las librerías afectadas estuvo axios en las versiones 1.14.1 y 0.30.4, 
+junto con la dependencia maliciosa: plain-crypto-js@4.2.1
+Esta instalaba un RAT (Remote Access Trojan) y un archivo .bat para persistencia.
+Horas después el equipo de Axios publicó versiones parcheadas (1.15.0 y 1.16.0).
+Al iniciar el proyecto instale la 1.16.0, así que no resulté afectado 
+(esa versión salió a inicios de mayo). Actualmente la más reciente es 1.16.1, 
+por lo que ejecuté: npm install axios@latest
 
-    PS C:\laragon\www\proyecto-fish> npm audit;
-        found 0 vulnerabilities
-    PS C:\laragon\www\proyecto-fish> npm list axios
-        proyecto-fish@ C:\laragon\www\proyecto-fish
-        └── axios@1.16.0
+♦️VERIFICACION en terminal y archivos:
+    npm audit -> found 0 vulnerabilities
+    npm list axios -> axios@1.16.0
+    npm list plain-crypto-js -> (empty)
+Revisa package-lock.json y package.json para confirmar la versión de axios.
 
-    PS C:\laragon\www\proyecto-fish> npm list plain-crypto-js
-        proyecto-fish@ C:\laragon\www\proyecto-fish
-        └── (empty)
-
-Y ademas revise el archivo package-lock.json y package.json para verificar la version de axios.
-
-Si hubiera estado infectada con esas versiones, probablemente un malware se haya ejecutado
-silenciosamente en el script automatico postinstall de nmp, por lo que se debe:
+♦️PLAN DE ACCION:
+Si hubiera estado infectado, probablemente el malware se habría ejecutado mediante el 
+script automático postinstall de npm. Qué hacer si ocurrió:
 1. Desinfectar el proyecto:
     npm uninstall axios
     npm cache clean --force
-    npm install axios@1.16.0 (o cualquier otra version)
-1.5 Tambien se puede hacer automaticamente a una version limpia con:
-    npm audit fix
-2. Verificar que se haya ido la carpeta node_modules/plain-crypto-js
-3. Cambiar todas las contraseñas que tengo guardadas en .env y en navegadores.
-4. Escanear en modo profundo el sistema operativo con un antivirus, ya que el malware intenta instalar
-binarios ocultos para mantener un acceso remoto persistente.
+    npm install axios@1.16.0 (o cualquier versión segura)
+1.5 También se puede intentar automáticamente: npm audit fix
+2. Verificar que ya no exista: node_modules/plain-crypto-js
+3. Cambiar contraseñas almacenadas en .env y navegadores.
+4. Escanear el sistema con antivirus en modo profundo, ya que 
+el malware intenta instalar binarios ocultos para mantener acceso remoto.
 
-✔️¿QUE HACER AHORA? 😀
-a) Se pueden usar herraminetas de analisis en tiempo real como (Socket.dev o Synk)
-que analizan los paquetes de npm buscando comportamientos raros.
-Se puede instalar su extension o integrarlo en los repositores de github
+♦️¿QUE HACER AHORA?
+A) Usar herramientas que analizan: 
+I. Socket.dev. Busca malware activo y secuestros. Los bloquea.
+   Se vincula a github desde la web de socket.dev
+   Se instala como una aplicación de GitHub que vigila 
+   ciertos repositorios o todos ellos (se dan permisos y en la web se debe 
+   crear una nueva organizacion en la que puedo ver las analiticas de mis repositorios).   
+II. Snyk CLI. Ecanea el propio código en busca de malas prácticas.
+    Se puede vincular la cuenta de GitHub en su web snyk.io. 
+    Se instala el CLI global con 'npm install -g snyk'. Verifica con 'snyk --version'.
+    Me autentico con 'snyk auth'. Analizo un proyecto con 'snyk test'.
+    Empieza las notificaciones en vivo de vulnerabilidades con 'snyk monitor'.
+    En su web, se importan y escanean los repos que elija. 
+III. Activar opciones de Dependabot en un repo individual de github para recibir pullrequest 
+     automáticos de actualización. En /.github/dependabot.yml se especifican los paquetes que
+     deben actualizarse y donde estan alojados.
 
-b) Tambien se puede configurar un .npmrc que gestione paquetes que lleven publicados al menos
-7 dias en el registro de npm.
+B) NPM y PNPM
+I. Configurar el .npmrc global o del proyecto para evitar instalar paquetes demasiado recientes.
+   O tambien se puede usar "npm config set min-release-age 7" para configurar rapidamente el npm global y
+   que no se instalen paquetes de menos de 7 dias. (La carpeta global esta en C:\Users\AlexR\AppData\Roaming\npm 
+   o se ubica con 'npm config get globalconfig')
+II. Actualizar npm con "npm install -g npm@latest" (puede que se requiera actualizar el comando anterior a menos dias) 
+III. (OPCIONAL) Aunque esto no habría evitado una infección postinstall, se recomienda considerar 
+     pnpm en lugar de npm. Instala globalmente con 'npm install -g pnpm'. Verifica con 'pnpm -v'. 
+     En el proyecto con npm se importa mediante 'pnpm import' para que lea el package-lock.json y 
+     lo convierta a pnpm-lock.yaml sin romper nada. Luego se puede borrar el package-lock.json 
+     e instalar todo limpiamente con: rm -rf node_modules, pnpm install, pnpm audit.
+     (Ojo, se tendria que actualizar el dependabot.yml con el nuevo pnpm y actualizar el Scheduler de Laravel
+     del cual se habla adelante)  .
+     La diferencia es que: npm duplica dependencias entre proyectos; 
+     pnpm reutiliza una instalación global mediante enlaces (Es similar a yarn).
+     Además, pnpm-lock.yaml reduce dependencias fantasma y 'pnpm audit' suele ser más rápido.
 
-c) Se pueden activar alertas de Dependabot de Github, el cual manda un pullrequest automatico
-para parchear el codigo si se detectan vulnerabilidades en su base de datos.
+C) Automatizar Auditorías para ejecutar comandos de analisis cada cierto tiempo.
+I. Crea un pequeño archivo YAML en mi repositorio. Este archivo le dice a los servidores de GitHub: 
+   "Todos los lunes a las 9:00 AM, abre una terminal invisible, ejecuta npm audit y composer audit. 
+    Si algo sale en rojo, envíame un email urgente".
+II. Vía Laravel Scheduler: Crea un comando personalizado (php artisan make:command AuditarSistemas)
+    que ejecute los comandos en la consola mediante la función shell_exec('npm audit'). 
+    Luego, en el archivo routes/console.php, simplemente escribe: 
+    Schedule::command('app:auditar-sistemas')->weekly(); 
+    (necesito tener el cron job de Laravel activado en el servidor).
 
-d) Seguir cuentas en redes sociales de divulgacion de ciberseguridad para mantenerse informado.
+D) Seguir cuentas y medios de divulgación en ciberseguridad para mantenerse informado.
+    Ej. Feross Aboukhadijeh / @SocketSecurity, vx-underground, ThePrimeagen / Fireship, Troy Hunt
+        Midudev, Victor Robles WEB, Hola Mundo...
+    
 
-e) usa "npm config set min-release-age 7" para que solo se instalen dependencias de no mas de 7 dias
-de antiguo
-
-f) Actualiza npm con "npm install -g npm@latest"
-
-g) Extra: Aunque esto no hubiese evitado la infeccion, se recomienda  dejar de usar 'npm' y en su 
-lugar usar 'pnpm'. El tradicional duplica librerias por cada vez que se use en un proyecto distinto, 
-pero con el pnpm se instala una sola version glabal y en cada proyecto se llega a estos paquetes 
-con "accesos directos". De igual manera al usar 'yarn'.
-Ademas, el archivo pnpm-lock.yaml bloquea dependencias fantasma y hacer 'pnmp audit' es mas rapido 
-y eficiente
+E) Documentación Profesional.
+I. Usa la página web readme.so para hacer un readme.md rapido
+II. Usa una página web para documentar con VitePress, Mintlify 
+    o Laravel Scribe (que lee los comentarios en PHP y arma un manual de la API automáticamente).
 
 */
 
 /*⚠️OJO Hubo otra Vulnerabilidad 😁 ⚠️ 
+♦️SUCESO:
 Esta vez laravel-lang y composer el 22 de mayo.
-Me salve de nuevo ya que yo hice en terminal composer install o require el 11 de mayo 
-y desde entonces no use el comando...
-✔️Que hacer?
-Verifica con: 
-'composer audit' 
-a mi me salen advertencias de bugs en mi proyecto, pero no malware,
-por lo que actualice esas librerias con: 
-'composer update symfony/http-foundation symfony/http-kernel symfony/mailer symfony/mime symfony/polyfill-intl-idn symfony/routing --with-dependencies'
-lo que solamente actualiza esas en especifico, sin riesgo de las librerias infectadas... 
+No resulté afectado porque ejecuté composer install / composer require 
+el 11 de mayo y después no volví a usar esos comandos.
+♦️VERIFICACION y PLAN DE ACCION
+1.  composer audit
+    (En mi caso solo aparecieron advertencias de bugs, no malware.
+    Actualicé únicamente las librerías necesarias con):
+    composer update symfony/http-foundation symfony/http-kernel symfony/mailer 
+    symfony/mime symfony/polyfill-intl-idn symfony/routing --with-dependencies
 
-Actualiza composer:
-'composer self-update' 
-para la ultima version global, o
-'composer update --prefer-dist --no-cache' 
-para evitar el cache con posible infeccion, o
-'rm composer.lock' y luego 'composer install --prefer-dist --no-cache' 
-para hacerlo completamente limpio y desde 0
+2.  composer self-update (ultima version global)
+    composer update --prefer-dist --no-cache (evitar el cache con posible infeccion)
+    rm composer.lock y
+    composer install --prefer-dist --no-cache (completamente limpio y desde 0)
 */
-
-/* Nota Final: 
-1. Usa herramientas como Socket.dev o el CLI de Synk
-2. Ejecuta npm audit y composer audit cada cierto tiempo.
-3. Sigue redes sociales que informan de esto. */
