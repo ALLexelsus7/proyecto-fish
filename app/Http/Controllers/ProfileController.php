@@ -28,6 +28,23 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
+        // Manejo del Avatar
+        if ($request->hasFile('avatar')) {
+            // Borra el avatar viejo de la carpeta fisica si existe (para no acumular basura)
+            if ($request->user()->avatar && file_exists(public_path('img/avatars/' . $request->user()->avatar))) {
+                unlink(public_path('img/avatars/' . $request->user()->avatar));
+            }
+
+            // Generar un nombre unico
+            $imageName = time() . '_' . uniqid() . '.' . $request->file('avatar')->extension();
+            
+            // Lo mueve a la carpeta publica
+            $request->file('avatar')->move(public_path('img/avatars'), $imageName);
+            
+            // Guardar SOLO el nombre en la base de datos
+            $request->user()->avatar = $imageName;
+        }
+
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
@@ -64,3 +81,5 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 }
+
+// Ejecuto 'php artisan storage:link' para que la imagenes sean publicas.

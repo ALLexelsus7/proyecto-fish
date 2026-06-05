@@ -48,7 +48,7 @@
                 {{-- Config. Perfil --}}
                 <div class="hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center">
                     <a href="{{ route('profile.edit') }}" class="flex flex-col items-center">
-                        <span class="material-symbols-outlined text-4xl text-luz-de-linterna">admin_panel_settings</span>   
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-luz-de-linterna object-cover shadow-lg shadow-luz-de-linterna/20">   
                         <p class="text-xs text-luz-de-linterna font-bold mt-1 text-center">Config. Perfil</p>
                     </a>
                 </div>  
@@ -56,7 +56,7 @@
         </div>
 
         {{-- Datos estadisticos rapidos --}}
-        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 lg:grid-cols-6 gap-4">
             
             <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-coral-electrico/50 transition-colors rounded-2xl">
                 <div class="p-3 bg-coral-electrico/20 rounded-full text-coral-electrico mb-2">
@@ -91,6 +91,14 @@
             </div>
 
             <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-fuchsia-500/50 transition-colors rounded-2xl">
+                <div class="p-3 bg-white/30 rounded-full text-white/70 mb-2">
+                    <span class="material-symbols-outlined text-2xl">people</span>
+                </div>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Usuarios</p>
+                <p class="text-2xl font-black text-white">{{ $usuariosEnBd }}</p>
+            </div>
+
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-fuchsia-500/50 transition-colors rounded-2xl">
                 <div class="p-3 bg-fuchsia-500/20 rounded-full text-fuchsia-400 mb-2">
                     <span class="material-symbols-outlined text-2xl">payments</span>
                 </div>
@@ -108,6 +116,17 @@
                     <span class="material-symbols-outlined text-gray-500 group-hover:text-magma-diablillo transition">arrow_forward</span>
                 </div>
                 <p class="text-gray-400 text-sm">Visualiza la tabla completa de especies, edita información, actualiza precios y elimina registros obsoletos.</p>
+            </a>          
+        </div>
+
+        {{-- Gestion de Usuarios --}}
+        <div class="w-full flex justify-center items-center">
+            <a href="{{ route('admin.usuarios.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-emerald-500 transition-all cursor-pointer rounded-3xl mt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-white">Gestión de Tripulación (Usuarios)</h3>
+                    <span class="material-symbols-outlined text-gray-500 group-hover:text-emerald-500 transition">group</span>
+                </div>
+                <p class="text-gray-400 text-sm">Visualiza la base de datos de exploradores registrados, audita sus cuentas y revoca accesos de la plataforma.</p>
             </a>          
         </div>
 

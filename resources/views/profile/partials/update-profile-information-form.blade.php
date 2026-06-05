@@ -13,16 +13,36 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
+                                                {{-- Agrego enctype="multipart/form-data" para aceptar imagenes --}}
         @csrf
         @method('patch')
 
+        {{-- Campo para Avatar --}}
+        <div class="flex items-center space-x-6">
+            <div class="shrink-0">
+                <img class="h-16 w-16 object-cover rounded-full border border-magma-diablillo/50" src="{{ $user->avatar_url }}" alt="Avatar actual">
+            </div>
+            <label class="block">
+                <span class="sr-only">Elegir foto de perfil</span>
+                <input type="file" name="avatar" accept="image/*" class="block w-full text-sm text-gray-400
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-magma-diablillo/10 file:text-magma-diablillo
+                    hover:file:bg-magma-diablillo/20
+                "/>
+            </label>
+        </div>
+
+        {{-- Campo nombre --}}
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full text-coral-electrico" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+        {{-- Campo email --}}
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full text-coral-electrico" :value="old('email', $user->email)" required autocomplete="username" />

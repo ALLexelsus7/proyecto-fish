@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes; // para que el usuario no se elimine
 
-#[Fillable(['name', 'email', 'password', 'rol'])]
+#[Fillable(['name', 'email', 'password', 'rol', 'avatar'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,7 +33,7 @@ class User extends Authenticatable
 
     public function favoritos()
     {
-        // Relación de muchos a muchos
+        // Relación de que los favoritos pueden pertenecer a muchos productos
         return $this->belongsToMany(Producto::class, 'favoritos', 'user_id', 'producto_id')->withTimestamps();
     }
 
@@ -42,4 +42,26 @@ class User extends Authenticatable
     {
         return $this->rol === $rol;
     }
+
+    public function reviews() { 
+        //Relacion de un usuario puede tener varias resenias
+        return $this->hasMany(Review::class); 
+    }
+
+
+    public function getAvatarUrlAttribute()
+    {
+        // Si no hay avatar, devuelve las iniciales del user
+        if (!$this->avatar) {
+            return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=FF7F50&background=111827';
+        }
+        
+        // Si en la BD dice 'avatars/foto.png', lo convierte a solo 'foto.png'
+        $nombreLimpio = basename($this->avatar);
+        // basename() limpia basura vieja
+
+        // Arma la ruta final hacia la carpeta pública
+        return asset('img/avatars/' . $nombreLimpio);
+    }
+
 }

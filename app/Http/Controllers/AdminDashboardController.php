@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Pedido;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon; // Carbon es una biblioteca de PHP para manejar fechas y horas de manera más sencilla.
 
 class AdminDashboardController extends Controller
@@ -24,6 +26,8 @@ class AdminDashboardController extends Controller
         $ingresosMes = Pedido::whereMonth('created_at', Carbon::now()->month)
                              ->whereYear('created_at', Carbon::now()->year)
                              ->sum('total');
+        // Estadísticas de usuarios
+        $usuariosEnBd = User::where('id', '!=', Auth::id())->where('rol', '!=', 'admin')->count();
 
         // Monitor de pedidos
         $pedidos = Pedido::with('user')->latest()->take(10)->get(); // Trae los ultimos 10 con los datos del usuario que lo creo       
@@ -37,6 +41,7 @@ class AdminDashboardController extends Controller
             'sinStock', 
             'pedidosPendientes',
             'ingresosMes',
+            'usuariosEnBd',
             'pedidos',
             'totalVentas'
         ));

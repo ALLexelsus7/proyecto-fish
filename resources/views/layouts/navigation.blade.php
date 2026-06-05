@@ -43,15 +43,16 @@
         @auth
             <div class="flex items-center gap-4">
                 @if(Auth::user()->email == 'admin@abyssal.com') {{-- Ajuste temporal --}}
-                    <a href="{{ route('admin.dashboard') }}" class="text-magma-diablillo font-bold hover:text-mangle-toxico transition flex items-center gap-1 p-2">
-                        <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+                    <a href="{{ route('admin.dashboard') }}" class="group text-magma-diablillo font-bold hover:text-fosforescencia-abisal transition flex items-center gap-1 p-2">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Perfil" class="group-hover:border-fosforescencia-abisal w-6 h-6 rounded-full border-2 border-magma-diablillo object-cover shadow-lg shadow-luz-de-linterna/20">
                         Panel Admin
                     </a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="text-coral-electrico hover:text-mangle-toxico transition flex items-center gap-1 p-2">
-                        <span class="material-symbols-outlined text-sm">account_circle</span>
+                    <a href="{{ route('dashboard') }}" class="group text-coral-electrico hover:text-mangle-toxico transition flex items-center gap-1 p-2">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Perfil" class="group-hover:border-mangle-toxico w-6 h-6 rounded-full border-2 border-coral-electrico object-cover shadow-lg shadow-luz-de-linterna/20">
                         Panel Usuario
                     </a>
+                    
                 @endif              
 
                 <form method="POST" action="{{ route('logout') }}">

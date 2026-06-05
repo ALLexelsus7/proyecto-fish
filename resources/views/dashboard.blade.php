@@ -6,8 +6,18 @@
     <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/0 -z-10"></div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         
-        {{-- Cambio de tabs --}}
+        {{-- Tarjeta con acciones y Cambio de tabs --}}
         <div class="tarjeta-cristal p-8 mb-8 border-l-8 border-magma-diablillo flex flex-col md:flex-row justify-between items-start md:items-center gap-4 rounded-l-3xl rounded-r-lg">
+            
+            {{-- Avatar con indicador de estado --}}
+            <div class="relative shrink-0 hover:scale-105 transition-transform duration-300">
+                <img src="{{ Auth::user()->avatar_url }}" alt="Avatar de {{ Auth::user()->name }}" 
+                    class="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-magma-diablillo/40 shadow-xl shadow-magma-diablillo/20">
+                
+                {{-- Puntito verde de "En Línea" / "Sistemas Activos" --}}
+                <div class="absolute bottom-2 right-2 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 border-4 border-gray-900 rounded-full" title="Conexión Abisal Estable"></div>
+            </div>
+            
             <div>
                 <h2 class="text-4xl font-black text-white italic tracking-tighter">MI <span class="text-magma-diablillo">BITÁCORA</span></h2>
                 <p class="text-gray-200 text-xs tracking-[0.2em] font-bold">Registro de expediciones de <span class="text-red-400 font-bold uppercase">{{ Auth::user()->name }}</span>.</p>

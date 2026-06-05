@@ -6,13 +6,15 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\FavoritoController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminUserController;
+use App\Models\Review;
 use Illuminate\Support\Facades\Route;
 
 //► Rutas publicas (sin loguear)
 Route::get('/', function () { return view('home'); })->name('home');
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
-Route::get('/contacto', function () { return view('contacto'); })->name('contacto');
 
 //► Grupo de rutas protegidas (para los logueados y verificados)
 Route::middleware(['auth','verified'])->group(function () {
@@ -37,6 +39,16 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/checkout/process', [PedidoController::class, 'procesarCheckout'])->name('checkout.process');
     Route::get('/checkout/success/{id}', [PedidoController::class, 'success'])->name('checkout.success');
 
+    // Contacto y Reseñas 
+    Route::get('/contacto', function () { //⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️falta hacer el ContactoController para poner esta logica alli
+        // Obtiene las reseñas con sus respectivos usuarios cargados (Eager Loading)
+        $reviews = Review::with('user')->latest()->get();        
+        return view('contacto', compact('reviews'));
+    })->name('contacto');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::patch('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
     //☼☼☼☼☼☼☼☼☼☼☼ RUTAS DEL ADMIN ☼☼☼☼☼☼☼☼☼☼☼//
     // Solo el admin puede entrar a estas rutas. Se agrega el prefijo y nombre para ahorrar escribirlo.
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -60,6 +72,11 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
         // Funcion para eliminar producto
         Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+        // Gestion de usuarios
+        Route::get('/usuarios', [AdminUserController::class, 'index'])->name('usuarios.index');
+        Route::delete('/usuarios/{user}', [AdminUserController::class, 'destroy'])->name('usuarios.destroy');
+        Route::patch('/usuarios/{user}/rol', [AdminUserController::class, 'updateRole'])->name('usuarios.updateRole');
     });
     
 });
