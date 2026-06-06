@@ -53,26 +53,46 @@
             </div>
         </div>
 
-        <form action="#" class="tarjeta-cristal p-8 space-y-5 border border-white/10 text-white rounded-xl">
+        {{-- Alerta de exito del form de contacto --}}
+        @if(session('success_contact'))
+            <div class="mb-8 p-4 z-20 absolute w-auto bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl text-center font-bold">
+                <span class="material-symbols-outlined align-middle mr-2">cell_tower</span>
+                {{ session('success_contact') }}
+            </div>
+        @endif
+        <form action="{{ route('contacto.store') }}" method="POST" class="tarjeta-cristal p-8 space-y-5 border border-white/10 text-white rounded-xl">
+            @csrf
+            @method('POST')
+
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <label class="text-xs font-bold uppercase tracking-widest">Nombre</label>
-                    <input type="text" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition">
+                    <input type="text" name="nombre" 
+                           value="{{ Auth::check() ? Auth::user()->name : old('nombre') }}"
+                           class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition"
+                           {{ Auth::check() ? 'readonly' : '' }}> {{-- readonly evita que cambien su nombre si ya están logueados --}}
+                    @error('nombre') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest">Asunto</label>
-                    <input type="text" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition">
+                    <label class="text-xs font-bold uppercase tracking-widest">Correo Electrónico</label>
+                    <input type="email" name="email" 
+                           value="{{ Auth::check() ? Auth::user()->email : old('email') }}"
+                           class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition"
+                           {{ Auth::check() ? 'readonly' : '' }}>
+                    @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
             </div>
 
             <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest">Correo Electrónico</label>
-                <input type="email" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition">
+                <label class="text-xs font-bold uppercase tracking-widest">Asunto</label>
+                <input type="text" name="asunto" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition">
+                @error('asunto') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
             </div>
 
             <div class="space-y-2">
                 <label class="text-xs font-bold uppercase tracking-widest">Mensaje</label>
-                <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition"></textarea>
+                <textarea rows="4" name="mensaje" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:border-magma-diablillo focus:ring-1 focus:ring-magma-diablillo outline-none transition"></textarea>
+                @error('mensaje') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
             </div>
 
             <button type="submit" class="w-full bg-magma-diablillo hover:bg-ojo-aberracion hover:text-terror-submarino font-black py-4 rounded-xl shadow-lg shadow-magma-diablillo/20 transition-all transform hover:-translate-y-1">
@@ -182,7 +202,7 @@
             <div class="bg-gray-950/40 border border-gray-800 p-6 rounded-2xl h-fit">
                 <h3 class="text-lg font-bold text-white mb-2">Escribe tu Bitácora</h3>
                 <p class="text-xs text-gray-400 mb-6">Comparte tu experiencia con la tripulación.</p>
-
+                {{-- Solo los logueados ven el formulario para escribir --}}
                 @auth
                     <form action="{{ route('reviews.store') }}" method="POST" x-data="{ rating: 5, hoverRating: 0 }">
                         @csrf

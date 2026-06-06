@@ -90,9 +90,9 @@
                 <p class="text-2xl font-black text-white">{{ $pedidosPendientes }}</p>
             </div>
 
-            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-fuchsia-500/50 transition-colors rounded-2xl">
+            <div class="tarjeta-cristal p-4 flex flex-col justify-center items-center text-center border border-white/5 hover:border-white/30 transition-colors rounded-2xl">
                 <div class="p-3 bg-white/30 rounded-full text-white/70 mb-2">
-                    <span class="material-symbols-outlined text-2xl">people</span>
+                    <span class="material-symbols-outlined text-2xl">person</span>
                 </div>
                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Usuarios</p>
                 <p class="text-2xl font-black text-white">{{ $usuariosEnBd }}</p>
@@ -108,26 +108,37 @@
 
         </div>
 
-        {{-- Gestión de Inventario --}}
-        <div class="w-full flex justify-center items-center">
-            <a href="{{ route('admin.productos.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-magma-diablillo transition-all cursor-pointer rounded-3xl">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-white">Gestión de Inventario</h3>
-                    <span class="material-symbols-outlined text-gray-500 group-hover:text-magma-diablillo transition">arrow_forward</span>
+        {{-- Gestión de inventario, usuarios y mensajes --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <a href="{{ route('admin.productos.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-magma-diablillo transition-all cursor-pointer rounded-3xl h-full flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-white">Gestión de Inventario</h3>
+                        <span class="material-symbols-outlined text-gray-500 group-hover:text-magma-diablillo transition">inventory</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Visualiza la tabla completa de especies, edita información, actualiza precios y elimina registros obsoletos.</p>
                 </div>
-                <p class="text-gray-400 text-sm">Visualiza la tabla completa de especies, edita información, actualiza precios y elimina registros obsoletos.</p>
-            </a>          
-        </div>
+            </a>
 
-        {{-- Gestion de Usuarios --}}
-        <div class="w-full flex justify-center items-center">
-            <a href="{{ route('admin.usuarios.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-emerald-500 transition-all cursor-pointer rounded-3xl mt-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-white">Gestión de Tripulación (Usuarios)</h3>
-                    <span class="material-symbols-outlined text-gray-500 group-hover:text-emerald-500 transition">group</span>
+            <a href="{{ route('admin.usuarios.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-emerald-500 transition-all cursor-pointer rounded-3xl h-full flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-white">Gestión de Tripulación (Usuarios)</h3>
+                        <span class="material-symbols-outlined text-gray-500 group-hover:text-emerald-500 transition">group</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Visualiza la base de datos de exploradores registrados, audita sus cuentas y revoca accesos de la plataforma.</p>
                 </div>
-                <p class="text-gray-400 text-sm">Visualiza la base de datos de exploradores registrados, audita sus cuentas y revoca accesos de la plataforma.</p>
-            </a>          
+            </a>
+
+            <a href="{{ route('admin.mensajes.index') }}" class="group tarjeta-cristal p-8 border border-white/10 hover:border-blue-500 transition-all cursor-pointer rounded-3xl h-full flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-white">Centro de Comunicaciones</h3>
+                        <span class="material-symbols-outlined text-gray-500 group-hover:text-blue-500 transition">inbox</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Bandeja de entrada del Abismo. Revisa las transmisiones, dudas y solicitudes de contacto de los exploradores.</p>
+                </div>
+            </a>
         </div>
 
         {{-- Monitor de pedidos --}}

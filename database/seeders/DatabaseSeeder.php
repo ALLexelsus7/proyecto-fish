@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Producto;
 use App\Models\Review;
+use App\Models\ContactMessage;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +43,9 @@ class DatabaseSeeder extends Seeder
 
         // Inyecta 7 resenias
         Review::factory()->count(7)->create();
+
+        // Inyecta 6 mensajes de contacto
+        ContactMessage::factory()->count(6)->create();
     }
 }
 
@@ -49,4 +53,6 @@ class DatabaseSeeder extends Seeder
 // a la vez ejecutar los seeders y factories de DatabaseSeeder.php
 
 // Para ejecutar solo el databaseseeder 'php artisan db:seed'
-// Para ejecutar un solo un seeder o factory 'php artisan db:seed --class=UserSeeder'
+// Para ejecutar un solo un seeder 'php artisan db:seed --class=UserSeeder'
+// Para ejecutar un solo factory entro a 'php artisan tinker' y
+// hago 'App\Models\MODELO::factory()->count(#)->create();' luego 'exit'

@@ -7,6 +7,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\FavoritoController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminUserController;
 use App\Models\Review;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 //► Rutas publicas (sin loguear)
 Route::get('/', function () { return view('home'); })->name('home');
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/contacto', [ContactController::class, 'index'])->name('contacto');
+Route::post('/contacto/enviar', [ContactController::class, 'store'])->name('contacto.store');
 
 //► Grupo de rutas protegidas (para los logueados y verificados)
 Route::middleware(['auth','verified'])->group(function () {
@@ -39,12 +42,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/checkout/process', [PedidoController::class, 'procesarCheckout'])->name('checkout.process');
     Route::get('/checkout/success/{id}', [PedidoController::class, 'success'])->name('checkout.success');
 
-    // Contacto y Reseñas 
-    Route::get('/contacto', function () { //⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️falta hacer el ContactoController para poner esta logica alli
-        // Obtiene las reseñas con sus respectivos usuarios cargados (Eager Loading)
-        $reviews = Review::with('user')->latest()->get();        
-        return view('contacto', compact('reviews'));
-    })->name('contacto');
+    // Reseñas (agregar, actualizar y eliminar)    
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::patch('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
@@ -77,6 +75,11 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('/usuarios', [AdminUserController::class, 'index'])->name('usuarios.index');
         Route::delete('/usuarios/{user}', [AdminUserController::class, 'destroy'])->name('usuarios.destroy');
         Route::patch('/usuarios/{user}/rol', [AdminUserController::class, 'updateRole'])->name('usuarios.updateRole');
+
+        // Gestion de Mensajes de Contacto
+        Route::get('/mensajes', [App\Http\Controllers\AdminContactController::class, 'index'])->name('mensajes.index');
+        Route::patch('/mensajes/{mensaje}/toggle', [App\Http\Controllers\AdminContactController::class, 'toggleLeido'])->name('mensajes.toggle');
+        Route::delete('/mensajes/{mensaje}', [App\Http\Controllers\AdminContactController::class, 'destroy'])->name('mensajes.destroy');
     });
     
 });
