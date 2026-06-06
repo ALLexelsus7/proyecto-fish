@@ -18,7 +18,7 @@ class ContactController extends Controller
         return view('contacto', compact('reviews'));
     }
 
-    // Funcion para guardar un nuevo mensaje de contacto
+    // Funcion para guardar un nuevo mensaje de contacto (cualquiera puede aunque no este logeado)
     public function store(Request $request)
     {
         // Validar que no manden datos basura
