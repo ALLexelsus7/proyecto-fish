@@ -1,6 +1,6 @@
 <?php
 // con 'php artisan make:controller AdminContactController'
-// para manejar los mensajes de contacto
+// para gestionar los mensajes de contacto
 namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;

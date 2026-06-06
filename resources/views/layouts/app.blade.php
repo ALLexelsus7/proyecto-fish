@@ -1,3 +1,4 @@
+{{-- OJO, instale la extencion de 'Draw Folder Structure' para generar la estrucutra de las vistas para documentacion (click a la carpeta y hasta abajo) --}}
 {{-- Este es el layout principal plantilla para las demas vistas --}}
 <!DOCTYPE html>
 <html lang="es">
