@@ -1,58 +1,128 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌊 Abyssal Catch Co. (Proyecto-Fish)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Alpine.js](https://img.shields.io/badge/Alpine.js-8BC0D0?style=for-the-badge&logo=alpine.js&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
-## About Laravel
+Plataforma web de comercio electrónico especializada en la venta y gestión de peces exóticos con fines gastronómicos y ornamentales. Desarrollada como proyecto académico para la materia WEB II (Centro de Enseñanza Técnica Industrial).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Descripción del Proyecto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Abyssal Catch Co. es un sistema B2C que permite a los usuarios explorar un catálogo dinámico, gestionar un carrito de compras, guardar favoritos y realizar pedidos. Además, cuenta con un robusto panel de administración para gestionar el inventario, procesar las órdenes, auditar usuarios y responder mensajes de contacto.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🚀 Características Principales
 
-## Learning Laravel
+**Para Clientes (Tripulación):**
+* Exploración de catálogo con filtros (ornamentales y consumo).
+* Carrito de compras y sistema de "Checkout" de pedidos.
+* Gestión de perfil de usuario (carga de Avatar dinámico).
+* Sección de testimonios (CRUD de reseñas propias).
+* Formulario de contacto integrado.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Para Administradores (Comandantes):**
+* Dashboard interactivo para la gestión de inventario (CRUD de productos).
+* Actualización rápida de stock y estatus de pedidos.
+* Gestión de usuarios (Promoción a roles administrativos y baneos mediante `SoftDeletes`).
+* Bandeja de entrada del Centro de Comunicaciones (Lectura y purga de mensajes).
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🛠️ Stack Tecnológico
 
-## Agentic Development
+* **Backend:** PHP 8.3, Laravel Framework
+* **Frontend:** Blade Templates, Tailwind CSS, Alpine.js
+* **Base de Datos:** MySQL 8.0 (Eloquent ORM)
+* **Autenticación:** Laravel Breeze
+* **Testing:** Pest PHP
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
+## ⚙️ Requisitos Previos
+
+Antes de instalar el proyecto, asegúrate de tener instalado en tu entorno local:
+* [PHP >= 8.3](https://www.php.net/downloads)
+* [Composer](https://getcomposer.org/)
+* [Node.js y npm](https://nodejs.org/)
+* [MySQL](https://www.mysql.com/) (o XAMPP/Laragon)
+* Git
+
+---
+
+## 💻 Guía de Instalación
+
+Sigue estos pasos para desplegar la plataforma en tu entorno de desarrollo local:
+
+**1. Clonar el repositorio**
 ```bash
-composer require laravel/boost --dev
+git clone <URL_DEL_REPOSITORIO>
+cd proyecto-fish
+**2. Instalar dependencias de PHP (Backend)**
+```bash
+composer install
+**3. Instalar dependencias de Node (Frontend)**
+```bash
+npm install
+npm run build
+**4. Configurar variables de entorno**
+**Copia el archivo de ejemplo para crear tu propio archivo de configuración:**
+```bash
+cp .env.example .env
+**Abre el archivo .env recién creado y configura las credenciales de tu base de datos MySQL:**
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nombre_de_tu_base_de_datos
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+**5. Generar la clave de la aplicacion**
+```bash
+php artisan key:generate
+**6. Migrar la base de datos y generar datos semilla (Seeders)**
+**Este comando creará todas las tablas y las poblará con productos, usuarios, reseñas y mensajes de prueba utilizando nuestros Factories.**
+```bash
+php artisan migrate --seed
+**7. Enlazar el almacenamiento público (Storage)**
+**Crucial para que las imágenes de los productos y los avatares de los usuarios se visualicen correctamente en el navegador.**
+```bash
+php artisan storage:link
+**8. Iniciar el servidor de desarrollo**
+**Levanta el servidor interno de Laravel:**
+```bash
+php artisan serve
+**(Opcional) Si necesitas compilar cambios de Tailwind/Alpine en tiempo real en otra terminal ejecuta:**
+```bash
+npm run dev
 
-php artisan boost:install
-```
+🌐 ¡Listo! La aplicación estará disponible en http://localhost:8000.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 📁 Estructura del Proyecto
+Una vista simplificada de los componentes clave de la arquitectura MVC implementada:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+ * app/Http/Controllers/: Lógica de negocio (Ej. AdminDashboardController, ProductoController, ReviewController).
 
-## Code of Conduct
+ * app/Models/: Modelos de Eloquent con relaciones y Accessors (Ej. Producto, User, Review).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+ * database/migrations/: Estructura de las tablas y llaves foráneas.
 
-## Security Vulnerabilities
+ * database/factories/: Generadores de datos ficticios para pruebas.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+ * resources/views/: Interfaces gráficas divididas en admin, auth, layouts y componentes públicos.
 
-## License
+ * routes/web.php: Mapa de rutas HTTP protegidas por middlewares (auth, admin).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ * public/img/: Almacenamiento físico de assets estáticos, avatares e imágenes del catálogo.
+
+---
+
+## 👨‍💻 Autor y Créditos
+ * Desarrollador: Alex Ruiz Jordan (24110097)
+
+ * Institución: Centro de Enseñanza Técnica Industrial (CETI)
+
+ * Materia: WEB II
+
+ * Proyecto desarrollado con pasión, aplicando estándares de Clean Code, MVC y buenas prácticas de Experiencia de Usuario (UX).
