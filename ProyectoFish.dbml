@@ -1,0 +1,253 @@
+Enum "carritos_tipo_compra_enum" {
+  "consumo"
+  "ornamental"
+}
+
+Enum "detalle_pedidos_tipo_compra_enum" {
+  "consumo"
+  "ornamental"
+}
+
+Enum "pedidos_estado_enum" {
+  "pendiente"
+  "enviado"
+  "entregado"
+  "cancelado"
+}
+
+Enum "productos_categoria_enum" {
+  "shallow_coastal"
+  "oceanic"
+  "hadal_zone"
+}
+
+Enum "productos_estado_vida_enum" {
+  "ambos"
+  "vivo"
+  "consumo"
+}
+
+Enum "users_rol_enum" {
+  "cliente"
+  "admin"
+}
+
+// Table "cache" {
+//   "key" varchar(255) [pk, not null]
+//   "value" mediumtext [not null]
+//   "expiration" bigint [not null]
+
+// Indexes {
+//   expiration [name: "cache_expiration_index"]
+// }
+// }
+
+// Table "cache_locks" {
+//   "key" varchar(255) [pk, not null]
+//   "owner" varchar(255) [not null]
+//   "expiration" bigint [not null]
+
+// Indexes {
+//   expiration [name: "cache_locks_expiration_index"]
+// }
+// }
+
+Table "carritos" {
+  "id" bigint [pk, not null, increment]
+  "user_id" bigint [not null]
+  "producto_id" bigint [not null]
+  "cantidad" int [not null, default: "1"]
+  "tipo_compra" carritos_tipo_compra_enum [not null, default: "ornamental"]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  user_id [name: "carritos_user_id_foreign"]
+  producto_id [name: "carritos_producto_id_foreign"]
+}
+}
+
+Table "contact_messages" {
+  "id" bigint [pk, not null, increment]
+  "nombre" varchar(255) [not null]
+  "email" varchar(255) [not null]
+  "asunto" varchar(255) [not null]
+  "mensaje" text [not null]
+  "leido" tinyint(1) [not null, default: "0"]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "detalle_pedidos" {
+  "id" bigint [pk, not null, increment]
+  "pedido_id" bigint [not null]
+  "producto_id" bigint [default: NULL]
+  "cantidad" int [not null]
+  "precio_unitario" decimal(10,2) [not null]
+  "tipo_compra" detalle_pedidos_tipo_compra_enum [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  pedido_id [name: "detalle_pedidos_pedido_id_foreign"]
+  producto_id [name: "detalle_pedidos_producto_id_foreign"]
+}
+}
+
+// Table "failed_jobs" {
+//   "id" bigint [pk, not null, increment]
+//   "uuid" varchar(255) [not null]
+//   "connection" text [not null]
+//   "queue" text [not null]
+//   "payload" longtext [not null]
+//   "exception" longtext [not null]
+//   "failed_at" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+// Indexes {
+//   uuid [unique, name: "failed_jobs_uuid_unique"]
+// }
+// }
+
+Table "favoritos" {
+  "id" bigint [pk, not null, increment]
+  "user_id" bigint [not null]
+  "producto_id" bigint [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  (user_id, producto_id) [unique, name: "favoritos_user_id_producto_id_unique"]
+  producto_id [name: "favoritos_producto_id_foreign"]
+}
+}
+
+// Table "jobs" {
+//   "id" bigint [pk, not null, increment]
+//   "queue" varchar(255) [not null]
+//   "payload" longtext [not null]
+//   "attempts" smallint [not null]
+//   "reserved_at" int [default: NULL]
+//   "available_at" int [not null]
+//   "created_at" int [not null]
+
+// Indexes {
+//   queue [name: "jobs_queue_index"]
+// }
+// }
+
+// Table "job_batches" {
+//   "id" varchar(255) [pk, not null]
+//   "name" varchar(255) [not null]
+//   "total_jobs" int [not null]
+//   "pending_jobs" int [not null]
+//   "failed_jobs" int [not null]
+//   "failed_job_ids" longtext [not null]
+//   "options" mediumtext
+//   "cancelled_at" int [default: NULL]
+//   "created_at" int [not null]
+//   "finished_at" int [default: NULL]
+// }
+
+// Table "migrations" {
+//   "id" int [pk, not null, increment]
+//   "migration" varchar(255) [not null]
+//   "batch" int [not null]
+// }
+
+// Table "password_reset_tokens" {
+//   "email" varchar(255) [pk, not null]
+//   "token" varchar(255) [not null]
+//   "created_at" timestamp [default: NULL]
+// }
+
+Table "pedidos" {
+  "id" bigint [pk, not null, increment]
+  "user_id" bigint [not null]
+  "total" decimal(10,2) [not null]
+  "estado" pedidos_estado_enum [not null, default: "pendiente"]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  user_id [name: "pedidos_user_id_foreign"]
+}
+}
+
+Table "productos" {
+  "id" bigint [pk, not null, increment]
+  "nombre_comun" varchar(255) [not null]
+  "nombre_cientifico" varchar(255) [not null]
+  "categoria" productos_categoria_enum [not null, default: "hadal_zone"]
+  "precio" decimal(10,2) [not null]
+  "stock" int [not null, default: "0"]
+  "descripcion" text [not null]
+  "imagen_url" varchar(255) [not null]
+  "estado_vida" productos_estado_vida_enum [not null, default: "ambos"]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+  "deleted_at" timestamp [default: NULL]
+}
+
+Table "reviews" {
+  "id" bigint [pk, not null, increment]
+  "user_id" bigint [not null]
+  "rating" tinyint [not null]
+  "comentario" text [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+  "deleted_at" timestamp [default: NULL]
+
+Indexes {
+  user_id [name: "reviews_user_id_foreign"]
+}
+}
+
+// Table "sessions" {
+//   "id" varchar(255) [pk, not null]
+//   "user_id" bigint [default: NULL]
+//   "ip_address" varchar(45) [default: NULL]
+//   "user_agent" text
+//   "payload" longtext [not null]
+//   "last_activity" int [not null]
+
+// Indexes {
+//   user_id [name: "sessions_user_id_index"]
+//   last_activity [name: "sessions_last_activity_index"]
+// }
+// }
+
+Table "users" {
+  "id" bigint [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "email" varchar(255) [not null]
+  "avatar" varchar(255) [default: NULL]
+  "rol" users_rol_enum [not null, default: "cliente"]
+  "email_verified_at" timestamp [default: NULL]
+  "password" varchar(255) [not null]
+  "remember_token" varchar(100) [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+  "deleted_at" timestamp [default: NULL]
+
+Indexes {
+  email [unique, name: "users_email_unique"]
+}
+}
+
+// Relaciones entre tablas
+
+Ref:"users"."id" < "carritos"."user_id" [delete: cascade]
+
+Ref:"productos"."id" < "carritos"."producto_id" [delete: cascade]
+
+Ref:"pedidos"."id" < "detalle_pedidos"."pedido_id" [delete: cascade]
+
+Ref:"productos"."id" < "detalle_pedidos"."producto_id" [delete: set null]
+
+Ref:"users"."id" < "favoritos"."user_id" [delete: cascade]
+
+Ref:"productos"."id" < "favoritos"."producto_id" [delete: cascade]
+
+Ref:"users"."id" < "pedidos"."user_id" [delete: cascade]
+
+Ref:"users"."id" < "reviews"."user_id" [delete: cascade]

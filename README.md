@@ -1,3 +1,5 @@
+<!-- README.md Desarrollado con el Agente Claude Haiku 4.5 en la ventana de Agentes de VSCode 
+(con el contexto completo del proyecto). Tambien se puede usar la plataforma Readme.so para su edicion -->
 # 🌊 Abyssal Catch Co. (Proyecto-Fish)
 
 ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
@@ -293,12 +295,12 @@ proyecto-fish/
 Después de ejecutar las migraciones y seeders, usa estas credenciales:
 
 ### Administrador
-- **Email**: `admin@ejemplo.com`
-- **Contraseña**: `password`
+- **Email**: `admin@abyssal.com`
+- **Contraseña**: `password123`
 
-### Usuario Regular
-- **Email**: `usuario@ejemplo.com`
-- **Contraseña**: `password`
+### Cliente Regular
+- **Email**: `cliente@abyssal.com`
+- **Contraseña**: `password123`
 
 ---
 
@@ -361,6 +363,42 @@ php artisan test --verbose
 ✅ **Middlewares de Autorización** — Protección de rutas administrativas  
 ✅ **SQL Injection Prevention** — Uso de Eloquent ORM y query builder  
 
+Ademas, se integro el archivo dependabot.yml para realizar auditorias semanalmente a npm y composer.
+
+Se recomienda tener tu repositorio en GitHub y utilizar plataformas como Socket.dev y/o Snyk.io para un analizis mas profundo del proyecto en cuanto a vulnerabilidades en dependencias.
+
+Tambien es preferible configurar tu .npmrc global o local para que no admita dependencias demasiado recientes:
+
+```bash
+# Configuración global
+npm config set min-release-age 7
+
+# Configuración local
+npm config set min-release-age 7 --location=proyecto-fish
+```
+En el proyecto se incluye un Scheduler `AuditarSistemas.php` para ejecutar comandos de auditoria utilizando `composer audit`, `npm audit` y `snyk test` de forma periódica, con el fin de mantener la seguridad del proyecto a largo plazo. Se ejecuta con:
+```bash
+# Ejecutar auditoría de seguridad manualmente
+php artisan seguridad:auditar
+```
+Y una vez desplegado el proyecto a produccion, se recomienda configurar un cron job para ejecutar este comando semanalmente:
+```bash
+# Cron job semanal (ejemplo para Linux)
+0 0 * * 0 cd /ruta/a/proyecto-fish && php artisan seguridad:auditar >> /ruta/a/logs/auditoria.log 2>&1
+```
+
+Por ultimo, se recomienda utilizar `PNPM` en lugar de `NPM` para la gestión de dependencias JavaScript, ya que ofrece una mejor seguridad y manejo de vulnerabilidades. Para migrar a Pnpm, sigue estos pasos:
+
+```bash
+# Instalar Pnpm globalmente
+npm install -g pnpm
+# Eliminar node_modules y package-lock.json
+rm -rf node_modules package-lock.json
+# Instalar dependencias con Pnpm
+pnpm install
+# Actualizar scripts en package.json si es necesario
+```
+
 ---
 
 ## 📞 Soporte y Contribuciones
@@ -384,7 +422,7 @@ Si encuentras bugs o tienes sugerencias:
 - **Matrícula**: 24110097
 - **Institución**: Centro de Enseñanza Técnica Industrial (CETI)
 - **Materia**: WEB II
-- **Año**: 2025
+- **Año**: 2026
 
 ### 📜 Licencia
 
@@ -402,7 +440,7 @@ Este proyecto está licenciado bajo la **Licencia MIT** — ver archivo `LICENSE
 ## 📞 Contacto
 
 Para preguntas sobre el proyecto, contacta a través de:
-- 📧 Email: `alex.ruiz@ejemplo.com`
+- 📧 Email: `a24110097@ceti.mx`
 - 🐙 GitHub: [@ALLexelsus7](https://github.com/ALLexelsus7)
 - 💼 LinkedIn: [Alex Ruiz Jordan](https://www.linkedin.com/in/alexruizjordan/)
 
